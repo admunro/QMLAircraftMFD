@@ -18,8 +18,9 @@ qt_add_qml_module(appAircraftMFD
     QML_FILES
         Main.qml
         QML_FILES ui/AircraftMFD.qml
-        QML_FILES
-        QML_FILES
+        QML_FILES ui/NavPage.qml
+        QML_FILES ui/RadarPage.qml
+        QML_FILES ui/TemplatePage.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
