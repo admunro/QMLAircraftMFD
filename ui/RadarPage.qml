@@ -15,7 +15,7 @@ Rectangle {
 
     // Function handlers for button events from the main MFD
     function handleLeftButton(index) {
-        console.log("Left button pressed in RADAR page: " + leftButtonCaptions[index]);
+        console.log("Button pressed in " + pageName + " page: " + leftButtonCaptions[index]);
 
         switch(leftButtonCaptions[index]) {
             case "MODE":
@@ -40,7 +40,7 @@ Rectangle {
     }
 
     function handleRightButton(index) {
-        console.log("Right button pressed in RADAR page: " + rightButtonCaptions[index]);
+        console.log("Button pressed in " + pageName + " page: " + rightButtonCaptions[index]);
 
         switch(rightButtonCaptions[index]) {
             case "RANGE+":

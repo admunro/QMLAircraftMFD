@@ -9,12 +9,13 @@ Rectangle {
 
     // Properties
     property var pages: [
-        { name: "NAV",   color: "#203040" },
-        { name: "RADAR", color: "#302030" },
-        { name: "COM",   color: "#203020" },
-        { name: "SYS",   color: "#303020" },
-        { name: "FUEL",  color: "#302020" }
+        { name: "NAV",   source: "NavPage.qml", color: "#203040" },
+        { name: "RADAR", source: "RadarPage.qml", color: "#302030" },
+        { name: "COM",   source: "ComPage.qml", color: "#203020" },
+        { name: "SYS",   source: "SysPage.qml", color: "#303020" },
+        { name: "FUEL",  source: "TemplatePage.qml", color: "#302020" }
     ]
+
 
     // Signal properties to communicate with page components
     signal leftButtonClicked(int index)
@@ -25,7 +26,9 @@ Rectangle {
     property var leftButtonCaptions: ["L1", "L2", "L3", "L4", "L5"]  // Placeholders
     property var rightButtonCaptions: ["R1", "R2", "R3", "R4", "R5"] // Placeholders
 
-    property string currentPage: pages[0].name
+    property int currentPage: 0
+    property var currentItem // This is the QtObject that is currently loaded in the display. It's set by the Loader.
+
 
     // Main content area with Loader for different pages
     Rectangle {
@@ -45,45 +48,25 @@ Rectangle {
             id: pageLoader
             anchors.fill: parent
             source: {
-                switch(mfd.currentPage) {
-                    case "NAV": return "NavPage.qml";
-                    case "RADAR": return "RadarPage.qml";
-                    case "COM": return "ComPage.qml";
-                    case "SYS": return "SysPage.qml";
-                    case "FUEL": return "TemplatePage.qml";
-                    default: return "";
-                }
+                    mfd.pages[mfd.currentPage].source;
             }
 
             onLoaded: {
                 if (item) {
                     // Set properties on the page
-                    item.pageColor = mfd.pages.find(page => page.name === currentPage).color;
-                    item.pageName = currentPage;
+
+                    mfd.currentItem = item
+
+                    item.pageColor = mfd.pages[mfd.currentPage].color;
+                    item.pageName = mfd.pages[mfd.currentPage].name;
 
                     // Connect signals
-                    leftButtonClicked.connect(item.handleLeftButton);
-                    rightButtonClicked.connect(item.handleRightButton);
+                    mfd.leftButtonClicked.connect(item.handleLeftButton);
+                    mfd.rightButtonClicked.connect(item.handleRightButton);
 
                     // Get button captions from the page
-                    leftButtonCaptions = item.leftButtonCaptions;
-                    rightButtonCaptions = item.rightButtonCaptions;
-
-                    // Connect to property changes for button captions
-                    item.leftButtonCaptionsChanged.connect(function() {
-                        leftButtonCaptions = item.leftButtonCaptions;
-                    });
-                    item.rightButtonCaptionsChanged.connect(function() {
-                        rightButtonCaptions = item.rightButtonCaptions;
-                    });
-                }
-            }
-
-            // Clean up connections when page changes
-            onSourceChanged: {
-                if (item) {
-                    mfd.leftButtonClicked.disconnect(item.handleLeftButton);
-                    mfd.rightButtonClicked.disconnect(item.handleRightButton);
+                    mfd.leftButtonCaptions = item.leftButtonCaptions;
+                    mfd.rightButtonCaptions = item.rightButtonCaptions;
                 }
             }
         }
@@ -131,8 +114,7 @@ Rectangle {
                     anchors.fill: parent
                     onPressed: parent.color = "#404040"
                     onReleased: parent.color = "#2a2a2a"
-                    onClicked: {
-                        console.log("Left button clicked: " + mfd.index);
+                    onClicked: {                        
                         leftButtonClicked(index);
                     }
                 }
@@ -154,6 +136,8 @@ Rectangle {
         spacing: 40
 
         Repeater {
+
+            id: rightRepeater
             model: 5
 
             Rectangle {
@@ -180,7 +164,6 @@ Rectangle {
                     onPressed: parent.color = "#404040"
                     onReleased: parent.color = "#2a2a2a"
                     onClicked: {
-                        console.log("Right button clicked: " + index);
                         rightButtonClicked(index);
                     }
                 }
@@ -208,13 +191,13 @@ Rectangle {
             Rectangle {
                 width: 70
                 height: 70
-                color: currentPage === modelData.name ? "#404040" : "#2a2a2a"
+                color: mfd.pages[mfd.currentPage].color
                 border.color: "#3a3a3a"
                 border.width: 1
 
                 Text {
                     anchors.centerIn: parent
-                    text: modelData.name
+                    text: mfd.pages[index].name
                     color: "white"
                     font.pixelSize: 18
                     font.family: "Roboto Mono"
@@ -224,19 +207,23 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        bottomButtonClicked(modelData.name);
-                        currentPage = modelData.name;
+
+                        if (index != mfd.currentPage)
+                        {
+                            // Disconnect the button handlers from the currently selected page
+
+                            if (mfd.currentItem)
+                            {
+                                mfd.leftButtonClicked.disconnect(mfd.currentItem.handleLeftButton);
+                                mfd.rightButtonClicked.disconnect(mfd.currentItem.handleRightButton);
+                            }
+
+                            // Set the new page index. The Loader object will handle new connections
+                            mfd.currentPage = index;
+                        }
                     }
                 }
             }
         }
-    }
-
-    // MFD frame
-    Rectangle {
-        anchors.fill: parent
-        color: "transparent"
-        border.color: "#606060"
-        border.width: 6
     }
 }
