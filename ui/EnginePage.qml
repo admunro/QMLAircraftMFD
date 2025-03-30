@@ -2,16 +2,14 @@ import QtQuick 2.15
 
 Rectangle
 {
-    id: navPage
+    id: hydraulicsPage
 
-    property double heading
-
-    property string pageName: "NAV_PAGE"
+    property string pageName: "ENGINES_PAGE"
     property color pageColor: "#000000"
 
     // Button captions that will be read by the main MFD
-    property var leftButtonCaptions: ["Nav L1", "Nav L2", "Nav L3", "Nav L4", "Nav L5"]
-    property var rightButtonCaptions: ["Nav R1", "Nav R2", "Nav R3", "Nav R4", "Nav R5"]
+    property var leftButtonCaptions: ["Engine L1", "Engine L2", "Engine L3", "Engine L4", "Engine L5"]
+    property var rightButtonCaptions: ["Engine R1", "Engine R2", "Engine R3", "Engine R4", "Engine R5"]
 
 
     // Function handlers for button events from the main MFD
@@ -68,7 +66,7 @@ Rectangle
     {
         id: navPlaceholder
 
-        source: 'img/nav.png'
+        source: 'img/engines.png'
 
         width: parent.width
         height: parent.height

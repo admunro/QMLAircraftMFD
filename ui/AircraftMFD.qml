@@ -2,18 +2,17 @@ import QtQuick 2.15
 
 
 Rectangle {
+
     id: mfd
-    width: 800
-    height: 600
-    color: "dimgrey"
+    color: "black"
 
     // Properties
     property var pages: [
-        { name: "NAV",   source: "NavPage.qml", color: "#203040" },
-        { name: "RADAR", source: "RadarPage.qml", color: "#302030" },
-        { name: "COM",   source: "ComPage.qml", color: "#203020" },
-        { name: "SYS",   source: "SysPage.qml", color: "#303020" },
-        { name: "FUEL",  source: "TemplatePage.qml", color: "#302020" }
+        { name: "NAV",    source: "NavPage.qml",      color: "#203040" },
+        { name: "STORE",  source: "StorePage.qml",    color: "#302030" },
+        { name: "SNSR",   source: "SensorPage.qml",   color: "#203020" },
+        { name: "HYD",    source: "HydPage.qml",      color: "#303020" },
+        { name: "ENG",    source: "EnginePage.qml",   color: "#302020" }
     ]
 
 
@@ -29,6 +28,14 @@ Rectangle {
     property int currentPage: 0
     property var currentItem // This is the QtObject that is currently loaded in the display. It's set by the Loader.
 
+
+    Rectangle {
+        color: 'dimgrey'
+        width: parent.width -2
+        height: parent.height - 2
+
+        anchors.centerIn: parent
+    }
 
     // Main content area with Loader for different pages
     Rectangle {
@@ -77,18 +84,14 @@ Rectangle {
         id: leftButtonColumn
         anchors {
             left: parent.left
-            top: parent.top
-            bottom: bottomButtonRow.top
             margins: 2
-            topMargin: 150
+            verticalCenter: parent.verticalCenter
         }
         width: 100
         spacing: 40
 
         Repeater {
             model: 5
-
-            anchors.top: parent.top
 
             Rectangle {
 
@@ -127,10 +130,8 @@ Rectangle {
         id: rightButtonColumn
         anchors {
             right: parent.right
-            top: parent.top
-            bottom: bottomButtonRow.top
             margins: 2
-            topMargin: 150
+            verticalCenter: parent.verticalCenter
         }
         width: 100
         spacing: 40
@@ -142,10 +143,11 @@ Rectangle {
 
             Rectangle {
 
-                anchors.horizontalCenter: parent.horizontalCenter
-
                 width: parent.width * 0.8
                 height: 70
+
+                anchors.horizontalCenter: parent.horizontalCenter
+
                 color: "#2a2a2a"
                 border.color: "#3a3a3a"
                 border.width: 1
@@ -191,7 +193,7 @@ Rectangle {
             Rectangle {
                 width: 70
                 height: 70
-                color: mfd.pages[mfd.currentPage].color
+                color: index == mfd.currentPage ? "#404040" : "#2a2a2a"
                 border.color: "#3a3a3a"
                 border.width: 1
 

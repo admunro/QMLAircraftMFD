@@ -15,12 +15,27 @@ qt_add_executable(appAircraftMFD
 qt_add_qml_module(appAircraftMFD
     URI AircraftMFD
     VERSION 1.0
+
     QML_FILES
         Main.qml
         QML_FILES ui/AircraftMFD.qml
         QML_FILES ui/NavPage.qml
         QML_FILES ui/RadarPage.qml
         QML_FILES ui/TemplatePage.qml
+        QML_FILES ui/map.qml
+
+    RESOURCES
+        ui/img/engines.png
+        ui/img/hydraulics.png
+        ui/img/nav.png
+        ui/img/sensor.png
+        ui/img/stores.png
+        QML_FILES ui/StorePage.qml
+        QML_FILES ui/SensorPage.qml
+        QML_FILES ui/HydPage.qml
+        QML_FILES ui/EnginePage.qml
+        QML_FILES ui/MapDisplay.qml
+
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

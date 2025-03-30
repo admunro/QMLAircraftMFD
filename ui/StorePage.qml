@@ -4,14 +4,12 @@ Rectangle
 {
     id: navPage
 
-    property double heading
-
-    property string pageName: "NAV_PAGE"
+    property string pageName: "STORE_PAGE"
     property color pageColor: "#000000"
 
     // Button captions that will be read by the main MFD
-    property var leftButtonCaptions: ["Nav L1", "Nav L2", "Nav L3", "Nav L4", "Nav L5"]
-    property var rightButtonCaptions: ["Nav R1", "Nav R2", "Nav R3", "Nav R4", "Nav R5"]
+    property var leftButtonCaptions: ["Store L1", "Store L2", "Store L3", "Store L4", "Store L5"]
+    property var rightButtonCaptions: ["Store R1", "Store R2", "Store R3", "Store R4", "Store R5"]
 
 
     // Function handlers for button events from the main MFD
@@ -68,7 +66,7 @@ Rectangle
     {
         id: navPlaceholder
 
-        source: 'img/nav.png'
+        source: 'img/stores.png'
 
         width: parent.width
         height: parent.height
