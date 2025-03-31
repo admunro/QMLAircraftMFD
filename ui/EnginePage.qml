@@ -8,13 +8,13 @@ Rectangle
     property color pageColor: "#000000"
 
     // Button captions that will be read by the main MFD
-    property var leftButtonCaptions: ["Engine L1", "Engine L2", "Engine L3", "Engine L4", "Engine L5"]
-    property var rightButtonCaptions: ["Engine R1", "Engine R2", "Engine R3", "Engine R4", "Engine R5"]
+    property var leftButtonCaptions: ["Engine\nL1", "Engine\nL2", "Engine\nL3", "Engine\nL4", "Engine\nL5"]
+    property var rightButtonCaptions: ["Engine\nR1", "Engine\nR2", "Engine\nR3", "Engine\nR4", "Engine\nR5"]
 
 
     // Function handlers for button events from the main MFD
     function handleLeftButton(index) {
-        console.log("Button pressed in " + pageName + " page: " + leftButtonCaptions[index]);
+        console.log("Button pressed in " + pageName + " page: L" + (index+1));
 
         switch(index) {
             case 0:
@@ -36,7 +36,7 @@ Rectangle
     }
 
     function handleRightButton(index) {
-        console.log("Button pressed in " + pageName + " page: " + rightButtonCaptions[index]);
+        console.log("Button pressed in " + pageName + " page: R" + (index+1));
 
         switch(index) {
             case 0:

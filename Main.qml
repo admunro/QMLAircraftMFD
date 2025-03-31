@@ -6,16 +6,9 @@ Window {
 
     id: mainWindow
 
+    width: 1920
+    height: width / 3.5
 
-    property int windowHeight: 800
-
-    property int mfdWidth: 800
-    property int mapWidth: 1200
-
-    property int windowWidth: mfdWidth * 2 + mapWidth
-
-    width: windowWidth
-    height: windowHeight
     visible: true
 
     title: qsTr("Generic MFD")
@@ -25,8 +18,8 @@ Window {
     {
         id: leftMFD
 
+        width: parent.width / 3.5    // 800 pixels when window is 2800 wide
         height: parent.height
-        width: mainWindow.mfdWidth
 
         anchors.left: parent.left
     }
@@ -35,18 +28,22 @@ Window {
     {
         id: mapDisplay
 
-        width: mainWindow.mapWidth
-        height: mainWindow.windowHeight
+        width: parent.width / 1.75  // 1600 pixels when window is 2800 wide
+        height: parent.height
 
-        anchors.centerIn: parent
+        anchors.left: leftMFD.right
+        anchors.right: rightMFD.left
+
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
     }
 
     AircraftMFD
     {
         id: rightMFD
 
-        width: mainWindow.mfdWidth
-        height: mainWindow.height
+        width: parent.width / 3.5  // 800 pixels when window is 2800 wide
+        height: parent.height
 
         anchors.right: parent.right
 

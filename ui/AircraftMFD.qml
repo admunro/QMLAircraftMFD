@@ -31,7 +31,7 @@ Rectangle {
 
     Rectangle {
         color: 'dimgrey'
-        width: parent.width -2
+        width: parent.width - 2
         height: parent.height - 2
 
         anchors.centerIn: parent
@@ -50,6 +50,7 @@ Rectangle {
         color: "red"
 
         height: parent.height * 0.8
+        width: parent.width * 0.8
 
         Loader {
             id: pageLoader
@@ -79,16 +80,20 @@ Rectangle {
         }
     }
 
+
     // Left side buttons
     Column {
         id: leftButtonColumn
+
         anchors {
             left: parent.left
-            margins: 2
             verticalCenter: parent.verticalCenter
+
         }
-        width: 100
-        spacing: 40
+
+        width: parent.width / 8
+        height: displayArea.height
+        spacing: parent.height / 20
 
         Repeater {
             model: 5
@@ -96,7 +101,7 @@ Rectangle {
             Rectangle {
 
                 width: parent.width * 0.8
-                height: 70
+                height: width
 
                 anchors.horizontalCenter: parent.horizontalCenter
 
@@ -108,7 +113,7 @@ Rectangle {
                     anchors.centerIn: parent
                     text: leftButtonCaptions[index]
                     color: "white"
-                    font.pixelSize: 14
+                    fontSizeMode: Text.Fit
                     font.family: "Roboto Mono"
                     font.bold: true
                 }
@@ -117,7 +122,7 @@ Rectangle {
                     anchors.fill: parent
                     onPressed: parent.color = "#404040"
                     onReleased: parent.color = "#2a2a2a"
-                    onClicked: {                        
+                    onClicked: {
                         leftButtonClicked(index);
                     }
                 }
@@ -128,13 +133,15 @@ Rectangle {
     // Right side buttons
     Column {
         id: rightButtonColumn
+
         anchors {
             right: parent.right
-            margins: 2
             verticalCenter: parent.verticalCenter
         }
-        width: 100
-        spacing: 40
+
+        width: parent.width / 8
+        height: displayArea.height
+        spacing: parent.height / 20
 
         Repeater {
 
@@ -144,7 +151,7 @@ Rectangle {
             Rectangle {
 
                 width: parent.width * 0.8
-                height: 70
+                height: width
 
                 anchors.horizontalCenter: parent.horizontalCenter
 
@@ -156,7 +163,7 @@ Rectangle {
                     anchors.centerIn: parent
                     text: rightButtonCaptions[index]
                     color: "white"
-                    font.pixelSize: 14
+                    fontSizeMode: Text.Fit
                     font.family: "Roboto Mono"
                     font.bold: true
                 }
@@ -177,22 +184,21 @@ Rectangle {
     Row {
         id: bottomButtonRow
         anchors {
-            right: parent.right
-            left: parent.left
             bottom: parent.bottom
             margins: 2
-            leftMargin: 150
-            bottomMargin: 30
+            horizontalCenter: parent.horizontalCenter
         }
-        height: 60
-        spacing: 40
+        height: parent.height / 10
+        spacing: parent.width / 20
 
         Repeater {
             model: mfd.pages
 
             Rectangle {
-                width: 70
-                height: 70
+
+                height: parent.height * 0.8
+                width: height
+
                 color: index == mfd.currentPage ? "#404040" : "#2a2a2a"
                 border.color: "#3a3a3a"
                 border.width: 1
@@ -201,7 +207,7 @@ Rectangle {
                     anchors.centerIn: parent
                     text: mfd.pages[index].name
                     color: "white"
-                    font.pixelSize: 18
+                    fontSizeMode: Text.Fit
                     font.family: "Roboto Mono"
                     font.bold: true
                 }
