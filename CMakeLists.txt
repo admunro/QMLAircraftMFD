@@ -4,9 +4,9 @@ project(AircraftMFD VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt5 REQUIRED COMPONENTS Quick)
 
-qt_standard_project_setup(REQUIRES 6.5)
+qt_standard_project_setup(REQUIRES 5.12)
 
 qt_add_executable(appAircraftMFD
     main.cpp
@@ -50,7 +50,7 @@ set_target_properties(appAircraftMFD PROPERTIES
 )
 
 target_link_libraries(appAircraftMFD
-    PRIVATE Qt6::Quick
+    PRIVATE Qt5::Quick
 )
 
 include(GNUInstallDirs)
