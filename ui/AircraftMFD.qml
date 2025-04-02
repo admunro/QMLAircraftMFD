@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick 2.5
 
 
 Rectangle {
@@ -114,6 +114,7 @@ Rectangle {
                     text: leftButtonCaptions[index]
                     color: "white"
                     fontSizeMode: Text.Fit
+                    font.pixelSize: 12
                     font.family: "Roboto Mono"
                     font.bold: true
                 }
@@ -164,6 +165,7 @@ Rectangle {
                     text: rightButtonCaptions[index]
                     color: "white"
                     fontSizeMode: Text.Fit
+                    font.pixelSize: 12
                     font.family: "Roboto Mono"
                     font.bold: true
                 }
@@ -208,6 +210,7 @@ Rectangle {
                     text: mfd.pages[index].name
                     color: "white"
                     fontSizeMode: Text.Fit
+                    font.pixelSize: 12
                     font.family: "Roboto Mono"
                     font.bold: true
                 }

@@ -1,6 +1,6 @@
-import QtQuick
-import QtLocation
-import QtPositioning
+import QtQuick 2.5
+import QtLocation 5.6
+import QtPositioning 5.5
 
 Rectangle
 {
@@ -42,43 +42,43 @@ Rectangle
 
             copyrightsVisible: false
 
-            PinchHandler
-            {
-                id: pinch
-                target: null
-                onActiveChanged: if (active) {
-                                     map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
-                                 }
-                onScaleChanged: (delta) => {
-                                    map.zoomLevel += Math.log2(delta)
-                                    map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-                                }
-                onRotationChanged: (delta) => {
-                                       map.bearing -= delta
-                                       map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-                                   }
-                grabPermissions: PointerHandler.TakeOverForbidden
-            }
+//            PinchHandler
+//            {
+//                id: pinch
+//                target: null
+//                onActiveChanged: if (active) {
+//                                     map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+//                                 }
+//                onScaleChanged: (delta) => {
+//                                    map.zoomLevel += Math.log2(delta)
+//                                    map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+//                                }
+//                onRotationChanged: (delta) => {
+//                                       map.bearing -= delta
+//                                       map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+//                                   }
+//                grabPermissions: PointerHandler.TakeOverForbidden
+//            }
 
-            WheelHandler
-            {
-                id: wheel
-                // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
-                // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
-                // and we don't yet distinguish mice and trackpads on Wayland either
-                acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
-                                 ? PointerDevice.Mouse | PointerDevice.TouchPad
-                                 : PointerDevice.Mouse
-                rotationScale: 1/120
-                property: "zoomLevel"
-            }
+//            WheelHandler
+//            {
+//                id: wheel
+//                // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
+//                // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
+//                // and we don't yet distinguish mice and trackpads on Wayland either
+//                acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+//                                 ? PointerDevice.Mouse | PointerDevice.TouchPad
+//                                 : PointerDevice.Mouse
+//                rotationScale: 1/120
+//                property: "zoomLevel"
+//            }
 
-            DragHandler
-            {
-                id: drag
-                target: null
-                onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
-            }
+//            DragHandler
+//            {
+//                id: drag
+//                target: null
+//                onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
+//            }
 
             Shortcut
             {
@@ -144,6 +144,7 @@ Rectangle
                         color: 'white'
                         fontSizeMode: Text.Fit
                         font.family: "Roboto Mono"
+                        font.pixelSize: 12
                         font.bold: true
                     }
 
