@@ -4,14 +4,60 @@ import QtPositioning
 
 Rectangle
 {
+    id: mapDisplay
+
     color: 'dimGrey'
 
-    property var pages: [ "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" ]
+    property var pages: [ "Zoom\nIn", "Zoom\nOut", "RTN\nPP", "TRK\nUp", "NTH\nUp" ]
+
+
+    enum MapOrientationType {
+        North_Up,
+        Track_Up
+    }
+
+    property var mapOrientation: MapDisplay.MapOrientationType.Track_Up
+
+    property real latitude: 48.7232 // Manching Airport
+    property real longitude: 11.5515
+    property real heading: 45.0; // Degrees 0 - 360
+
+    property var presentPosition: QtPositioning.coordinate(latitude, longitude)
+
 
     Plugin
     {
         id: mapPlugin
         name: 'osm'
+    }
+
+
+    function zoomIn()
+    {
+        if (map.zoomLevel < 20)
+        {
+            map.zoomLevel += 1
+        }
+        console.log('Zoom level: ' + map.zoomLevel)
+    }
+
+    function zoomOut()
+    {
+        if (map.zoomLevel > 6)
+        {
+            map.zoomLevel -= 1
+        }
+        console.log('Zoom level: ' + map.zoomLevel)
+    }
+
+    function selectTrackUp()
+    {
+        mapDisplay.mapOrientation = MapDisplay.MapOrientationType.Track_Up
+    }
+
+    function selectNorthUp()
+    {
+        mapDisplay.mapOrientation = MapDisplay.MapOrientationType.North_Up
     }
 
     Rectangle
@@ -34,44 +80,13 @@ Rectangle
             width: parent.width
             height: parent.height
 
-            //anchors.centerIn: parent
-
             plugin: mapPlugin
-            center: QtPositioning.coordinate(48.7232, 11.5515) // Manching Airport
+            center: mapDisplay.presentPosition
+            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? mapDisplay.heading : 0
+
             zoomLevel: 11
 
             copyrightsVisible: false
-
-            PinchHandler
-            {
-                id: pinch
-                target: null
-                onActiveChanged: if (active) {
-                                     map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
-                                 }
-                onScaleChanged: (delta) => {
-                                    map.zoomLevel += Math.log2(delta)
-                                    map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-                                }
-                onRotationChanged: (delta) => {
-                                       map.bearing -= delta
-                                       map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-                                   }
-                grabPermissions: PointerHandler.TakeOverForbidden
-            }
-
-            WheelHandler
-            {
-                id: wheel
-                // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
-                // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
-                // and we don't yet distinguish mice and trackpads on Wayland either
-                acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
-                                 ? PointerDevice.Mouse | PointerDevice.TouchPad
-                                 : PointerDevice.Mouse
-                rotationScale: 1/120
-                property: "zoomLevel"
-            }
 
             DragHandler
             {
@@ -79,22 +94,7 @@ Rectangle
                 target: null
                 onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
             }
-
-            Shortcut
-            {
-                enabled: map.zoomLevel < map.maximumZoomLevel
-                sequence: StandardKey.ZoomIn
-                onActivated: map.zoomLevel = Math.round(map.zoomLevel + 1)
-            }
-
-            Shortcut
-            {
-                enabled: map.zoomLevel > map.minimumZoomLevel
-                sequence: StandardKey.ZoomOut
-                onActivated: map.zoomLevel = Math.round(map.zoomLevel - 1)
-            }
         }
-
     }
 
 
@@ -155,7 +155,31 @@ Rectangle
 
                         onClicked:
                         {
-                            console.log('Button pressed on Map Display: ' + mapDisplay.pages[index])
+                            if (index == 0)
+                            {
+                               zoomIn()
+                            }
+                            else if (index == 1)
+                            {
+                                zoomOut()
+                            }
+                            else if (index == 2)
+                            {
+                                map.center = mapDisplay.presentPosition
+                            }
+                            else if (index == 3)
+                            {
+                                selectTrackUp()
+                            }
+                            else if (index == 4)
+                            {
+                                selectNorthUp()
+                            }
+
+                            else
+                            {
+                                console.log('Button pressed on Map Display: ' + mapDisplay.pages[index])
+                            }
                         }
                     }
                 }
