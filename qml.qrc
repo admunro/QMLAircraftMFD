@@ -13,5 +13,7 @@
         <file>ui/img/nav.png</file>
         <file>ui/img/hydraulics.png</file>
         <file>ui/img/engines.png</file>
+        <file>ui/img/plane.png</file>
+        <file>ui/scripts/PositionCalculator.js</file>
     </qresource>
 </RCC>

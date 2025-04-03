@@ -2,20 +2,77 @@ import QtQuick 2.5
 import QtLocation 5.6
 import QtPositioning 5.5
 
-Rectangle
-{
+import "../scripts/PositionCalculator.js" as PositionCalculator
+
+Rectangle {
+    id: mapDisplay
+
     color: 'dimGrey'
 
-    property var pages: [ "Map 1", "Map 2", "Map 3", "Map 4", "Map 5" ]
+    property var pages: ["Zoom\nIn", "Zoom\nOut", "RTN\nPP", "TRK\nUp", "NTH\nUp"]
 
-    Plugin
-    {
+    enum MapOrientationType {
+        North_Up,
+        Track_Up
+    }
+
+    property var mapOrientation: MapDisplay.MapOrientationType.Track_Up
+
+    property var presentPosition: QtPositioning.coordinate(48.7232, 11.5515) // Manching Airport
+    property real heading: 45 // Degrees 0 - 360
+    property real speed: 350 // knots
+
+    property bool centerOnPresentPosition: true
+
+    Timer {
+        id: positionTimer
+
+        interval: 20 // milliseconds
+        running: true
+        repeat: true
+
+        onTriggered: {
+
+            var newPosition = PositionCalculator.calculateNewPosition(
+                        mapDisplay.presentPosition.latitude,
+                        mapDisplay.presentPosition.longitude, mapDisplay.speed,
+                        mapDisplay.heading, interval / 1000)
+
+            mapDisplay.presentPosition = QtPositioning.coordinate(
+                        newPosition.latitude, newPosition.longitude)
+
+            if (mapDisplay.centerOnPresentPosition) {
+                map.center = mapDisplay.presentPosition
+            }
+        }
+    }
+
+    Plugin {
         id: mapPlugin
         name: 'osm'
     }
 
-    Rectangle
-    {
+    function zoomIn() {
+        if (map.zoomLevel < 20) {
+            map.zoomLevel += 1
+        }
+    }
+
+    function zoomOut() {
+        if (map.zoomLevel > 6) {
+            map.zoomLevel -= 1
+        }
+    }
+
+    function selectTrackUp() {
+        mapDisplay.mapOrientation = MapDisplay.MapOrientationType.Track_Up
+    }
+
+    function selectNorthUp() {
+        mapDisplay.mapOrientation = MapDisplay.MapOrientationType.North_Up
+    }
+
+    Rectangle {
         id: mapArea
 
         width: parent.width
@@ -27,81 +84,42 @@ Rectangle
 
         color: 'red'
 
-        Map
-        {
+        Map {
             id: map
 
             width: parent.width
             height: parent.height
 
-            //anchors.centerIn: parent
-
             plugin: mapPlugin
-            center: QtPositioning.coordinate(48.7232, 11.5515) // Manching Airport
+            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? mapDisplay.heading : 0
+
             zoomLevel: 11
 
             copyrightsVisible: false
 
-//            PinchHandler
-//            {
-//                id: pinch
-//                target: null
-//                onActiveChanged: if (active) {
-//                                     map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
-//                                 }
-//                onScaleChanged: (delta) => {
-//                                    map.zoomLevel += Math.log2(delta)
-//                                    map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-//                                }
-//                onRotationChanged: (delta) => {
-//                                       map.bearing -= delta
-//                                       map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-//                                   }
-//                grabPermissions: PointerHandler.TakeOverForbidden
-//            }
+            Image {
 
-//            WheelHandler
-//            {
-//                id: wheel
-//                // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
-//                // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
-//                // and we don't yet distinguish mice and trackpads on Wayland either
-//                acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
-//                                 ? PointerDevice.Mouse | PointerDevice.TouchPad
-//                                 : PointerDevice.Mouse
-//                rotationScale: 1/120
-//                property: "zoomLevel"
-//            }
+                id: ownshipImage
 
-//            DragHandler
-//            {
-//                id: drag
-//                target: null
-//                onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
-//            }
+                source: 'img/plane.png'
 
-            Shortcut
-            {
-                enabled: map.zoomLevel < map.maximumZoomLevel
-                sequence: StandardKey.ZoomIn
-                onActivated: map.zoomLevel = Math.round(map.zoomLevel + 1)
-            }
+                visible: mapDisplay.centerOnPresentPosition ? true : false
 
-            Shortcut
-            {
-                enabled: map.zoomLevel > map.minimumZoomLevel
-                sequence: StandardKey.ZoomOut
-                onActivated: map.zoomLevel = Math.round(map.zoomLevel - 1)
+                width: 30
+                height: 30
+
+                anchors.centerIn: parent
+
+                transform:
+
+                    Rotation {
+                        angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.heading : 0
+                    }
             }
         }
-
     }
 
-
-
-
-    Rectangle
-    {
+    Rectangle {
         id: bottomButtonArea
         color: 'transparent'
 
@@ -112,8 +130,7 @@ Rectangle
             bottom: parent.bottom
         }
 
-        Row
-        {
+        Row {
             id: bottomButtonRpw
 
             anchors {
@@ -137,8 +154,7 @@ Rectangle
                     border.color: 'black'
                     border.width: 1
 
-                    Text
-                    {
+                    Text {
                         anchors.centerIn: parent
                         text: mapDisplay.pages[index]
                         color: 'white'
@@ -148,21 +164,31 @@ Rectangle
                         font.bold: true
                     }
 
-                    MouseArea
-                    {
+                    MouseArea {
                         anchors.fill: parent
                         onPressed: parent.color = "#404040"
                         onReleased: parent.color = "#2a2a2a"
 
-                        onClicked:
-                        {
-                            console.log('Button pressed on Map Display: ' + mapDisplay.pages[index])
+                        onClicked: {
+                            if (index == 0) {
+                                zoomIn()
+                            } else if (index == 1) {
+                                zoomOut()
+                            } else if (index == 2) {
+                                mapDisplay.centerOnPresentPosition = true
+                                map.center = mapDisplay.presentPosition
+                            } else if (index == 3) {
+                                selectTrackUp()
+                            } else if (index == 4) {
+                                selectNorthUp()
+                            } else {
+                                console.log('Button pressed on Map Display: '
+                                            + mapDisplay.pages[index])
+                            }
                         }
                     }
                 }
             }
         }
-
     }
-
 }
