@@ -30,11 +30,13 @@ qt_add_qml_module(appAircraftMFD
         ui/img/nav.png
         ui/img/sensor.png
         ui/img/stores.png
+        ui/img/plane.png
         QML_FILES ui/StorePage.qml
         QML_FILES ui/SensorPage.qml
         QML_FILES ui/HydPage.qml
         QML_FILES ui/EnginePage.qml
         QML_FILES ui/MapDisplay.qml
+        QML_FILES scripts/PositionCalculator.js
 
 )
 
