@@ -111,12 +111,12 @@ Rectangle {
 
                 id: ownshipImage
 
-                source: 'img/plane.png'
+                source: 'img/fighter-plane-basic.png'
 
                 visible: mapDisplay.centerOnPresentPosition ? true : false
 
                 width: 30
-                height: 30
+                fillMode: Image.PreserveAspectFit
 
                 anchors.centerIn: parent
 

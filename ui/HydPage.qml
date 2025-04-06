@@ -66,9 +66,9 @@ Rectangle
     {
         id: navPlaceholder
 
-        source: 'img/hydraulics.png'
+        source: 'img/fighter-plane.png'
 
-        width: parent.width
+        //width: parent.width
         height: parent.height
 
         anchors.centerIn: parent

@@ -30,7 +30,8 @@ qt_add_qml_module(appAircraftMFD
         ui/img/nav.png
         ui/img/sensor.png
         ui/img/stores.png
-        ui/img/plane.png
+        ui/img/fighter-plane-basic.png
+        ui/img/fighter-plane.png
         QML_FILES ui/StorePage.qml
         QML_FILES ui/SensorPage.qml
         QML_FILES ui/HydPage.qml
