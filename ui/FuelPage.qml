@@ -9,11 +9,6 @@ Rectangle
     property string pageName: "FUEL_PAGE"
     property color pageColor: "green"
 
-
-    property real rearFuseTankPercentage: 50
-    property real leftWingTankPercentage: 66
-    property real rightWingTankPercentage: 33
-
     property int fuselageTankDisplayWidth: 50
     property int fuselageTankDisplayHeight: 75
 

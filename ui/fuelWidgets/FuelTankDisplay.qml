@@ -5,7 +5,6 @@ import QtQuick 2.15
 
 Rectangle
 {
-
     property real fillPercentage
 
     property int displayWidth
