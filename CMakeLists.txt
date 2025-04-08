@@ -34,7 +34,7 @@ qt_add_qml_module(appAircraftMFD
         ui/img/fighter-plane.png
         QML_FILES ui/StorePage.qml
         QML_FILES ui/SensorPage.qml
-        QML_FILES ui/HydPage.qml
+        QML_FILES ui/FuelPage.qml
         QML_FILES ui/EnginePage.qml
         QML_FILES ui/MapDisplay.qml
         QML_FILES scripts/PositionCalculator.js

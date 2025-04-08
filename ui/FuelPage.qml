@@ -4,12 +4,12 @@ Rectangle
 {
     id: hydraulicsPage
 
-    property string pageName: "HYDRAULICS_PAGE"
-    property color pageColor: "#000000"
+    property string pageName: "FUEL_PAGE"
+    property color pageColor: "green"
 
     // Button captions that will be read by the main MFD
-    property var leftButtonCaptions: ["Hyd\nL1", "Hyd\nL2", "Hyd\nL3", "Hyd\nL4", "Hyd\nL5"]
-    property var rightButtonCaptions: ["Hyd\nR1", "Hyd\nR2", "Hyd\nR3", "Hyd\nR4", "Hyd\nR5"]
+    property var leftButtonCaptions: ["Fuel\nL1", "Fuel\nL2", "Fuel\nL3", "Fuel\nL4", "Fuel\nL5"]
+    property var rightButtonCaptions: ["Fuel\nR1", "Fuel\nR2", "Fuel\nR3", "Fuel\nR4", "Fuel\nR5"]
 
 
     // Function handlers for button events from the main MFD
@@ -64,11 +64,10 @@ Rectangle
 
     Image
     {
-        id: navPlaceholder
+        id: fuelPageImage
 
         source: 'img/fighter-plane.png'
 
-        //width: parent.width
         height: parent.height
 
         anchors.centerIn: parent
