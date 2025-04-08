@@ -18,11 +18,20 @@ qt_add_qml_module(appAircraftMFD
 
     QML_FILES
         Main.qml
-        QML_FILES ui/AircraftMFD.qml
-        QML_FILES ui/NavPage.qml
-        QML_FILES ui/RadarPage.qml
-        QML_FILES ui/TemplatePage.qml
-        QML_FILES ui/map.qml
+        ui/AircraftMFD.qml
+        ui/NavPage.qml
+        ui/RadarPage.qml
+        ui/TemplatePage.qml
+        ui/map.qml
+        ui/StorePage.qml
+        ui/SensorPage.qml
+        ui/FuelPage.qml
+        ui/EnginePage.qml
+        ui/MapDisplay.qml
+        ui/fuelWidgets/FuelTankDisplay.qml
+
+        scripts/PositionCalculator.js
+
 
     RESOURCES
         ui/img/engines.png
@@ -32,12 +41,7 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
-        QML_FILES ui/StorePage.qml
-        QML_FILES ui/SensorPage.qml
-        QML_FILES ui/FuelPage.qml
-        QML_FILES ui/EnginePage.qml
-        QML_FILES ui/MapDisplay.qml
-        QML_FILES scripts/PositionCalculator.js
+
 
 )
 

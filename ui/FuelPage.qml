@@ -1,13 +1,15 @@
 import QtQuick 2.15
 
+import 'fuelWidgets'
+
 Rectangle
 {
-    id: hydraulicsPage
+    id: fuelPage
 
     property string pageName: "FUEL_PAGE"
     property color pageColor: "green"
 
-    property real fwdFuseTankPercentage: 90
+
     property real rearFuseTankPercentage: 50
     property real leftWingTankPercentage: 66
     property real rightWingTankPercentage: 33
@@ -86,216 +88,62 @@ Rectangle
         anchors.centerIn: parent
     }
 
-    Rectangle
+    FuelTankDisplay
     {
-        id: fwdFuseTankBorder
+        id: fwdFuseTank
 
-        property int marginWidth: 2
+        fillPercentage: 90
 
-        anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 100
+        anchors.horizontalCenter: parent.horizontalCenter
 
-
-        width: fuselageTankDisplayWidth + marginWidth*2
-        height: fuselageTankDisplayHeight + marginWidth*2
-
-        color: 'darkgrey'
-
-        Rectangle
-        {
-            id: fwdFuseTank
-
-            color: 'black'
-
-            width: fuselageTankDisplayWidth
-            height: fuselageTankDisplayHeight
-
-            anchors.centerIn: parent
-
-            Rectangle
-            {
-                id: fwdFuseTankFillLevel
-
-                anchors.bottom: parent.bottom
-
-                height: parent.height * fwdFuseTankPercentage/100
-                width: parent.width
-
-                color: 'blue'
-            }
-
-            Text
-            {
-                anchors.centerIn: parent
-
-                text: fwdFuseTankPercentage + " %"
-                color: "white"
-                fontSizeMode: Text.Fit
-                font.family: "Roboto Mono"
-                font.bold: true
-            }
-
-        }
-
+        displayWidth: fuselageTankDisplayWidth
+        displayHeight: fuselageTankDisplayHeight
     }
 
-    Rectangle
+    FuelTankDisplay
     {
-        id: rearFuseTankBorder
+        id: rearFuseTank
 
-        property int marginWidth: 2
+        fillPercentage: 50
 
-        anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 75
+        anchors.horizontalCenter: parent.horizontalCenter
 
-
-        width: fuselageTankDisplayWidth + marginWidth*2
-        height: fuselageTankDisplayHeight + marginWidth*2
-
-        color: 'darkgrey'
-
-        Rectangle
-        {
-            id: rearFuseTank
-
-            color: 'black'
-
-            width: fuselageTankDisplayWidth
-            height: fuselageTankDisplayHeight
-
-            anchors.centerIn: parent
-
-            Rectangle
-            {
-                id: rearFuseTankFillLevel
-
-                anchors.bottom: parent.bottom
-
-                height: parent.height * rearFuseTankPercentage/100
-                width: parent.width
-
-                color: 'blue'
-            }
-
-            Text
-            {
-                anchors.centerIn: parent
-
-                text: rearFuseTankPercentage + " %"
-                color: "white"
-                fontSizeMode: Text.Fit
-                font.family: "Roboto Mono"
-                font.bold: true
-            }
-
-        }
-
+        displayWidth: fuselageTankDisplayWidth
+        displayHeight: fuselageTankDisplayHeight
     }
 
 
-    Rectangle
+    FuelTankDisplay
     {
-        id: leftWingTankBorder
+        id: leftWingTank
 
-        property int marginWidth: 2
+        displayWidth: wingTankDisplayWidth
+        displayHeight: wingTankDisplayHeight
 
-        width: wingTankDisplayWidth + marginWidth*2
-        height: wingTankDisplayHeight + marginWidth*2
+        fillPercentage: 33
 
-        anchors.right: rearFuseTankBorder.left
-        anchors.top: rearFuseTankBorder.top
+        anchors.right: rearFuseTank.left
+        anchors.top: rearFuseTank.top
 
         anchors.rightMargin: wingTankSideMargin
-
-        color: 'darkgrey'
-
-        Rectangle
-        {
-            id: leftWingTank
-
-            color: 'black'
-
-            width: wingTankDisplayWidth
-            height: wingTankDisplayHeight
-
-            anchors.centerIn: parent
-
-            Rectangle
-            {
-                id: leftWingTankFillLevel
-
-                anchors.bottom: parent.bottom
-
-                height: parent.height * leftWingTankPercentage/100
-                width: parent.width
-
-                color: 'blue'
-            }
-
-            Text
-            {
-                anchors.centerIn: parent
-
-                text: leftWingTankPercentage + " %"
-                color: "white"
-                fontSizeMode: Text.Fit
-                font.family: "Roboto Mono"
-                font.bold: true
-            }
-        }
     }
 
-    Rectangle
+    FuelTankDisplay
     {
-        id: rightWingTankBorder
+        id: rightWingTank
 
-        property int marginWidth: 2
+        displayWidth: wingTankDisplayWidth
+        displayHeight: wingTankDisplayHeight
 
-        width: wingTankDisplayWidth + marginWidth*2
-        height: wingTankDisplayHeight + marginWidth*2
+        fillPercentage: 66
 
-        anchors.left: rearFuseTankBorder.right
-        anchors.top: rearFuseTankBorder.top
+        anchors.left: rearFuseTank.right
+        anchors.top: rearFuseTank.top
 
         anchors.leftMargin: wingTankSideMargin
-
-        color: 'darkgrey'
-
-        Rectangle
-        {
-            id: rightWingTank
-
-            color: 'black'
-
-            width: wingTankDisplayWidth
-            height: wingTankDisplayHeight
-
-            anchors.centerIn: parent
-
-            Rectangle
-            {
-                id: rightWingTankFillLevel
-
-                anchors.bottom: parent.bottom
-
-                height: parent.height * rightWingTankPercentage/100
-                width: parent.width
-
-                color: 'blue'
-            }
-
-            Text
-            {
-                anchors.centerIn: parent
-
-                text: rightWingTankPercentage + " %"
-                color: "white"
-                fontSizeMode: Text.Fit
-                font.family: "Roboto Mono"
-                font.bold: true
-            }
-        }
     }
 }
