@@ -9,17 +9,17 @@ Rectangle
     property string pageName: "FUEL_PAGE"
     property color pageColor: "green"
 
-    property int fuselageTankDisplayWidth: 50
+    property int fuselageTankDisplayWidth: 65
     property int fuselageTankDisplayHeight: 75
 
     property int wingTankDisplayWidth: 75
-    property int wingTankDisplayHeight: 40
+    property int wingTankDisplayHeight: 60
     property int wingTankSideMargin: 10
 
 
     // Button captions that will be read by the main MFD
-    property var leftButtonCaptions: ["Fuel\nL1", "Fuel\nL2", "Fuel\nL3", "Fuel\nL4", "Fuel\nL5"]
-    property var rightButtonCaptions: ["Fuel\nR1", "Fuel\nR2", "Fuel\nR3", "Fuel\nR4", "Fuel\nR5"]
+    property var leftButtonCaptions: ["Front\nFuse +", "Front\nFuse -", "Rear\nFuse +", "Rear\nFuse -", "Fuel\nL5"]
+    property var rightButtonCaptions: ["Port\nWing +", "Port\nWing -", "Stbd\nWing +", "Stbd\nWing -", "Fuel\nR5"]
 
 
     // Function handlers for button events from the main MFD
@@ -28,16 +28,20 @@ Rectangle
 
         switch(index) {
             case 0:
-                // Handle L1
+                if (fwdFuseTank.fillPercentage < 100)
+                    fwdFuseTank.fillPercentage += 10
                 break;
             case 1:
-                // Handle L2
+                if (fwdFuseTank.fillPercentage > 0)
+                    fwdFuseTank.fillPercentage -= 10
                 break;
             case 2:
-                // Handle L3
+                if (rearFuseTank.fillPercentage < 100)
+                    rearFuseTank.fillPercentage += 10
                 break;
             case 3:
-                // Handle L4
+                if (rearFuseTank.fillPercentage > 0)
+                    rearFuseTank.fillPercentage -= 10
                 break;
             case 4:
                 // Handle L5
@@ -50,16 +54,20 @@ Rectangle
 
         switch(index) {
             case 0:
-                // Handle R1
+                if (portWingTank.fillPercentage < 100)
+                    portWingTank.fillPercentage += 10
                 break;
             case 1:
-                // Handle R2
+                if (portWingTank.fillPercentage > 0)
+                    portWingTank.fillPercentage -= 10
                 break;
             case 2:
-                // Handle R3
+                if (starboardWingTank.fillPercentage < 100)
+                    starboardWingTank.fillPercentage += 10
                 break;
             case 3:
-                // Handle R4
+                if (starboardWingTank.fillPercentage > 0)
+                    starboardWingTank.fillPercentage -= 10
                 break;
             case 4:
                 // Handle R5
@@ -90,7 +98,7 @@ Rectangle
         fillPercentage: 90
 
         anchors.top: parent.top
-        anchors.topMargin: 100
+        anchors.topMargin: 150
         anchors.horizontalCenter: parent.horizontalCenter
 
         displayWidth: fuselageTankDisplayWidth
@@ -104,7 +112,7 @@ Rectangle
         fillPercentage: 50
 
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 75
+        anchors.bottomMargin: 100
         anchors.horizontalCenter: parent.horizontalCenter
 
         displayWidth: fuselageTankDisplayWidth
@@ -114,12 +122,12 @@ Rectangle
 
     FuelTankDisplay
     {
-        id: leftWingTank
+        id: portWingTank
 
         displayWidth: wingTankDisplayWidth
         displayHeight: wingTankDisplayHeight
 
-        fillPercentage: 33
+        fillPercentage: 30
 
         anchors.right: rearFuseTank.left
         anchors.top: rearFuseTank.top
@@ -129,12 +137,12 @@ Rectangle
 
     FuelTankDisplay
     {
-        id: rightWingTank
+        id: starboardWingTank
 
         displayWidth: wingTankDisplayWidth
         displayHeight: wingTankDisplayHeight
 
-        fillPercentage: 66
+        fillPercentage: 60
 
         anchors.left: rearFuseTank.right
         anchors.top: rearFuseTank.top

@@ -18,6 +18,15 @@ Rectangle
     color: 'darkgrey'
 
 
+    function getFuelFillColor()
+    {
+        if (fillPercentage > 40)
+            return 'green'
+        else if (fillPercentage > 20)
+            return 'yellow'
+        else
+            return 'red'
+    }
 
     Rectangle
     {
@@ -37,7 +46,8 @@ Rectangle
             height: parent.height * fillPercentage/100
             width: parent.width
 
-            color: 'blue'
+            color: getFuelFillColor()
+
         }
 
         Text
