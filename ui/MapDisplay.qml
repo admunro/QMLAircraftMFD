@@ -107,25 +107,31 @@ Rectangle {
                 }
             }
 
-            Image {
+            MapQuickItem
+            {
+                id: ownship
 
-                id: ownshipImage
+                coordinate: mapDisplay.presentPosition
 
-                source: 'img/fighter-plane-basic.png'
 
-                visible: mapDisplay.centerOnPresentPosition ? true : false
+                sourceItem: Image {
 
-                width: 30
-                fillMode: Image.PreserveAspectFit
+                    id: ownshipImage
 
-                anchors.centerIn: parent
+                    source: 'img/fighter-plane-basic.png'
 
-                transform:
+                    width: 30
+                    fillMode: Image.PreserveAspectFit
 
-                    Rotation {
-                        angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.heading : 0
-                    }
+                    transform:
+
+                        Rotation {
+                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.heading : 0
+                        }
+                }
             }
+
+
         }
     }
 
