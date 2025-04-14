@@ -32,6 +32,17 @@ Rectangle {
     property real track2Speed: 250
 
 
+    property var regensburg: QtPositioning.coordinate(49.0135470117391, 12.099220270621009)
+    property var nurnberg: QtPositioning.coordinate(49.454248608301405, 11.079626073052278)
+    property var wurzburg: QtPositioning.coordinate(49.7913484076446, 9.95397659969378)
+    property var heilbronn: QtPositioning.coordinate(49.14312704599744, 9.209073192899)
+    property var augsburg: QtPositioning.coordinate(48.36998485706096, 10.893213648008109)
+    property var ingolstadt: QtPositioning.coordinate(48.7675412885771, 11.416398607163837)
+
+    property var navigationRoute: [regensburg, nurnberg, wurzburg, heilbronn, augsburg, ingolstadt]
+
+
+
     property bool centerOnPresentPosition: true
 
     Timer {
@@ -136,11 +147,61 @@ Rectangle {
                 }
             }
 
+            MapPolyline {
+                id: currentRouteLegDisplay
+
+                line.width: 4
+                line.color: 'white'
+
+                path: [ mapDisplay.presentPosition, mapDisplay.navigationRoute[0]]
+
+
+            }
+
+            MapPolyline {
+                id: navigationRouteDisplay
+
+                line.width: 3
+                line.color: 'chartreuse'
+
+
+
+                path: mapDisplay.navigationRoute
+            }
+
+            Repeater {
+
+                model: mapDisplay.navigationRoute
+
+                MapQuickItem {
+                    coordinate: modelData
+
+                    anchorPoint.x : waypointImage.width / 2
+                    anchorPoint.y : waypointImage.height / 2
+
+                    sourceItem: Rectangle {
+
+                        id: waypointImage
+
+                        width: 15
+                        height: 15
+
+                        radius: 180
+
+                        color: 'green'
+                    }
+                }
+            }
+
+
             MapQuickItem
             {
                 id: ownship
 
                 coordinate: mapDisplay.presentPosition
+
+                anchorPoint.x: ownshipImage.width / 2
+                anchorPoint.y: ownshipImage.height / 2
 
 
                 sourceItem: Image {
@@ -165,6 +226,9 @@ Rectangle {
 
                 coordinate: mapDisplay.track1Position
 
+                anchorPoint.x: track1Image.width / 2
+                anchorPoint.y: track1Image.height / 2
+
                 sourceItem: Image {
                     id: track1Image
 
@@ -185,6 +249,9 @@ Rectangle {
                 id: track2
 
                 coordinate: mapDisplay.track2Position
+
+                anchorPoint.x: track2Image.width / 2
+                anchorPoint.y: track2Image.height / 2
 
                 sourceItem: Image {
                     id: track2Image
