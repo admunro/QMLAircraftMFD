@@ -22,6 +22,16 @@ Rectangle {
     property real heading: 45 // Degrees 0 - 360
     property real speed: 350 // knots
 
+
+    property var track1Position: QtPositioning.coordinate(48.7122, 11.2179) // Fliegerhorst Neuburg
+    property real track1Heading: 0
+    property real track1Speed: 400
+
+    property var track2Position: QtPositioning.coordinate(48.3547, 11.7885) // Munich airport
+    property real track2Heading: 270
+    property real track2Speed: 250
+
+
     property bool centerOnPresentPosition: true
 
     Timer {
@@ -44,6 +54,25 @@ Rectangle {
             if (mapDisplay.centerOnPresentPosition) {
                 map.center = mapDisplay.presentPosition
             }
+
+
+            var newTrack1Position = PositionCalculator.calculateNewPosition(mapDisplay.track1Position.latitude,
+                                                                            mapDisplay.track1Position.longitude,
+                                                                            mapDisplay.track1Speed,
+                                                                            mapDisplay.track1Heading,
+                                                                            interval / 1000)
+
+            mapDisplay.track1Position  = QtPositioning.coordinate(newTrack1Position.latitude, newTrack1Position.longitude)
+
+
+            var newTrack2Position = PositionCalculator.calculateNewPosition(mapDisplay.track2Position.latitude,
+                                                                            mapDisplay.track2Position.longitude,
+                                                                            mapDisplay.track2Speed,
+                                                                            mapDisplay.track2Heading,
+                                                                            interval / 1000)
+
+            mapDisplay.track2Position  = QtPositioning.coordinate(newTrack2Position.latitude, newTrack2Position.longitude)
+
         }
     }
 
@@ -131,7 +160,47 @@ Rectangle {
                 }
             }
 
+            MapQuickItem {
+                id: track1
 
+                coordinate: mapDisplay.track1Position
+
+                sourceItem: Image {
+                    id: track1Image
+
+                    source: 'img/fighter-plane-basic.png'
+
+                    width: 20
+                    fillMode: Image.PreserveAspectFit
+
+                    transform:
+
+                        Rotation {
+                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.track1Heading : mapDisplay.track1Heading - mapDisplay.heading
+                    }
+                }
+            }
+
+            MapQuickItem {
+                id: track2
+
+                coordinate: mapDisplay.track2Position
+
+                sourceItem: Image {
+                    id: track2Image
+
+                    source: 'img/fighter-plane-basic.png'
+
+                    width: 20
+                    fillMode: Image.PreserveAspectFit
+
+                    transform:
+
+                        Rotation {
+                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.track2Heading : mapDisplay.track2Heading - mapDisplay.heading
+                    }
+                }
+            }
         }
     }
 
