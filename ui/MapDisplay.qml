@@ -20,7 +20,7 @@ Rectangle {
 
     property var presentPosition: QtPositioning.coordinate(48.7232, 11.5515) // Manching Airport
     property real heading: 45 // Degrees 0 - 360
-    property real speed: 350 // knots
+    property real speed: 850 // knots
 
 
     property var track1Position: QtPositioning.coordinate(48.7122, 11.2179) // Fliegerhorst Neuburg
@@ -216,6 +216,10 @@ Rectangle {
                     transform:
 
                         Rotation {
+
+                            origin.x: ownshipImage.width / 2
+                            origin.y: ownshipImage.width / 2
+
                             angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.heading : 0
                         }
                 }
