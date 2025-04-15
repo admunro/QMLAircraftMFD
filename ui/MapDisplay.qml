@@ -23,15 +23,6 @@ Rectangle {
     property real speed: 850 // knots
 
 
-    property var track1Position: QtPositioning.coordinate(48.7122, 11.2179) // Fliegerhorst Neuburg
-    property real track1Heading: 0
-    property real track1Speed: 400
-
-    property var track2Position: QtPositioning.coordinate(48.3547, 11.7885) // Munich airport
-    property real track2Heading: 270
-    property real track2Speed: 250
-
-
     property var regensburg: QtPositioning.coordinate(49.0135470117391, 12.099220270621009)
     property var nurnberg: QtPositioning.coordinate(49.454248608301405, 11.079626073052278)
     property var wurzburg: QtPositioning.coordinate(49.7913484076446, 9.95397659969378)
@@ -65,25 +56,6 @@ Rectangle {
             if (mapDisplay.centerOnPresentPosition) {
                 map.center = mapDisplay.presentPosition
             }
-
-
-            var newTrack1Position = PositionCalculator.calculateNewPosition(mapDisplay.track1Position.latitude,
-                                                                            mapDisplay.track1Position.longitude,
-                                                                            mapDisplay.track1Speed,
-                                                                            mapDisplay.track1Heading,
-                                                                            interval / 1000)
-
-            mapDisplay.track1Position  = QtPositioning.coordinate(newTrack1Position.latitude, newTrack1Position.longitude)
-
-
-            var newTrack2Position = PositionCalculator.calculateNewPosition(mapDisplay.track2Position.latitude,
-                                                                            mapDisplay.track2Position.longitude,
-                                                                            mapDisplay.track2Speed,
-                                                                            mapDisplay.track2Heading,
-                                                                            interval / 1000)
-
-            mapDisplay.track2Position  = QtPositioning.coordinate(newTrack2Position.latitude, newTrack2Position.longitude)
-
         }
     }
 
@@ -225,50 +197,27 @@ Rectangle {
                 }
             }
 
-            MapQuickItem {
-                id: track1
+            MapItemView {
 
-                coordinate: mapDisplay.track1Position
+                model: entityModel
 
-                anchorPoint.x: track1Image.width / 2
-                anchorPoint.y: track1Image.height / 2
+                delegate: MapQuickItem {
+                    coordinate: QtPositioning.coordinate(latitude, longitude)
 
-                sourceItem: Image {
-                    id: track1Image
+                    anchorPoint.x : image.width / 2
+                    anchorPoint.y : image.height/ 2
 
-                    source: 'img/fighter-plane-basic.png'
+                    sourceItem: Image {
 
-                    width: 20
-                    fillMode: Image.PreserveAspectFit
+                        id: image
 
-                    transform:
-
-                        Rotation {
-                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.track1Heading : mapDisplay.track1Heading - mapDisplay.heading
-                    }
-                }
-            }
-
-            MapQuickItem {
-                id: track2
-
-                coordinate: mapDisplay.track2Position
-
-                anchorPoint.x: track2Image.width / 2
-                anchorPoint.y: track2Image.height / 2
-
-                sourceItem: Image {
-                    id: track2Image
-
-                    source: 'img/fighter-plane-basic.png'
-
-                    width: 20
-                    fillMode: Image.PreserveAspectFit
-
-                    transform:
-
-                        Rotation {
-                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.track2Heading : mapDisplay.track2Heading - mapDisplay.heading
+                        source: 'img/fighter-plane-basic.png'
+                        width: 20
+                        fillMode: Image.PreserveAspectFit
+                        transform:
+                            Rotation {
+                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? heading : heading - mapDisplay.heading
+                        }
                     }
                 }
             }

@@ -3,13 +3,21 @@ cmake_minimum_required(VERSION 3.16)
 project(AircraftMFD VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 20)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Positioning)
+
+# Make sure all required components were found
+if(NOT Qt6_FOUND OR NOT Qt6Quick_FOUND OR NOT Qt6Positioning_FOUND)
+    message(FATAL_ERROR "Could not find one or more required Qt components")
+endif()
 
 qt_standard_project_setup(REQUIRES 6.5)
 
 qt_add_executable(appAircraftMFD
     main.cpp
+    entityModel.cpp
+
 )
 
 qt_add_qml_module(appAircraftMFD
@@ -41,8 +49,6 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
-        ui/img/plane.png
-
 
 )
 
@@ -58,7 +64,10 @@ set_target_properties(appAircraftMFD PROPERTIES
 )
 
 target_link_libraries(appAircraftMFD
-    PRIVATE Qt6::Quick
+    PRIVATE
+    Qt6::Core
+    Qt6::Quick
+    Qt6::Positioning
 )
 
 include(GNUInstallDirs)
