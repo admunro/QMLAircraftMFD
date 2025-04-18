@@ -12,12 +12,23 @@ Window {
 
     visible: true
 
+    color: 'black'
+
     title: qsTr("Scenario Control")
 
     property int selectedEntity: entitiesListView.currentIndex
 
-    // We don't need to define roles here since we'll use the model's role names directly
-    // or use hardcoded values in setData calls
+
+    // Function to update slider controls based on selected entity
+    function updateControls() {
+        if (selectedEntity >= 0) {
+            var data = entityModel.get(selectedEntity);
+            if (data) {
+                headingSlider.value = data.heading;
+                speedSlider.value = data.speed;
+            }
+        }
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -32,6 +43,8 @@ Window {
             Rectangle {
                 width: entitiesListView.width
                 height: 40
+
+                color: 'gainsboro'
 
                 RowLayout {
                     anchors.fill: parent
@@ -97,7 +110,7 @@ Window {
                     width: entitiesListView.width
                     height: 50
 
-                    color: selectedEntity === index ? "#e0e0e0" : "#f0f0f0"
+                    color: selectedEntity === index ? "darkgrey" : "dimgrey"
                     border.color: "#cccccc"
 
                     RowLayout {
@@ -143,8 +156,17 @@ Window {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: entitiesListView.currentIndex = index
+                        onClicked: {
+                            entitiesListView.currentIndex = index
+                            controlsWindow.updateControls();
+                        }
                     }
+                }
+
+                // Also update controls when the current index changes programmatically
+                onCurrentIndexChanged: {
+                    controlsWindow.updateControls()
+
                 }
             }
         }
@@ -152,18 +174,13 @@ Window {
         Rectangle {
             Layout.fillWidth: true
             height: 120
-            color: "#f5f5f5"
+            color: "darkgrey"
             border.color: "#cccccc"
 
             ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: 10
                 spacing: 10
-
-                Text {
-                    text: "Selected Item: " + (controlsWindow.selectedEntity >= 0 ? controlsWindow.selectedEntity : "None")
-                    font.bold: true
-                }
 
                 Text {
                     text: "Adjust Heading:"
@@ -179,20 +196,21 @@ Window {
                         from: 0
                         to: 360
                         stepSize: 1
-                        value: enabled ? entityModel.data(entityModel.index(controlsWindow.selectedEntity, 0), EntityModel.HeadingRole) : 0
                         enabled: controlsWindow.selectedEntity >= 0
 
                         onMoved: {
                             if (enabled) {
                                 // Update the model with new value from slider
-                                // Use the numeric value directly (HeadingRole = 262)
-                                entityModel.setData(entityModel.index(controlsWindow.selectedEntity, 0), value, EntityModel.HeadingRole);
+                                entityModel.setData(
+                                            entityModel.index(controlsWindow.selectedEntity, 0),
+                                            value,
+                                            EntityModel.HeadingRole);
                             }
                         }
                     }
 
                     Text {
-                        text: headingSlider.value.toFixed(2)
+                        text: headingSlider.value.toFixed(2) + "°"
                         width: 50
                     }
                 }
@@ -211,14 +229,15 @@ Window {
                         from: 0
                         to: 1000
                         stepSize: 10
-                        value: entitiesListView.currentIndex >= 0 ? entityModel.speed : 0
-                        enabled: entitiesListView.currentIndex >= 0
+                        enabled: controlsWindow.selectedEntity >= 0
 
                         onMoved: {
-                            if (entitiesListView.currentIndex >= 0) {
+                            if (enabled) {
                                 // Update the model with new value from slider
-                                // Use the numeric value directly (SpeedRole = 263)
-                                entityModel.setData(entityModel.index(entitiesListView.currentIndex, 0), value, 263);
+                                entityModel.setData(
+                                            entityModel.index(entitiesListView.currentIndex, 0),
+                                            value,
+                                            EntityModel.SpeedRole);
                             }
                         }
                     }
@@ -232,21 +251,10 @@ Window {
         }
     }
 
-    // Function to update slider controls based on selected entity
-       function updateControls() {
-           if (entitiesListView.currentIndex >= 0) {
-               var data = entityModel.get(entitiesListView.currentIndex)
-               if (data) {
-                   headingSlider.value = data.heading
-                   speedSlider.value = data.speed
-               }
-           }
-       }
-
-       // Initialize controls on component completion
-       Component.onCompleted: {
-           updateControls()
-       }
+    // Initialize controls on component completion
+    Component.onCompleted: {
+        updateControls()
+    }
 }
 
 
