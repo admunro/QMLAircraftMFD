@@ -14,14 +14,23 @@ endif()
 
 qt_standard_project_setup(REQUIRES 6.5)
 
+# Add the include directory for headers
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+
 qt_add_executable(appAircraftMFD
     src/main.cpp
-    src/entityModel.cpp
+    src/entitymodel.cpp
+    src/entitymodel.h
 )
 
 qt_add_qml_module(appAircraftMFD
     URI AircraftMFD
     VERSION 1.0
+
+    SOURCES
+        src/entitymodel.h
+        src/entitymodel.cpp
 
     QML_FILES
         ui/Cockpit.qml
@@ -39,7 +48,8 @@ qt_add_qml_module(appAircraftMFD
         ui/EntityControl.qml
         ui/fuelWidgets/FuelTankDisplay.qml
 
-        scripts/PositionCalculator.js
+
+
 
 
     RESOURCES
@@ -50,6 +60,8 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
+
+        scripts/PositionCalculator.js
 
 
 )
