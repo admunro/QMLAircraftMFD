@@ -31,6 +31,10 @@ qt_add_qml_module(appAircraftMFD
     SOURCES
         src/entitymodel.h
         src/entitymodel.cpp
+        src/ownshipmodel.h
+        src/ownshipmodel.cpp
+        src/entityutils.h
+        src/entityutils.cpp
 
     QML_FILES
         ui/Cockpit.qml
@@ -62,6 +66,8 @@ qt_add_qml_module(appAircraftMFD
         ui/img/fighter-plane.png
 
         scripts/PositionCalculator.js
+
+
 
 
 )

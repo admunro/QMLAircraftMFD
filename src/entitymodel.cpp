@@ -1,30 +1,4 @@
-#include <numbers>
-#include <cmath>
-
-#include <QGeoCoordinate>
-
 #include "entitymodel.h"
-
-
-
-void EntityModel::updateEntities()
-{
-    for (int i = 0; i < m_entities.size(); i++)
-    {
-        auto& entity = m_entities[i];
-
-        auto newPosition = calculateNewPosition(entity.position,
-                                                entity.heading_deg,
-                                                entity.speed_kts,
-                                                this->updateRateMilliseconds);
-
-        entity.position.setLatitude(newPosition.latitude());
-        entity.position.setLongitude(newPosition.longitude());
-
-        QModelIndex index = createIndex(i, 0);
-        emit dataChanged(index, index, { LatitudeRole, LongitudeRole });
-    }
-}
 
 
 EntityModel::EntityModel(QObject *parent, double updateRateMS)
@@ -37,6 +11,26 @@ EntityModel::EntityModel(QObject *parent, double updateRateMS)
 
     timer->start(updateRateMilliseconds);
 
+}
+
+
+void EntityModel::updateEntities()
+{
+    for (int i = 0; i < m_entities.size(); i++)
+    {
+        auto& entity = m_entities[i];
+
+        auto newPosition = EntityUtils::calculateNewPosition(entity.position,
+                                                             entity.heading_deg,
+                                                             entity.speed_kts,
+                                                             this->updateRateMilliseconds);
+
+        entity.position.setLatitude(newPosition.latitude());
+        entity.position.setLongitude(newPosition.longitude());
+
+        QModelIndex index = createIndex(i, 0);
+        emit dataChanged(index, index, { LatitudeRole, LongitudeRole });
+    }
 }
 
 int EntityModel::rowCount(const QModelIndex& parent) const
@@ -53,7 +47,7 @@ QVariant EntityModel::data(const QModelIndex& index, int role) const
     if (!index.isValid() || index.row() >= m_entities.size())
         return QVariant();
 
-    const Entity &entity = m_entities[index.row()];
+    const EntityUtils::Entity &entity = m_entities[index.row()];
 
     switch (role) {
     case IdRole:
@@ -101,7 +95,7 @@ void EntityModel::addEntity(const QString &id,
 {
     beginInsertRows(QModelIndex(), m_entities.size(), m_entities.size());
 
-    Entity entity;
+    EntityUtils::Entity entity;
     entity.id = id;
     entity.name = name;
     entity.position = QGeoCoordinate(latitude, longitude);
@@ -134,7 +128,7 @@ QVariantMap EntityModel::get(int row) const
     if (row < 0 || row >= m_entities.size())
         return QVariantMap();
 
-    const Entity &entity = m_entities[row];
+    const EntityUtils::Entity &entity = m_entities[row];
     QVariantMap map;
     map["entityId"] = entity.id;
     map["name"] = entity.name;
@@ -156,44 +150,12 @@ void EntityModel::clearEntities()
 }
 
 
-QGeoCoordinate EntityModel::calculateNewPosition(const QGeoCoordinate& position, double heading_deg, double speed_kts, double deltaTime_ms)
-{
-    constexpr double earthRadius_m { 6371000 };
-    constexpr double knots_to_metres_per_second { 0.514444 };
-
-    double latRad = position.latitude() * std::numbers::pi / 180.0;
-    double lonRad = position.longitude() * std::numbers::pi / 180.0;
-
-
-    double headingRad = heading_deg * std::numbers::pi / 180.0;
-
-    double speedMPS = speed_kts * knots_to_metres_per_second;
-
-    double distance = speedMPS * deltaTime_ms/1000.0;
-
-    double distanceRad = distance / earthRadius_m;
-
-    double newLatRad = asin (sin(latRad) * cos(distanceRad) +
-                            cos(latRad) * sin(distanceRad) * cos(headingRad));
-
-    double newLonRad = lonRad + atan2(sin(headingRad) * sin(distanceRad) * cos(latRad),
-                                      cos(distanceRad) - sin(latRad) * sin(newLatRad));
-
-    double newLat = newLatRad * 180 / std::numbers::pi;
-    double newLon = newLonRad * 180 / std::numbers::pi;
-
-    return QGeoCoordinate( newLat, newLon );
-
-}
-
-// Add these two methods to your entitymodel.cpp file
-
 bool EntityModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     if (!index.isValid() || index.row() >= m_entities.size())
         return false;
 
-    Entity &entity = m_entities[index.row()];
+    EntityUtils::Entity &entity = m_entities[index.row()];
     bool changed = false;
 
     switch (role) {
