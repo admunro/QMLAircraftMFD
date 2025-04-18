@@ -158,9 +158,6 @@ void EntityModel::clearEntities()
 
 QGeoCoordinate EntityModel::calculateNewPosition(const QGeoCoordinate& position, double heading_deg, double speed_kts, double deltaTime_ms)
 {
-    // Something wrong in here!
-
-
     constexpr double earthRadius_m { 6371000 };
     constexpr double knots_to_metres_per_second { 0.514444 };
 

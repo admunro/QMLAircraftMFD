@@ -2,9 +2,10 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import AircraftMFD 1.0
-
 Window {
+
+    title: qsTr("Scenario Control")
+
     id: controlsWindow
 
     width: 800
@@ -12,248 +13,56 @@ Window {
 
     visible: true
 
-    color: 'black'
+    TabBar {
 
-    title: qsTr("Scenario Control")
+        id: bar
+        width: parent.width
 
-    property int selectedEntity: entitiesListView.currentIndex
+        TabButton {
+            text: "Entities"
 
 
-    // Function to update slider controls based on selected entity
-    function updateControls() {
-        if (selectedEntity >= 0) {
-            var data = entityModel.get(selectedEntity);
-            if (data) {
-                headingSlider.value = data.heading;
-                speedSlider.value = data.speed;
-            }
+        }
+
+        TabButton {
+            text: "Ownship"
+
+
         }
     }
 
-    ColumnLayout {
-        anchors.fill: parent
-        anchors.margins: 20
-        spacing: 20
+    StackLayout {
+        width: parent.width
 
-        Column {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+        anchors.top: bar.bottom
+        anchors.bottom: parent.bottom
 
-            // Column Headers
-            Rectangle {
-                width: entitiesListView.width
-                height: 40
+        currentIndex: bar.currentIndex
 
-                color: 'gainsboro'
+        Item {
+            id: entitiesTab
 
-                RowLayout {
-                    anchors.fill: parent
-                    anchors.margins: 10
-                    spacing: 10
+            EntityControl {
+                id: entityControl
 
-                    Text {
-                        text: "ID"
-                        font.bold: true
-                        Layout.preferredWidth: 30
-                    }
-
-                    Text {
-                        text: "Name"
-                        font.bold: true
-                        Layout.preferredWidth: 30
-                    }
-
-                    Text {
-                        text: "Latitude"
-                        font.bold: true
-                        Layout.preferredWidth: 80
-                    }
-
-                    Text {
-                        text: "Longitude"
-                        font.bold: true
-                        Layout.preferredWidth: 80
-                    }
-
-                    Text {
-                        text: "Type"
-                        font.bold: true
-                        Layout.preferredWidth: 30
-                    }
-
-                    Text {
-                        text: "Heading (deg)"
-                        font.bold: true
-                        Layout.preferredWidth: 30
-                    }
-
-                    Text {
-                        text: "Speed (kts)"
-                        font.bold: true
-                        Layout.preferredWidth: 30
-                    }
-                }
-            }
-
-            ListView {
-                id: entitiesListView
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
-                width: parent.width
-                height: parent.height - 40
-                clip: true
-                model: entityModel
-
-                delegate: Rectangle {
-                    width: entitiesListView.width
-                    height: 50
-
-                    color: selectedEntity === index ? "darkgrey" : "dimgrey"
-                    border.color: "#cccccc"
-
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: 10
-                        spacing: 10
-
-                        Text {
-                            text: model.entityId
-                            Layout.preferredWidth: 30
-                        }
-
-                        Text {
-                            text: model.name
-                            Layout.preferredWidth: 30
-                        }
-
-                        Text {
-                            text: model.latitude.toFixed(6)
-                            Layout.preferredWidth: 80
-                        }
-
-                        Text {
-                            text: model.longitude.toFixed(6)
-                            Layout.preferredWidth: 80
-                        }
-
-                        Text {
-                            text: model.type
-                            Layout.preferredWidth: 30
-                        }
-
-                        Text {
-                            text: model.heading
-                            Layout.preferredWidth: 30
-                        }
-
-                        Text {
-                            text: model.speed
-                            Layout.preferredWidth: 30
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            entitiesListView.currentIndex = index
-                            controlsWindow.updateControls();
-                        }
-                    }
-                }
-
-                // Also update controls when the current index changes programmatically
-                onCurrentIndexChanged: {
-                    controlsWindow.updateControls()
-
-                }
-            }
-        }
-
-        Rectangle {
-            Layout.fillWidth: true
-            height: 120
-            color: "darkgrey"
-            border.color: "#cccccc"
-
-            ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 10
-                spacing: 10
+            }
 
-                Text {
-                    text: "Adjust Heading:"
-                }
+        }
 
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 10
+        Item {
+            id: ownshipTab
 
-                    Slider {
-                        id: headingSlider
-                        Layout.fillWidth: true
-                        from: 0
-                        to: 360
-                        stepSize: 1
-                        enabled: controlsWindow.selectedEntity >= 0
+            Rectangle {
+                id: ownshipControl
 
-                        onMoved: {
-                            if (enabled) {
-                                // Update the model with new value from slider
-                                entityModel.setData(
-                                            entityModel.index(controlsWindow.selectedEntity, 0),
-                                            value,
-                                            EntityModel.HeadingRole);
-                            }
-                        }
-                    }
+                color: 'red'
 
-                    Text {
-                        text: headingSlider.value.toFixed(2) + "°"
-                        width: 50
-                    }
-                }
+                anchors.fill: parent
 
-                Text {
-                    text: "Adjust Speed:"
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 10
-
-                    Slider {
-                        id: speedSlider
-                        Layout.fillWidth: true
-                        from: 0
-                        to: 1000
-                        stepSize: 10
-                        enabled: controlsWindow.selectedEntity >= 0
-
-                        onMoved: {
-                            if (enabled) {
-                                // Update the model with new value from slider
-                                entityModel.setData(
-                                            entityModel.index(entitiesListView.currentIndex, 0),
-                                            value,
-                                            EntityModel.SpeedRole);
-                            }
-                        }
-                    }
-
-                    Text {
-                        text: speedSlider.value.toFixed(0) + " kts"
-                        width: 70
-                    }
-                }
             }
         }
-    }
 
-    // Initialize controls on component completion
-    Component.onCompleted: {
-        updateControls()
     }
 }
 

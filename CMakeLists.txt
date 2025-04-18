@@ -17,8 +17,6 @@ qt_standard_project_setup(REQUIRES 6.5)
 qt_add_executable(appAircraftMFD
     main.cpp
     entityModel.cpp
-#    mainwindow.cpp
-
 )
 
 qt_add_qml_module(appAircraftMFD
@@ -38,6 +36,7 @@ qt_add_qml_module(appAircraftMFD
         ui/FuelPage.qml
         ui/EnginePage.qml
         ui/MapDisplay.qml
+        ui/EntityControl.qml
         ui/fuelWidgets/FuelTankDisplay.qml
 
         scripts/PositionCalculator.js
@@ -51,6 +50,7 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
+
 
 )
 
@@ -70,7 +70,6 @@ target_link_libraries(appAircraftMFD
     Qt6::Core
     Qt6::Quick
     Qt6::Positioning
-#    Qt6::Widgets
 )
 
 include(GNUInstallDirs)

@@ -57,10 +57,6 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 
-    const Entity& getItem(int row) const {
-        return m_entities[row];
-    }
-
     Q_INVOKABLE void addEntity(const QString& id,
                                const QString& name,
                                double latitude,
