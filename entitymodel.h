@@ -4,6 +4,7 @@
 #include <QGeoCoordinate>
 #include <QVector>
 #include <QTimer>
+#include <QtQml/qqmlregistration.h>
 
 
 
@@ -12,6 +13,7 @@
 class EntityModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
 
 
@@ -27,7 +29,6 @@ public:
         double heading_deg;
         double speed_kts;
     };
-
 
 
     enum EntityRoles

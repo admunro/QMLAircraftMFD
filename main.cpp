@@ -4,7 +4,6 @@
 
 
 #include "entitymodel.h"
-//#include "mainwindow.h"
 
 
 int main(int argc, char *argv[])
@@ -56,6 +55,7 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
 
     engine.rootContext()->setContextProperty("entityModel", &entityModel);
+
 
     engine.loadFromModule("AircraftMFD", "Cockpit");
     engine.loadFromModule("AircraftMFD", "ControlWindow");

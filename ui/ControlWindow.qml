@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import AircraftMFD 1.0
+
 Window {
     id: controlsWindow
 
@@ -177,14 +179,14 @@ Window {
                         from: 0
                         to: 360
                         stepSize: 1
-                        value: enabled ? entityModel.data(entityModel.index(controlsWindow.selectedEntity, 0), 262) : 0
+                        value: enabled ? entityModel.data(entityModel.index(controlsWindow.selectedEntity, 0), EntityModel.HeadingRole) : 0
                         enabled: controlsWindow.selectedEntity >= 0
 
                         onMoved: {
                             if (enabled) {
                                 // Update the model with new value from slider
                                 // Use the numeric value directly (HeadingRole = 262)
-                                entityModel.setData(entityModel.index(controlsWindow.selectedEntity, 0), value, 262);
+                                entityModel.setData(entityModel.index(controlsWindow.selectedEntity, 0), value, EntityModel.HeadingRole);
                             }
                         }
                     }
