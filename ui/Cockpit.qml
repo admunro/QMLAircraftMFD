@@ -1,7 +1,5 @@
 import QtQuick
 
-import "ui"
-
 Window {
 
     id: mainWindow
@@ -11,7 +9,7 @@ Window {
 
     visible: true
 
-    title: qsTr("Generic MFD")
+    title: qsTr("Generic Fighter Cockpit")
 
 
     AircraftMFD

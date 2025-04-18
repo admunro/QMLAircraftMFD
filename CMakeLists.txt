@@ -5,7 +5,7 @@ project(AircraftMFD VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Positioning)
+find_package(Qt6 REQUIRED COMPONENTS Quick Positioning Widgets)
 
 # Make sure all required components were found
 if(NOT Qt6_FOUND OR NOT Qt6Quick_FOUND OR NOT Qt6Positioning_FOUND)
@@ -17,6 +17,7 @@ qt_standard_project_setup(REQUIRES 6.5)
 qt_add_executable(appAircraftMFD
     main.cpp
     entityModel.cpp
+#    mainwindow.cpp
 
 )
 
@@ -25,7 +26,8 @@ qt_add_qml_module(appAircraftMFD
     VERSION 1.0
 
     QML_FILES
-        Main.qml
+        ui/Cockpit.qml
+        ui/ControlWindow.qml
         ui/AircraftMFD.qml
         ui/NavPage.qml
         ui/RadarPage.qml
@@ -68,6 +70,7 @@ target_link_libraries(appAircraftMFD
     Qt6::Core
     Qt6::Quick
     Qt6::Positioning
+#    Qt6::Widgets
 )
 
 include(GNUInstallDirs)

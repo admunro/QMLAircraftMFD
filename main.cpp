@@ -4,14 +4,12 @@
 
 
 #include "entitymodel.h"
-
-
-
-
+//#include "mainwindow.h"
 
 
 int main(int argc, char *argv[])
 {
+
     QGuiApplication app(argc, argv);
 
     double timerRateMS = 20;
@@ -48,6 +46,8 @@ int main(int argc, char *argv[])
 
 
     QQmlApplicationEngine engine;
+
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
@@ -56,10 +56,9 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
 
     engine.rootContext()->setContextProperty("entityModel", &entityModel);
-    engine.loadFromModule("AircraftMFD", "Main");
 
-
-
+    engine.loadFromModule("AircraftMFD", "Cockpit");
+    engine.loadFromModule("AircraftMFD", "ControlWindow");
 
     return app.exec();
 }
