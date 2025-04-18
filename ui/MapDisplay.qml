@@ -190,7 +190,7 @@ Rectangle {
                         Rotation {
 
                             origin.x: ownshipImage.width / 2
-                            origin.y: ownshipImage.width / 2
+                            origin.y: ownshipImage.height / 2
 
                             angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.heading : 0
                         }
@@ -204,18 +204,19 @@ Rectangle {
                 delegate: MapQuickItem {
                     coordinate: QtPositioning.coordinate(latitude, longitude)
 
-                    anchorPoint.x : image.width / 2
-                    anchorPoint.y : image.height/ 2
-
                     sourceItem: Image {
 
-                        id: image
+                        id: entityImage
 
                         source: 'img/fighter-plane-basic.png'
                         width: 20
                         fillMode: Image.PreserveAspectFit
                         transform:
                             Rotation {
+
+                            origin.x: entityImage.width / 2
+                            origin.y: entityImage.height / 2
+
                             angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? heading : heading - mapDisplay.heading
                         }
                     }

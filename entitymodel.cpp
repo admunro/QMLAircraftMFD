@@ -129,6 +129,23 @@ void EntityModel::removeEntity(const QString &id)
     }
 }
 
+QVariantMap EntityModel::get(int row) const
+{
+    if (row < 0 || row >= m_entities.size())
+        return QVariantMap();
+
+    const Entity &entity = m_entities[row];
+    QVariantMap map;
+    map["entityId"] = entity.id;
+    map["name"] = entity.name;
+    map["latitude"] = entity.position.latitude();
+    map["longitude"] = entity.position.longitude();
+    map["type"] = entity.type;
+    map["heading"] = entity.heading_deg;
+    map["speed"] = entity.speed_kts;
+    return map;
+}
+
 
 
 void EntityModel::clearEntities()
@@ -170,6 +187,79 @@ QGeoCoordinate EntityModel::calculateNewPosition(const QGeoCoordinate& position,
 
     return QGeoCoordinate( newLat, newLon );
 
+}
+
+// Add these two methods to your entitymodel.cpp file
+
+bool EntityModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    if (!index.isValid() || index.row() >= m_entities.size())
+        return false;
+
+    Entity &entity = m_entities[index.row()];
+    bool changed = false;
+
+    switch (role) {
+    case IdRole:
+        if (value.toString() != entity.id) {
+            entity.id = value.toString();
+            changed = true;
+        }
+        break;
+    case NameRole:
+        if (value.toString() != entity.name) {
+            entity.name = value.toString();
+            changed = true;
+        }
+        break;
+    case LatitudeRole:
+        if (value.toDouble() != entity.position.latitude()) {
+            entity.position.setLatitude(value.toDouble());
+            changed = true;
+        }
+        break;
+    case LongitudeRole:
+        if (value.toDouble() != entity.position.longitude()) {
+            entity.position.setLongitude(value.toDouble());
+            changed = true;
+        }
+        break;
+    case TypeRole:
+        if (value.toString() != entity.type) {
+            entity.type = value.toString();
+            changed = true;
+        }
+        break;
+    case HeadingRole:
+        if (value.toDouble() != entity.heading_deg) {
+            entity.heading_deg = value.toDouble();
+            changed = true;
+        }
+        break;
+    case SpeedRole:
+        if (value.toDouble() != entity.speed_kts) {
+            entity.speed_kts = value.toDouble();
+            changed = true;
+        }
+        break;
+    default:
+        return false;
+    }
+
+    if (changed) {
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    return false;
+}
+
+Qt::ItemFlags EntityModel::flags(const QModelIndex& index) const
+{
+    if (!index.isValid())
+        return Qt::NoItemFlags;
+
+    return Qt::ItemIsEditable | QAbstractListModel::flags(index);
 }
 
 
