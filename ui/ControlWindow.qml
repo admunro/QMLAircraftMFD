@@ -184,15 +184,13 @@ Window {
                         from: 0
                         to: 360
                         stepSize: 1
-                        value: entitiesListView.currentIndex >= 0 ? entityModel(entitiesListView.currentIndex).heading : 0
+                        value: entitiesListView.currentIndex >= 0 ? entityModel.data(entityModel.index(entitiesListView.currentIndex, 0), heading) : 0
                         enabled: entitiesListView.currentIndex >= 0
 
                         onMoved: {
                             if (entitiesListView.currentIndex >= 0) {
                                 // Update the model with new value from slider
-                                entityModel.setData(entityModel.index(entitiesListView.currentIndex, 0), value)
-
-                                //entityModel.setHeading(entitiesListView.currentIndex, value)
+                                entityModel.setData(entityModel.index(entitiesListView.currentIndex, 0), value, heading);
                             }
                         }
                     }
