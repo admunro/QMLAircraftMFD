@@ -1,64 +1,74 @@
 #pragma once
 
-#include <QAbstractListModel>
+#include <QObject>
 #include <QGeoCoordinate>
 #include <QTimer>
 #include <QtQml/qqmlregistration.h>
 
-#include "entityutils.h"
 
 
-class OwnshipModel : public QAbstractListModel
+class OwnshipModel : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
 
 public:
 
-    /* This is duplicated from EntityModel, find some way to make them both
-     * use the same source...
-     */
-    enum OwnshipRoles
-    {
-        IdRole = Qt::UserRole + 1,
-        NameRole,
-        LatitudeRole,
-        LongitudeRole,
-        TypeRole,
-        HeadingRole,
-        SpeedRole
-    };
-
-    Q_ENUM(OwnshipRoles); // Expose this enum to QML
-
-    explicit OwnshipModel(QObject *parent = nullptr, double updateRateMS = 0.0);
+    explicit OwnshipModel(QGeoCoordinate startPosition,
+                          double heading_deg = 0.0,
+                          double speed_kts = 0.0 ,
+                          double updateRateMS = 0.0,
+                          QObject *parent = nullptr);
 
     void updateData();
 
+    Q_PROPERTY(QString id READ id WRITE setId NOTIFY idChanged FINAL)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
+    Q_PROPERTY(QGeoCoordinate position READ position WRITE setPosition NOTIFY positionChanged FINAL)
+    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged FINAL)
+    Q_PROPERTY(double heading_deg READ heading_deg WRITE setHeading_deg NOTIFY heading_degChanged FINAL)
+    Q_PROPERTY(double speed_kts READ speed_kts WRITE setSpeed_kts NOTIFY speed_ktsChanged FINAL)
 
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex& index, int role) const override;
-    bool setData(const QModelIndex& index, const QVariant& value, int role) override;
-    QHash<int, QByteArray> roleNames() const override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    QString id() const;
+    void setId(const QString &newId);
 
-    Q_INVOKABLE void addOwnship(const QString& id,
-                                const QString& name,
-                                double latitude,
-                                double longidute,
-                                const QString& type,
-                                double speed_kts,
-                                double heading_deg);
+    QString name() const;
+    void setName(const QString &newName);
 
-    Q_INVOKABLE QVariantMap get(int row) const;
+    QGeoCoordinate position() const;
+    void setPosition(const QGeoCoordinate &newPosition);
+
+    QString type() const;
+    void setType(const QString &newType);
+
+    double heading_deg() const;
+    void setHeading_deg(double newHeading_deg);
+
+    double speed_kts() const;
+    void setSpeed_kts(double newSpeed_kts);
+
+signals:
+
+    void idChanged();
+    void nameChanged();
+    void positionChanged();
+    void typeChanged();
+    void heading_degChanged();
+    void speed_ktsChanged();
 
 private:
 
 
     QTimer* timer;
-    double updateRateMilliseconds;
+    double m_updateRateMilliseconds;
 
-    EntityUtils::Entity ownship;
+    QString m_id;
+    QString m_name;
+    QGeoCoordinate m_position;
+    QString m_type;
+
+    double m_heading_deg { 0.0 };
+    double m_speed_kts { 0.0 };
 
 };
 

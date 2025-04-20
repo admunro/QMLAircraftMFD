@@ -1,9 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-
+#include <QGeoCoordinate>
 
 #include "entitymodel.h"
+#include "ownshipmodel.h"
 
 
 int main(int argc, char *argv[])
@@ -13,8 +14,15 @@ int main(int argc, char *argv[])
 
     double timerRateMS = 20;
 
-    EntityModel entityModel(&app, timerRateMS);
 
+    OwnshipModel ownshipModel(QGeoCoordinate(48.7232, 11.5515), // Manching Airport
+                              45.0,
+                              400.0,
+                              timerRateMS,
+                              &app);
+
+
+    EntityModel entityModel(&app, timerRateMS);
 
     entityModel.addEntity("1",
                           "Bandit1",
@@ -55,6 +63,7 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
 
     engine.rootContext()->setContextProperty("entityModel", &entityModel);
+    engine.rootContext()->setContextProperty("ownshipModel", &ownshipModel);
 
 
     engine.loadFromModule("AircraftMFD", "Cockpit");

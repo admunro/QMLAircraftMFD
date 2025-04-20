@@ -2,7 +2,7 @@ import QtQuick
 import QtLocation
 import QtPositioning
 
-import "../scripts/PositionCalculator.js" as PositionCalculator
+import AircraftMFD 1.0
 
 Rectangle {
     id: mapDisplay
@@ -16,12 +16,8 @@ Rectangle {
         Track_Up
     }
 
-    property var mapOrientation: MapDisplay.MapOrientationType.Track_Up
-
-    property var presentPosition: QtPositioning.coordinate(48.7232, 11.5515) // Manching Airport
-    property real heading: 45 // Degrees 0 - 360
-    property real speed: 850 // knots
-
+    property int mapOrientation: MapDisplay.MapOrientationType.Track_Up
+    property bool centerOnPresentPosition: true
 
     property var regensburg: QtPositioning.coordinate(49.0135470117391, 12.099220270621009)
     property var nurnberg: QtPositioning.coordinate(49.454248608301405, 11.079626073052278)
@@ -34,30 +30,6 @@ Rectangle {
 
 
 
-    property bool centerOnPresentPosition: true
-
-    Timer {
-        id: positionTimer
-
-        interval: 20 // milliseconds
-        running: true
-        repeat: true
-
-        onTriggered: {
-
-            var newPosition = PositionCalculator.calculateNewPosition(
-                        mapDisplay.presentPosition.latitude,
-                        mapDisplay.presentPosition.longitude, mapDisplay.speed,
-                        mapDisplay.heading, interval / 1000)
-
-            mapDisplay.presentPosition = QtPositioning.coordinate(
-                        newPosition.latitude, newPosition.longitude)
-
-            if (mapDisplay.centerOnPresentPosition) {
-                map.center = mapDisplay.presentPosition
-            }
-        }
-    }
 
     Plugin {
         id: mapPlugin
@@ -103,11 +75,23 @@ Rectangle {
             height: parent.height
 
             plugin: mapPlugin
-            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? mapDisplay.heading : 0
+            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? ownshipModel.heading_deg : 0
 
             zoomLevel: 11
 
             copyrightsVisible: false
+
+            //center: ownshipModel.position
+
+            Connections {
+                target: ownshipModel
+
+                function onPositionChanged() {
+                    if (mapDisplay.centerOnPresentPosition) {
+                        map.center = ownshipModel.position;
+                    }
+                }
+            }
 
             DragHandler {
                 id: drag
@@ -125,8 +109,7 @@ Rectangle {
                 line.width: 4
                 line.color: 'white'
 
-                path: [ mapDisplay.presentPosition, mapDisplay.navigationRoute[0]]
-
+                path: [ ownshipModel.position, mapDisplay.navigationRoute[0]]
 
             }
 
@@ -170,11 +153,10 @@ Rectangle {
             {
                 id: ownship
 
-                coordinate: mapDisplay.presentPosition
+                coordinate: ownshipModel.position
 
                 anchorPoint.x: ownshipImage.width / 2
                 anchorPoint.y: ownshipImage.height / 2
-
 
                 sourceItem: Image {
 
@@ -189,11 +171,11 @@ Rectangle {
 
                         Rotation {
 
-                            origin.x: ownshipImage.width / 2
-                            origin.y: ownshipImage.height / 2
+                        origin.x: ownshipImage.width / 2
+                        origin.y: ownshipImage.height / 2
 
-                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.heading : 0
-                        }
+                        angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? ownshipModel.heading_deg : 0
+                    }
                 }
             }
 
@@ -217,7 +199,7 @@ Rectangle {
                             origin.x: entityImage.width / 2
                             origin.y: entityImage.height / 2
 
-                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? heading : heading - mapDisplay.heading
+                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? heading : heading - ownshipModel.heading_deg
                         }
                     }
                 }
@@ -281,7 +263,6 @@ Rectangle {
                                 zoomOut()
                             } else if (index == 2) {
                                 mapDisplay.centerOnPresentPosition = true
-                                map.center = mapDisplay.presentPosition
                             } else if (index == 3) {
                                 selectTrackUp()
                             } else if (index == 4) {

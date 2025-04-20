@@ -22,6 +22,8 @@ qt_add_executable(appAircraftMFD
     src/main.cpp
     src/entitymodel.cpp
     src/entitymodel.h
+    src/ownshipmodel.cpp
+    src/ownshipmodel.h
 )
 
 qt_add_qml_module(appAircraftMFD
@@ -64,11 +66,6 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
-
-        scripts/PositionCalculator.js
-
-
-
 
 )
 
