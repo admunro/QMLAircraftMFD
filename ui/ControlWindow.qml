@@ -53,13 +53,8 @@ Window {
         Item {
             id: ownshipTab
 
-            Rectangle {
-                id: ownshipControl
-
-                color: 'red'
-
-                anchors.fill: parent
-
+            OwnshipControl {
+                id: ownshipControls
             }
         }
 
