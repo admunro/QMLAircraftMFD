@@ -11,10 +11,11 @@ class OwnshipModel : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
+    //QML_UNCREATABLE("OwnshipModel is created in C++ and should not be created directly in QML")
 
 public:
 
-    explicit OwnshipModel(QGeoCoordinate startPosition,
+    explicit OwnshipModel(QGeoCoordinate startPosition = QGeoCoordinate(0.0, 0.0),
                           double heading_deg = 0.0,
                           double speed_kts = 0.0 ,
                           double updateRateMS = 0.0,

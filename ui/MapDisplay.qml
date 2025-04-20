@@ -96,8 +96,7 @@ Rectangle {
             DragHandler {
                 id: drag
                 target: null
-                onTranslationChanged: {
-                    //delta =>
+                onTranslationChanged: function(delta) {
                     map.pan(-delta.x, -delta.y)
                     mapDisplay.centerOnPresentPosition = false
                 }
