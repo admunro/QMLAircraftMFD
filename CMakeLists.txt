@@ -45,7 +45,7 @@ qt_add_qml_module(appAircraftMFD
         ui/NavPage.qml
         ui/RadarPage.qml
         ui/TemplatePage.qml
-        ui/map.qml
+
         ui/StorePage.qml
         ui/SensorPage.qml
         ui/FuelPage.qml
