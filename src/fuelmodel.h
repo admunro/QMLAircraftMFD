@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QAbstractListModel>
-#include <QQmlEngine>
+#include <QtQml/qqmlregistration.h>
 
 
 class FuelModel : public QAbstractListModel
@@ -21,9 +21,9 @@ public:
 
     enum FuelRoles
     {
-        fillLevelRole = Qt::UserRole + 1,
-        capacityRole,
-        nameRole
+        FillLevelRole = Qt::UserRole + 1,  // Note - role names need to begin with a capital letter.
+        CapacityRole,                      // see: https://stackoverflow.com/questions/66855134/how-to-access-a-q-enum-declared-in-c-class-from-qml
+        NameRole
     };
 
     Q_ENUM(FuelRoles);

@@ -522,7 +522,7 @@ Rectangle {
                             if (enabled) {
                                 fuelModel.setData(fuelModel.index(entityControlWindow.selectedFuelTank, 0),
                                                   value,
-                                                  FuelModel.fillLevelRole);
+                                                  FuelModel.FillLevelRole);
                             }
                         }
                     }

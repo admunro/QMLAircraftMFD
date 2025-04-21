@@ -23,11 +23,11 @@ QVariant FuelModel::data(const QModelIndex& index, int role) const
 
     switch (role)
     {
-        case fillLevelRole:
+        case FillLevelRole:
             return fuelTank.fill_level_kg;
-        case capacityRole:
+        case CapacityRole:
             return fuelTank.capacity_kg;
-        case nameRole:
+        case NameRole:
             return fuelTank.tankName;
         default:
             return QVariant();
@@ -38,9 +38,9 @@ QVariant FuelModel::data(const QModelIndex& index, int role) const
 QHash<int, QByteArray> FuelModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[fillLevelRole] = "fillLevel";
-    roles[capacityRole] = "capacity";
-    roles[nameRole] = "name";
+    roles[FillLevelRole] = "fillLevel";
+    roles[CapacityRole] = "capacity";
+    roles[NameRole] = "name";
 
     return roles;
 }
@@ -63,6 +63,8 @@ void FuelModel::addFuelTank(const QString& name,
     fuelTank_t tank { name, capacity_kg, fillLevel_kg };
 
     m_fuelTanks.append(tank);
+
+    endInsertRows();
 
 }
 
@@ -92,7 +94,7 @@ bool FuelModel::setData(const QModelIndex& index, const QVariant& value, int rol
 
     fuelTank_t &tank = m_fuelTanks[index.row()];
 
-    if (role == fillLevelRole && value.toInt() != tank.fill_level_kg)
+    if (role == FillLevelRole && value.toInt() != tank.fill_level_kg)
     {
         tank.fill_level_kg = value.toInt();
         emit dataChanged(index, index);
