@@ -64,6 +64,7 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
+        SOURCES src/fuelmodel.h src/fuelmodel.cpp
 
 
 )
