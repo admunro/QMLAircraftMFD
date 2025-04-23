@@ -18,6 +18,20 @@ Rectangle
     property int wingTankDisplayHeight: 60
     property int wingTankSideMargin: 10
 
+    // Add connection to the fuelModel to listen for changes
+    Connections {
+        target: fuelModel
+
+        // This will be triggered whenever data in the model changes
+        function onDataChanged() {
+            // Force update of all tank displays
+            fwdFuseTank.fillPercentage = calculateFuelTankPercentage("Front Fuselage").toFixed(0)
+            rearFuseTank.fillPercentage = calculateFuelTankPercentage("Rear Fuselage").toFixed(0)
+            portWingTank.fillPercentage = calculateFuelTankPercentage("Port Wing").toFixed(0)
+            starboardWingTank.fillPercentage = calculateFuelTankPercentage("Starboard Wing").toFixed(0)
+        }
+    }
+
 
     // Button captions that will be read by the main MFD
     property var leftButtonCaptions: ["Front\nFuse +", "Front\nFuse -", "Rear\nFuse +", "Rear\nFuse -", "Fuel\nL5"]
