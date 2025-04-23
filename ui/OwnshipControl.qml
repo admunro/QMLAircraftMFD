@@ -69,7 +69,7 @@ Rectangle {
             border.width: 1
             radius: 4
 
-            ColumnLayout {
+            RowLayout {
                 anchors.fill: parent
                 anchors.margins: 10
                 spacing: 5
@@ -100,10 +100,12 @@ Rectangle {
             border.width: 1
             radius: 4
 
-            ColumnLayout {
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 10
+
                 anchors.fill: parent
                 anchors.margins: 10
-                spacing: 5
 
                 Text {
                     text: "Heading: " + ownshipHeadingSlider.value.toFixed(0) + "°"
@@ -112,47 +114,43 @@ Rectangle {
                     font.family: "Roboto Mono"
                 }
 
-                RowLayout {
+                Slider {
+                    id: ownshipHeadingSlider
                     Layout.fillWidth: true
-                    spacing: 10
+                    from: 0
+                    to: 359
+                    stepSize: 1
+                    value: ownshipModel.heading_deg
 
-                    Slider {
-                        id: ownshipHeadingSlider
-                        Layout.fillWidth: true
-                        from: 0
-                        to: 359
-                        stepSize: 1
-                        value: ownshipModel.heading_deg
+                    onMoved: {
+                        // Direct property assignment
+                        ownshipModel.heading_deg = value;
+                    }
+                }
 
-                        onMoved: {
-                            // Direct property assignment
-                            ownshipModel.heading_deg = value;
+                // Heading adjustment buttons
+                Row {
+                    spacing: 5
+                    Button {
+                        width: 40
+                        height: 30
+                        text: "-5°"
+                        onClicked: {
+                            updateHeading(-5)
                         }
                     }
 
-                    // Heading adjustment buttons
-                    Row {
-                        spacing: 5
-                        Button {
-                            width: 40
-                            height: 30
-                            text: "-5°"
-                            onClicked: {
-                                updateHeading(-5)
-                            }
-                        }
-
-                        Button {
-                            width: 40
-                            height: 30
-                            text: "+5°"
-                            onClicked: {
-                                updateHeading(+5)
-                            }
+                    Button {
+                        width: 40
+                        height: 30
+                        text: "+5°"
+                        onClicked: {
+                            updateHeading(+5)
                         }
                     }
                 }
             }
+
         }
 
         // Speed Control
@@ -164,10 +162,13 @@ Rectangle {
             border.width: 1
             radius: 4
 
-            ColumnLayout {
+
+
+
+            RowLayout {
                 anchors.fill: parent
+                spacing: 10
                 anchors.margins: 10
-                spacing: 5
 
                 Text {
                     text: "Speed: " + ownshipSpeedSlider.value.toFixed(0) + " kts"
@@ -176,43 +177,38 @@ Rectangle {
                     font.family: "Roboto Mono"
                 }
 
-                RowLayout {
+                Slider {
+                    id: ownshipSpeedSlider
                     Layout.fillWidth: true
-                    spacing: 10
+                    from: 0
+                    to: 1000
+                    stepSize: 10
+                    value: ownshipModel.speed_kts
 
-                    Slider {
-                        id: ownshipSpeedSlider
-                        Layout.fillWidth: true
-                        from: 0
-                        to: 1000
-                        stepSize: 10
-                        value: ownshipModel.speed_kts
+                    onMoved: {
+                        // Direct property assignment
+                        ownshipModel.speed_kts = value;
+                    }
+                }
 
-                        onMoved: {
-                            // Direct property assignment
-                            ownshipModel.speed_kts = value;
+                // Speed adjustment buttons
+                Row {
+                    spacing: 5
+                    Button {
+                        width: 50
+                        height: 30
+                        text: "-50"
+                        onClicked: {
+                            updateSpeed(-50)
                         }
                     }
 
-                    // Speed adjustment buttons
-                    Row {
-                        spacing: 5
-                        Button {
-                            width: 50
-                            height: 30
-                            text: "-50"
-                            onClicked: {
-                                updateSpeed(-50)
-                            }
-                        }
-
-                        Button {
-                            width: 50
-                            height: 30
-                            text: "+50"
-                            onClicked: {
-                                updateSpeed(50)
-                            }
+                    Button {
+                        width: 50
+                        height: 30
+                        text: "+50"
+                        onClicked: {
+                            updateSpeed(50)
                         }
                     }
                 }

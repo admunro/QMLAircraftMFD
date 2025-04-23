@@ -227,10 +227,13 @@ Rectangle {
             border.width: 1
             radius: 4
 
-            ColumnLayout {
+
+
+            RowLayout {
 
                 anchors.fill: parent
                 anchors.margins: 10
+
                 spacing: 10
 
                 Text {
@@ -240,56 +243,52 @@ Rectangle {
                     font.family: "Roboto Mono"
                 }
 
-                RowLayout {
+                Slider {
+                    id: headingSlider
                     Layout.fillWidth: true
-                    spacing: 10
+                    from: 0
+                    to: 360
+                    stepSize: 1
+                    enabled: entityControlWindow.selectedEntity >= 0
 
-                    Slider {
-                        id: headingSlider
-                        Layout.fillWidth: true
-                        from: 0
-                        to: 360
-                        stepSize: 1
-                        enabled: entityControlWindow.selectedEntity >= 0
-
-                        onMoved: {
-                            if (enabled) {
-                                // Update the model with new value from slider
-                                entityModel.setData(
-                                            entityModel.index(entityControlWindow.selectedEntity, 0),
-                                            value,
-                                            EntityModel.HeadingRole);
-                            }
+                    onMoved: {
+                        if (enabled) {
+                            // Update the model with new value from slider
+                            entityModel.setData(
+                                        entityModel.index(entityControlWindow.selectedEntity, 0),
+                                        value,
+                                        EntityModel.HeadingRole);
                         }
-                    }
-
-                    Row {
-
-                        Button {
-                            width: 40
-                            height: 30
-
-                            text:  "-5°"
-
-                            onClicked: {
-                                updateHeading(-5)
-                            }
-                        }
-
-                        Button {
-                            width: 40
-                            height: 30
-
-                            text:  "+5°"
-
-                            onClicked: {
-                                updateHeading(5)
-                            }
-                        }
-
                     }
                 }
+
+                Row {
+
+                    Button {
+                        width: 40
+                        height: 30
+
+                        text:  "-5°"
+
+                        onClicked: {
+                            updateHeading(-5)
+                        }
+                    }
+
+                    Button {
+                        width: 40
+                        height: 30
+
+                        text:  "+5°"
+
+                        onClicked: {
+                            updateHeading(5)
+                        }
+                    }
+
+                }
             }
+
         }
 
         // Speed Control
@@ -302,12 +301,10 @@ Rectangle {
             radius: 4
 
 
-            ColumnLayout {
+            RowLayout {
+
                 anchors.fill: parent
                 anchors.margins: 10
-                spacing: 5
-
-
 
                 Text {
                     text: "Speed: " + speedSlider.value.toFixed(0) + " kts"
@@ -316,54 +313,51 @@ Rectangle {
                     font.family: "Roboto Mono"
                 }
 
-                RowLayout {
+                Slider {
+                    id: speedSlider
+                    Layout.fillWidth: true
+                    from: 0
+                    to: 1000
+                    stepSize: 10
+                    enabled: entityControlWindow.selectedEntity >= 0
 
-                    Slider {
-                        id: speedSlider
-                        Layout.fillWidth: true
-                        from: 0
-                        to: 1000
-                        stepSize: 10
-                        enabled: entityControlWindow.selectedEntity >= 0
+                    onMoved: {
+                        if (enabled) {
+                            // Update the model with new value from slider
+                            entityModel.setData(
+                                        entityModel.index(entitiesListView.currentIndex, 0),
+                                        value,
+                                        EntityModel.SpeedRole);
+                        }
+                    }
+                }
 
-                        onMoved: {
-                            if (enabled) {
-                                // Update the model with new value from slider
-                                entityModel.setData(
-                                            entityModel.index(entitiesListView.currentIndex, 0),
-                                            value,
-                                            EntityModel.SpeedRole);
-                            }
+                Row {
+                    Button {
+                        width: 40
+                        height: 30
+
+                        text:  "-50"
+
+                        onClicked: {
+                            updateSpeed(-50)
                         }
                     }
 
-                    Row {
-                        Button {
-                            width: 40
-                            height: 30
+                    Button {
+                        width: 40
+                        height: 30
 
-                            text:  "-50"
+                        text:  "+50"
 
-                            onClicked: {
-                                updateSpeed(-50)
-                            }
-                        }
-
-                        Button {
-                            width: 40
-                            height: 30
-
-                            text:  "+50"
-
-                            onClicked: {
-                                updateSpeed(50)
-                            }
+                        onClicked: {
+                            updateSpeed(50)
                         }
                     }
                 }
             }
         }
-     }
+    }
 
 
 
