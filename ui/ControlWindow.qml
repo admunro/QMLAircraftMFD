@@ -9,7 +9,7 @@ Window {
     id: controlsWindow
 
     width: 800
-    height: 600
+    height: 1000
 
     visible: true
 

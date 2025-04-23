@@ -11,7 +11,7 @@ Rectangle {
     color: "#292929"
 
     property int selectedEntity: entitiesListView.currentIndex
-    property int selectedFuelTank : fuelTanksListView.currentIndex
+
 
 
     // Function to update heading and speed slider controls based on selected entity
@@ -67,20 +67,6 @@ Rectangle {
 
         }
     }
-
-
-
-    // Function to update fillLevel slider control based on selected fuel tank
-    function updateFuelTanks() {
-        if (selectedFuelTank >= 0) {
-            var data = fuelModel.get(selectedFuelTank);
-            if (data) {
-                fuelLevelSlider.to = data.capacity;
-                fuelLevelSlider.value = data.fillLevel;
-            }
-        }
-    }
-
 
 
     ColumnLayout {
@@ -377,166 +363,13 @@ Rectangle {
                 }
             }
         }
-
-
-
-        // Title
-        Text {
-            Layout.alignment: Qt.AlignHCenter
-            text: "Fuel Tanks"
-            color: "white"
-            font.pixelSize: 24
-            font.bold: true
-            font.family: "Roboto Mono"
-        }
-
-        Rectangle {
-            Layout.fillWidth: true
-            height: 40
-
-            color: 'gainsboro'
-
-            RowLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                spacing: 10
-
-                Text {
-                    text: "Name"
-                    font.bold: true
-                    Layout.preferredWidth: 30
-                }
-
-                Text {
-                    text: "Capacity (kg)"
-                    font.bold: true
-                    Layout.preferredWidth: 30
-                }
-
-                Text {
-                    text: "Fill Level (kg)"
-                    font.bold: true
-                    Layout.preferredWidth: 30
-                }
-
-            }
-
-        }
-
-        ListView {
-
-            id: fuelTanksListView
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            clip: true
-            model: fuelModel
-
-            delegate: Rectangle {
-
-                width: fuelTanksListView.width
-                height: 50
-
-                color: selectedFuelTank === index ? "darkgrey" : "dimgrey"
-                border.color: "#cccccc"
-
-                RowLayout {
-
-                    anchors.fill: parent
-                    anchors.margins: 10
-                    spacing: 10
-
-
-                    Text {
-
-                        text: model.name
-                        Layout.preferredWidth: 80
-                    }
-
-                    Text {
-
-                        text: model.capacity
-                        Layout.preferredWidth: 80
-                    }
-
-                    Text {
-
-                        text: model.fillLevel
-                        Layout.preferredWidth: 80
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        fuelTanksListView.currentIndex = index
-                        entityControlWindow.updateFuelTanks()
-
-                    }
-                }
-            }
-
-            // Also update controls when the current index changes programmatically
-            onCurrentIndexChanged: {
-                entityControlWindow.updateFuelTanks()
-            }
-        }
-
-        // Fuel Tank Slider
-        Rectangle {
-            Layout.fillWidth: true
-            height: 120
-            color: "#3a3a3a"
-            border.color: "#5a5a5a"
-            border.width: 1
-            radius: 4
-
-            ColumnLayout {
-
-                anchors.fill: parent
-                anchors.margins: 10
-                spacing: 10
-
-                Text {
-                    text: fuelModel.get(selectedFuelTank).name + " Fill Level: " + fuelLevelSlider.value + " kg"
-                    color: "white"
-                    font.pixelSize: 14
-                    font.family: "Roboto Mono"
-                }
-
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: 10
-
-                    Slider {
-                        id: fuelLevelSlider
-                        Layout.fillWidth: true
-
-                        from: 0
-                        to: fuelModel.get(selectedFuelTank).capacity
-                        stepSize: 1
-                        enabled: entityControlWindow.selectedFuelTank >= 0
-
-                        onMoved: {
-                            if (enabled) {
-                                fuelModel.setData(fuelModel.index(entityControlWindow.selectedFuelTank, 0),
-                                                  value,
-                                                  FuelModel.FillLevelRole);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+     }
 
 
 
     // Initialize controls on component completion
     Component.onCompleted: {
         updateControls()
-        updateFuelTanks()
     }
 
 }

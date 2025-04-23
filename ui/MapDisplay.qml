@@ -29,13 +29,6 @@ Rectangle {
     property var navigationRoute: [regensburg, nurnberg, wurzburg, heilbronn, augsburg, ingolstadt]
 
 
-
-
-    Plugin {
-        id: mapPlugin
-        name: 'osm'
-    }
-
     function zoomIn() {
         if (map.zoomLevel < 20) {
             map.zoomLevel += 1
@@ -74,14 +67,22 @@ Rectangle {
             width: parent.width
             height: parent.height
 
-            plugin: mapPlugin
+            plugin: Plugin {
+                name: 'osm'
+
+                // PluginParameter { name: "osm.mapping.custom.host";
+                //                   value: "https://a.tile.opentopomap.org/${z}/${x}/${y}.png" }
+
+            }
+
+            //activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
+
             bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? ownshipModel.heading_deg : 0
 
             zoomLevel: 11
 
             copyrightsVisible: false
 
-            //center: ownshipModel.position
 
             Connections {
                 target: ownshipModel
