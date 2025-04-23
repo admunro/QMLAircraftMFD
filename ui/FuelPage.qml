@@ -1,6 +1,8 @@
-import QtQuick 2.15
+import QtQuick
 
 import 'fuelWidgets'
+
+import AircraftMFD 1.0
 
 Rectangle
 {
@@ -20,6 +22,17 @@ Rectangle
     // Button captions that will be read by the main MFD
     property var leftButtonCaptions: ["Front\nFuse +", "Front\nFuse -", "Rear\nFuse +", "Rear\nFuse -", "Fuel\nL5"]
     property var rightButtonCaptions: ["Port\nWing +", "Port\nWing -", "Stbd\nWing +", "Stbd\nWing -", "Fuel\nR5"]
+
+    function calculateFuelTankPercentage(tankName) {
+
+        var tank = fuelModel.get(tankName)
+
+        var capacity = tank.capacity
+        var fillLevel = tank.fillLevel
+
+        return fillLevel / capacity * 100
+    }
+
 
 
     // Function handlers for button events from the main MFD
@@ -95,7 +108,7 @@ Rectangle
     {
         id: fwdFuseTank
 
-        fillPercentage: 90
+        fillPercentage: calculateFuelTankPercentage("Front Fuselage").toFixed(0)
 
         anchors.top: parent.top
         anchors.topMargin: 150
@@ -109,7 +122,7 @@ Rectangle
     {
         id: rearFuseTank
 
-        fillPercentage: 50
+        fillPercentage: calculateFuelTankPercentage("Rear Fuselage").toFixed(0)
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 100
@@ -127,7 +140,7 @@ Rectangle
         displayWidth: wingTankDisplayWidth
         displayHeight: wingTankDisplayHeight
 
-        fillPercentage: 30
+        fillPercentage: calculateFuelTankPercentage("Port Wing").toFixed(0)
 
         anchors.right: rearFuseTank.left
         anchors.top: rearFuseTank.top
@@ -142,7 +155,7 @@ Rectangle
         displayWidth: wingTankDisplayWidth
         displayHeight: wingTankDisplayHeight
 
-        fillPercentage: 60
+        fillPercentage: calculateFuelTankPercentage("Starboard Wing").toFixed(0)
 
         anchors.left: rearFuseTank.right
         anchors.top: rearFuseTank.top

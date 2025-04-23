@@ -87,6 +87,27 @@ QVariantMap FuelModel::get(int row) const
 }
 
 
+QVariantMap FuelModel::get(const QString& name) const
+{
+    for (const auto& tank: m_fuelTanks)
+    {
+        if (tank.tankName == name)
+        {
+            QVariantMap map;
+
+            map["name"] = tank.tankName;
+            map["capacity"] = tank.capacity_kg;
+            map["fillLevel"] = tank.fill_level_kg;
+
+            return map;
+        }
+    }
+
+    return QVariantMap();
+
+}
+
+
 bool FuelModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     if (!index.isValid() || index.row() >= m_fuelTanks.size())

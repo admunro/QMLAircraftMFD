@@ -41,6 +41,7 @@ public:
     Q_INVOKABLE void addFuelTank(const QString& name, int capacity_kg, int fillLevel_kg);
 
     Q_INVOKABLE QVariantMap get(int row) const;
+    Q_INVOKABLE QVariantMap get(const QString& name) const;
 
 private:
 

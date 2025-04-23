@@ -368,7 +368,7 @@ Rectangle {
 
     // Initialize controls on component completion
     Component.onCompleted: {
-        updateFuelTanks()()
+        updateFuelTanks()
     }
 
 }
