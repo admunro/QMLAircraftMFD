@@ -6,6 +6,7 @@ import QtQuick 2.15
 Rectangle
 {
     property real fillPercentage
+    property string fillCaption
 
     property int displayWidth
     property int displayHeight
@@ -56,7 +57,7 @@ Rectangle
 
             anchors.centerIn: parent
 
-            text: fillPercentage + " %"
+            text: fillCaption
             color: "white"
             fontSizeMode: Text.Fit
             font.family: "Roboto Mono"
