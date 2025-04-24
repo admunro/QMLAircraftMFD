@@ -39,6 +39,8 @@ qt_add_qml_module(appAircraftMFD
         src/entityutils.cpp
         src/fuelmodel.h
         src/fuelmodel.cpp
+        src/enginesmodel.h
+        src/enginesmodel.cpp
 
     QML_FILES
         ui/Cockpit.qml
@@ -66,6 +68,7 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
+
 
 
 
