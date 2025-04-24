@@ -26,6 +26,8 @@ QVariant EnginesModel::data(const QModelIndex &index, int role) const
     {
     case RPMPercentRole:
         return engine.rpm_percent;
+    case NameRole:
+        return engine.name;
     default:
         return QVariant();
 
@@ -52,7 +54,7 @@ bool EnginesModel::setData(const QModelIndex &index, const QVariant &value, int 
 QHash<int, QByteArray> EnginesModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[NameRole] = "enginename";
+    roles[NameRole] = "name";
     roles[RPMPercentRole] = "rpmpercent";
 
     return roles;

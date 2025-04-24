@@ -435,7 +435,7 @@ Rectangle {
                     spacing: 10
 
                     Text {
-                        text: model.enginename
+                        text: model.name
                         Layout.preferredWidth: 80
                     }
 
@@ -452,7 +452,6 @@ Rectangle {
                         updateEngines()
                     }
                 }
-
             }
 
             onCurrentIndexChanged: {
@@ -510,6 +509,7 @@ Rectangle {
     // Initialize controls on component completion
     Component.onCompleted: {
         updateFuelTanks()
+        updateEngines()
     }
 
 }
