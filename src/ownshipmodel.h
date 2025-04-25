@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QtQml/qqmlregistration.h>
 
+#include <memory>
 
 
 class OwnshipModel : public QObject
@@ -60,7 +61,7 @@ signals:
 private:
 
 
-    QTimer* timer;
+    std::unique_ptr<QTimer> timer;
     double m_updateRateMilliseconds;
 
     QString m_id;

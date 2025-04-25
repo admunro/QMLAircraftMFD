@@ -7,6 +7,7 @@
 #include <QtQml/qqmlregistration.h>
 #include "entityutils.h"
 
+#include <memory>
 
 
 
@@ -63,7 +64,7 @@ public:
 
 private:
 
-    QTimer* timer;
+    std::unique_ptr<QTimer> timer;
 
     double updateRateMilliseconds;
 
