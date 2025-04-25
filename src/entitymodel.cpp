@@ -5,9 +5,9 @@ EntityModel::EntityModel(QObject *parent, double updateRateMS)
     : QAbstractListModel{parent},
     updateRateMilliseconds (updateRateMS)
 {
-    this->timer = new QTimer();
+    this->timer = std::make_unique<QTimer>();
 
-    QObject::connect(this->timer, &QTimer::timeout, this, &EntityModel::updateEntities);
+    QObject::connect(this->timer.get(), &QTimer::timeout, this, &EntityModel::updateEntities);
 
     timer->start(updateRateMilliseconds);
 
