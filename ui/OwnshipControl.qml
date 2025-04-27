@@ -28,7 +28,7 @@ Rectangle {
         var newSpeed = ownshipModel.speed_kts + speedDelta;
 
         if (newSpeed < 0) newSpeed = 0
-        if (newSpeed > 360) newSpeed = 360
+        if (newSpeed > 1000) newSpeed = 1000
 
         ownshipModel.speed_kts = newSpeed;
         ownshipSpeedSlider.value = newSpeed;
