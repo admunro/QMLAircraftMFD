@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<models>
+    
+
+
+<model name="Engine">
+	<member type="QString" name="name"/>
+	<member type="int" name="rpm_percent" initialValue="0"/>
+</model>
+
+<model name="Entity" plural="Entities">
+
+	<include name="QVector" type="system"/>
+	<include name="QTimer" type="system"/>
+	<include name="QGeoCoordinate" type="system"/>
+
+	<member type="QString" name="id"/>
+	<member type="QString" name="name"/>
+	<member type="QGeoCoordinate" name="position" initialValue="0.0, 0.0"/>
+	<member type="double" name="heading_deg" initialValue="0.0"/>
+	<member type="double" name="speed_kts" initialValue="0.0"/>
+
+</model>
+
+
+</models>
+
