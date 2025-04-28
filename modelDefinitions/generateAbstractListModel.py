@@ -254,6 +254,80 @@ def create_source_file(model, class_name, members, vector_name):
 
     # setData
     source_file.append(indent + class_name + '::setData(const QModelIndex& index, const QVariant& value, int role)')
+    source_file.append('{')
+    increase_indent()
+    source_file.append(indent + 'if (!index.isValid() || index.row() >= ' + vector_name + '.size())')
+    increase_indent()
+    source_file.append(indent + 'return false;')
+    source_file.append('')
+    decrease_indent()
+
+    element_name = class_name.removesuffix('Model').lower()
+
+    source_file.append(indent + 'auto& ' + element_name + ' = ' + vector_name + '[index.row()]')
+    source_file.append(indent + 'bool changed = false;')
+    source_file.append('')
+    source_file.append(indent + 'switch (role)')
+    source_file.append(indent + '{')
+
+    for member in members:
+
+        role_name = member.attrib['name'].capitalize() + 'Role'
+        type_name = member.attrib['type'].capitalize()
+
+        source_file.append(indent + 'case ' + role_name + ':')
+        increase_indent()
+        source_file.append(indent + 'if (value.to' + type_name + '() != ' + element_name + '.' + member.attrib['name'] + ')')
+        source_file.append(indent + '{')
+        increase_indent()
+        source_file.append(indent + element_name + '.' + member.attrib['name'] + ' = value.to' + type_name + '();')
+        source_file.append(indent + 'changed = true;')
+        decrease_indent()
+        source_file.append(indent + '}')
+        source_file.append(indent + 'break;')
+        source_file.append('')
+        decrease_indent()
+
+    source_file.append(indent + 'default:')
+    increase_indent()
+    source_file.append(indent + 'return false;')
+    decrease_indent()
+    source_file.append(indent + '}')
+    source_file.append('')
+    source_file.append(indent + 'if (changed)')
+    source_file.append(indent + '{')
+    increase_indent()
+    source_file.append(indent + 'emit dataChanged(index, index);')
+    source_file.append(indent + 'return true;')
+    decrease_indent()
+    source_file.append(indent + '}')
+    source_file.append('')
+    source_file.append(indent + 'return false;')
+    decrease_indent()
+    source_file.append('')
+    source_file.append(indent + '}')
+    source_file.append('')
+
+    # roleNames
+    source_file.append('QHash<int, QByteArray> ' + class_name + '::roleNames() const')
+    source_file.append('{')
+    increase_indent()
+
+    for member in members:
+        source_file.append(indent + 'roles[' + member.attrib['name'].capitalize() + 'Role]' + ' = "' + member.attrib['name'] + '";')
+
+    source_file.append('')
+    source_file.append(indent + 'return roles;')
+    decrease_indent()
+    source_file.append('}')
+    source_file.append('')
+
+
+
+
+
+
+
 
     with open('generated_' + class_name.lower() + '.cpp', 'w') as file:
         for line in source_file:
