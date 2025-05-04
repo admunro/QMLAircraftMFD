@@ -91,27 +91,28 @@ def parse_enum(members, class_name):
 
     enum.append(indent + '};')
     enum.append('')
-    enum.append(indent + 'QENUM(' + class_name + 'Roles);')
+    enum.append(indent + 'Q_ENUM(' + class_name + 'Roles);')
 
     return enum
 
 
 def parse_member_parameters(members):
 
-    parameters = ''
+    parameters = []
 
     for member in members:
+
+        member_line = ''
 
         name = member.attrib['name']
         data_type = member.attrib['type']
 
         if data_type in simpleTypes:
-            parameters += data_type + ' ' + name
+            member_line += data_type + ' ' + name
         else:
-            parameters += 'const ' + data_type + '& ' + name
+            member_line += 'const ' + data_type + '& ' + name
 
-        if member != members[-1]:
-            parameters += ', '
+        parameters.append(member_line)
 
     return parameters
 
@@ -153,14 +154,25 @@ def create_header_file(model, class_name, includes, members, vector_name):
     header_file.append(indent + 'QHash<int, QByteArray> roleNames() const override;')
     header_file.append(indent + 'Qt::ItemFlags flags(const QModelIndex& index) const override;')
     header_file.append('')
-    header_file.append(indent +
-                       'Q_INVOKABLE void add' +
-                       class_name.removesuffix('Model') +
-                       '(' + parse_member_parameters(members) + ');')
+
+
+    add_entity_header = indent + 'Q_INVOKABLE void add' + '(' 
+    add_entity_indent = indent + ' ' * len(add_entity_header.removeprefix('\t'))
+    add_entity_members = parse_member_parameters(members)
+
+    if len(add_entity_members) == 1:
+        header_file.append(add_entity_indent + add_entity_header + add_entity_members[0] + ');')
+    else:
+        header_file.append(add_entity_header + add_entity_members[0] + ',')
+        for member in add_entity_members[1:]:
+            if member != add_entity_members[-1]:
+                header_file.append(add_entity_indent + member + ',')
+            else:
+                header_file.append(add_entity_indent + member + ');')
 
     header_file.append('')
-    header_file.append(indent + 'Q_INVOKABLE QVariantMap get(int row) const;')
-    header_file.append(indent + 'Q_INVOKABLE QVariantMap get(const QString& name) const;')
+    header_file.append(indent + 'Q_INVOKABLE QVariantMap getByIndex(int row) const;')
+    header_file.append(indent + 'Q_INVOKABLE QVariantMap getByName(const QString& name) const;')
     header_file.append('')
     header_file.append('')
 
@@ -170,7 +182,7 @@ def create_header_file(model, class_name, includes, members, vector_name):
 
     increase_indent()
 
-    header_file.append(indent + 'QVector<' + struct_name + '> m_' + vector_name + ';')
+    header_file.append(indent + 'QVector<' + struct_name + '> ' + vector_name + ';')
     header_file.append('')
 
     decrease_indent()
@@ -186,6 +198,9 @@ def create_source_file(model, class_name, members, vector_name):
 
     global indent
     indent = ''
+
+    simple_class_name = class_name.removesuffix('Model')
+    instance_name = simple_class_name.lower()
 
     source_file = []
 
@@ -206,7 +221,7 @@ def create_source_file(model, class_name, members, vector_name):
 
 
     # Row Count
-    source_file.append(class_name + '::rowCount(const QModelIndex& parent) const')
+    source_file.append('int ' + class_name + '::rowCount(const QModelIndex& parent) const')
     source_file.append('{')
     increase_indent()
     source_file.append(indent + 'if (parent.isValid())')
@@ -220,17 +235,16 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append('')
 
     # data
-    source_file.append(class_name + '::data(const QModelIndex& index int role) const')
+    source_file.append('QVariant ' + class_name + '::data(const QModelIndex& index, int role) const')
     source_file.append('{')
     increase_indent()
     source_file.append(indent + 'if (!index.isValid() || index.row() >= ' + vector_name + '.size())')
     increase_indent()
-    source_file.append(indent + 'return QVariant;')
+    source_file.append(indent + 'return QVariant();')
     decrease_indent()
     source_file.append('')
 
-    it = class_name.removesuffix('Model').lower()
-    source_file.append(indent + 'const auto& ' + it + ' = ' + vector_name + '[index.row()];')
+    source_file.append(indent + 'const auto& ' + instance_name + ' = ' + vector_name + '[index.row()];')
     source_file.append('')
     source_file.append(indent + 'switch (role)')
     source_file.append(indent + '{')
@@ -239,7 +253,7 @@ def create_source_file(model, class_name, members, vector_name):
     for member in members:
         source_file.append(indent + 'case ' + member.attrib['name'].capitalize() + 'Role:')
         increase_indent()
-        source_file.append(indent + 'return ' + class_name.removesuffix('Model').lower() + '.' + member.attrib['name'] + ';')
+        source_file.append(indent + 'return ' + instance_name + '.' + member.attrib['name'] + ';')
         decrease_indent()
 
     source_file.append(indent + 'default:')
@@ -253,7 +267,7 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append('')
 
     # setData
-    source_file.append(indent + class_name + '::setData(const QModelIndex& index, const QVariant& value, int role)')
+    source_file.append(indent + 'bool ' + class_name + '::setData(const QModelIndex& index, const QVariant& value, int role)')
     source_file.append('{')
     increase_indent()
     source_file.append(indent + 'if (!index.isValid() || index.row() >= ' + vector_name + '.size())')
@@ -262,9 +276,7 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append('')
     decrease_indent()
 
-    element_name = class_name.removesuffix('Model').lower()
-
-    source_file.append(indent + 'auto& ' + element_name + ' = ' + vector_name + '[index.row()]')
+    source_file.append(indent + 'auto& ' + instance_name + ' = ' + vector_name + '[index.row()]')
     source_file.append(indent + 'bool changed = false;')
     source_file.append('')
     source_file.append(indent + 'switch (role)')
@@ -277,10 +289,10 @@ def create_source_file(model, class_name, members, vector_name):
 
         source_file.append(indent + 'case ' + role_name + ':')
         increase_indent()
-        source_file.append(indent + 'if (value.to' + type_name + '() != ' + element_name + '.' + member.attrib['name'] + ')')
+        source_file.append(indent + 'if (value.to' + type_name + '() != ' + instance_name + '.' + member.attrib['name'] + ')')
         source_file.append(indent + '{')
         increase_indent()
-        source_file.append(indent + element_name + '.' + member.attrib['name'] + ' = value.to' + type_name + '();')
+        source_file.append(indent + instance_name + '.' + member.attrib['name'] + ' = value.to' + type_name + '();')
         source_file.append(indent + 'changed = true;')
         decrease_indent()
         source_file.append(indent + '}')
@@ -313,6 +325,8 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append('{')
     increase_indent()
 
+    source_file.append(indent + 'QHash<int, QByteArray> roles;')
+
     for member in members:
         source_file.append(indent + 'roles[' + member.attrib['name'].capitalize() + 'Role]' + ' = "' + member.attrib['name'] + '";')
 
@@ -322,12 +336,108 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append('}')
     source_file.append('')
 
+    # flags
+    source_file.append('Qt::ItemFlags ' + class_name + '::flags(const QModelIndex& index) const')
+    source_file.append('{')
+    increase_indent()
+    source_file.append(indent + 'if (!index.isValid())')
+    increase_indent()
+    source_file.append(indent + 'return Qt::NoItemFlags;')  
+    source_file.append('')
+    decrease_indent()
+    source_file.append(indent + 'return Qt::ItemIsEditable | QAbstractListModel::flags(index);')
+    source_file.append('}')
+    source_file.append('')
+    decrease_indent()
+
+    # addEntity
+    add_entity_header = 'void ' + class_name + '::add' + '('
+    add_entity_indent = ' ' * len(add_entity_header)
+    add_entity_members = parse_member_parameters(members)
+
+    if len(add_entity_members) == 1:
+        source_file.append(add_entity_indent + add_entity_header + add_entity_members[0] + ');')
+    else:
+        source_file.append(add_entity_header + add_entity_members[0] + ',')
+        for member in add_entity_members[1:]:
+            if member != add_entity_members[-1]:
+                source_file.append(add_entity_indent + member + ',')
+            else:
+                source_file.append(add_entity_indent + member + ')')
+
+    source_file.append('{')
+    increase_indent()
+    source_file.append(indent + 'beginInsertRows(QModelIndex(), ' + vector_name + '.size()' + ', ' + vector_name + '.size());' )
+    source_file.append('')
+
+    source_file.append(indent + simple_class_name + ' ' + instance_name + ';')
+    source_file.append('')
+
+    for member in members:
+        source_file.append(indent + instance_name + '.' + member.attrib['name'] + ' = ' + member.attrib['name'] + ';')
 
 
+    source_file.append(indent + vector_name + '.append(' + instance_name + ');')
+    source_file.append('')
+
+    source_file.append(indent + 'endInsertRows();')
+    decrease_indent()
+    source_file.append(indent + '}')
+
+    source_file.append('')
+
+    # getByIndex
+    source_file.append('QVariantMap ' + class_name + '::getByIndex(int row) const')
+    source_file.append('{')
+    increase_indent()
+    source_file.append(indent + 'if (row < 0 || row >= ' + vector_name + '.size())')
+    increase_indent()
+    source_file.append(indent + 'return QVariantMap();')
+    decrease_indent()
+    source_file.append('')
+    source_file.append(indent + 'const ' + simple_class_name + '& = ' + vector_name + '[row];')
+    source_file.append('')
+    source_file.append(indent + 'QVariantMap map;')
+    source_file.append('')
+
+    for member in members:
+        attrib_name = member.attrib['name']
+        source_file.append(indent + 'map["' + attrib_name + '"] = ' + instance_name + '.' + attrib_name + ';')
+
+    source_file.append('')
+    source_file.append(indent + 'return map;')
+    decrease_indent()
+    source_file.append(indent + '}')
+    source_file.append('')
 
 
+    #getByName
+    source_file.append('QVariantMap ' + class_name + '::getByName(const QString& name) const')
+    source_file.append('{')
+    increase_indent()
+    source_file.append(indent + 'for (const auto& ' + instance_name + ': ' + vector_name + ')')
+    source_file.append(indent + '{')
+    increase_indent()
+    source_file.append(indent + 'if (' + instance_name + '.name == name)')
+    source_file.append(indent + '{')
+    increase_indent()
+    source_file.append(indent + 'QVariantMap map;')
+    source_file.append('')
 
+    for member in members:
+        attrib_name = member.attrib['name']
+        source_file.append(indent + 'map["' + attrib_name + '"] = ' + instance_name + '.' + attrib_name + ';')
 
+    source_file.append('')
+    source_file.append(indent + 'return map;')
+    decrease_indent()
+    source_file.append(indent + '}')
+    decrease_indent()
+    source_file.append(indent + '}')
+    source_file.append('')
+    source_file.append(indent + 'return QVariantMap();')
+    decrease_indent()
+    source_file.append(indent + '}')
 
     with open('generated_' + class_name.lower() + '.cpp', 'w') as file:
         for line in source_file:
@@ -358,5 +468,3 @@ def parse_models(filename):
 
 if __name__ == "__main__":
     parse_models('models.xml')
-
-

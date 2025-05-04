@@ -2,28 +2,31 @@
 
 <models>
     
+	<model name="Engine">
+		<member type="QString" name="name"/>
+		<member type="int" name="rpm_percent" initialValue="0"/>
+	</model>
 
+	<model name="Entity" plural="Entities">
 
-<model name="Engine">
-	<member type="QString" name="name"/>
-	<member type="int" name="rpm_percent" initialValue="0"/>
-</model>
+		<include name="QVector" type="system"/>
+		<include name="QTimer" type="system"/>
 
-<model name="Entity" plural="Entities">
+		<member type="QString" name="id"/>
+		<member type="QString" name="name"/>
+		<member type="double" name="latitude_deg" initialValue="0.0"/>
+		<member type="double" name="longitude_deg" initialValue="0.0"/>
+		<member type="double" name="altitude_deg" initialValue="0.0"/>
+		<member type="double" name="heading_deg" initialValue="0.0"/>
+		<member type="double" name="speed_kts" initialValue="0.0"/>
 
-	<include name="QVector" type="system"/>
-	<include name="QTimer" type="system"/>
+	</model>
 
-	<member type="QString" name="id"/>
-	<member type="QString" name="name"/>
-	<member type="double" name="latitude_deg" initialValue="0.0"/>
-	<member type="double" name="longitude_deg" initialValue="0.0"/>
-	<member type="double" name="altitude_deg" initialValue="0.0"/>
-	<member type="double" name="heading_deg" initialValue="0.0"/>
-	<member type="double" name="speed_kts" initialValue="0.0"/>
-
-</model>
-
+	<model name="FuelTank">
+		<member type="QString" name="name"/>
+		<member type="int" name="capacity_kg" initialValue="0"/>
+		<member type="int" name="fill_level_kg" initialValue="0"/>
+	</model>
 
 </models>
 
