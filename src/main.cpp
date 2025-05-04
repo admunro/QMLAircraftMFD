@@ -5,7 +5,7 @@
 
 #include "entitymodel.h"
 #include "ownshipmodel.h"
-#include "enginesmodel.h"
+#include "enginemodel.h"
 #include "fueltankmodel.h"
 
 
@@ -73,10 +73,10 @@ int main(int argc, char *argv[])
                           300.0,
                           180.0);
 
-    EnginesModel enginesModel(&app);
+    EngineModel engineModel(&app);
 
-    enginesModel.addEngine("Port Engine", 50);
-    enginesModel.addEngine("Starboard Engine", 45);
+    engineModel.add("Port Engine", 50);
+    engineModel.add("Starboard Engine", 45);
 
 
     QQmlApplicationEngine engine;
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("entityModel",  &entityModel);
     engine.rootContext()->setContextProperty("ownshipModel", &ownshipModel);
     engine.rootContext()->setContextProperty("fuelTankModel", &fuelTankModel);
-    engine.rootContext()->setContextProperty("enginesModel", &enginesModel);
+    engine.rootContext()->setContextProperty("engineModel", &engineModel);
 
 
 

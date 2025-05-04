@@ -15,15 +15,15 @@ Rectangle
     property var rightButtonCaptions: ["Engine\nR1", "Engine\nR2", "Engine\nR3", "Engine\nR4", "Engine\nR5"]
 
 
-    property int portEngineRPM: enginesModel.get(0).rpmpercent
-    property int starboardEngineRPM: enginesModel.get(1).rpmpercent
+    property int portEngineRPM: engineModel.getByIndex(0).rpm_percent
+    property int starboardEngineRPM: engineModel.getByIndex(1).rpm_percent
 
     Connections {
-        target: enginesModel
+        target: engineModel
 
         function onDataChanged() {
-            portEngineRPM = enginesModel.get(0).rpmpercent;
-            starboardEngineRPM = enginesModel.get(1).rpmpercent
+            portEngineRPM = engineModel.getByIndex(0).rpm_percent;
+            starboardEngineRPM = engineModel.getByIndex(1).rpm_percent
         }
     }
 

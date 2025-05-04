@@ -39,8 +39,8 @@ qt_add_qml_module(appAircraftMFD
         src/entityutils.cpp
         src/fueltankmodel.h
         src/fueltankmodel.cpp
-        src/enginesmodel.h
-        src/enginesmodel.cpp
+        src/enginemodel.h
+        src/enginemodel.cpp
 
     QML_FILES
         ui/Cockpit.qml

@@ -49,9 +49,9 @@ Rectangle {
 
     function updateEngines() {
         if (selectedEngine >= 0){
-            var data = enginesModel.get(selectedEngine);
+            var data = engineModel.getByIndex(selectedEngine);
             if (data) {
-                engineSlider.value = data.rpmpercent;
+                engineSlider.value = data.rpm_percent;
             }
         }
     }
@@ -419,7 +419,7 @@ Rectangle {
             Layout.fillHeight: true
 
             clip: true
-            model: enginesModel
+            model: engineModel
 
             delegate: Rectangle {
 
@@ -440,7 +440,7 @@ Rectangle {
                     }
 
                     Text {
-                        text: model.rpmpercent
+                        text: model.rpm_percent
                         Layout.preferredWidth: 80
                     }
                 }
@@ -476,7 +476,7 @@ Rectangle {
                 spacing: 10
 
                 Text {
-                    text: enginesModel.get(selectedEngine).name + " RPM: " + engineSlider.value + " %"
+                    text: engineModel.getByIndex(selectedEngine).name + " RPM: " + engineSlider.value + " %"
                     color: "white"
                     font.pixelSize: 14
                     font.family: "Roboto Mono"
@@ -493,9 +493,9 @@ Rectangle {
 
                     onMoved: {
                         if (enabled) {
-                            enginesModel.setData(enginesModel.index(selectedEngine, 0),
-                                                 value,
-                                                 EnginesModel.RPMPercentRole);
+                            engineModel.setData(engineModel.index(selectedEngine, 0),
+                                                value,
+                                                EngineModel.Rpm_percentRole);
                         }
                     }
                 }
