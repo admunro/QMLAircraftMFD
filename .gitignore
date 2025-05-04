@@ -84,3 +84,6 @@ CMakeLists.txt.user*
 
 # VS Code
 .vscode/
+
+# Auto-generated model files
+modelDefinitions/generated*

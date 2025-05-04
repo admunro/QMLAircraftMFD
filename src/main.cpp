@@ -5,7 +5,7 @@
 
 #include "entitymodel.h"
 #include "ownshipmodel.h"
-#include "fuelmodel.h"
+#include "fueltankmodel.h"
 
 
 int main(int argc, char *argv[])
@@ -23,23 +23,23 @@ int main(int argc, char *argv[])
                               &app);
 
 
-    FuelModel fuelModel(&app);
+    FuelTankModel fuelTankModel(&app);
 
-    fuelModel.addFuelTank("Front Fuselage",
-                          400,
-                          350);
+    fuelTankModel.add("Front Fuselage",
+                      400,
+                      350);
 
-    fuelModel.addFuelTank("Rear Fuselage",
-                          400,
-                          300);
+    fuelTankModel.add("Rear Fuselage",
+                      400,
+                      300);
 
-    fuelModel.addFuelTank("Port Wing",
-                          300,
-                          250);
+    fuelTankModel.add("Port Wing",
+                      300,
+                      250);
 
-    fuelModel.addFuelTank("Starboard Wing",
-                          300,
-                          200);
+    fuelTankModel.add("Starboard Wing",
+                      300,
+                      200);
 
 
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("entityModel", &entityModel);
     engine.rootContext()->setContextProperty("ownshipModel", &ownshipModel);
-    engine.rootContext()->setContextProperty("fuelModel", &fuelModel);
+    engine.rootContext()->setContextProperty("fuelTankModel", &fuelTankModel);
 
 
     engine.loadFromModule("AircraftMFD", "Cockpit");

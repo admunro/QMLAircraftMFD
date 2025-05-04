@@ -37,10 +37,10 @@ Rectangle {
     // Function to update fillLevel slider control based on selected fuel tank
     function updateFuelTanks() {
         if (selectedFuelTank >= 0) {
-            var data = fuelModel.get(selectedFuelTank);
+            var data = fuelTankModel.getByIndex(selectedFuelTank);
             if (data) {
-                fuelLevelSlider.to = data.capacity;
-                fuelLevelSlider.value = data.fillLevel;
+                fuelLevelSlider.to = data.capacity_kg;
+                fuelLevelSlider.value = data.fill_level_kg;
             }
         }
     }
@@ -267,7 +267,7 @@ Rectangle {
             Layout.fillHeight: true
 
             clip: true
-            model: fuelModel
+            model: fuelTankModel
 
             delegate: Rectangle {
 
@@ -292,13 +292,13 @@ Rectangle {
 
                     Text {
 
-                        text: model.capacity
+                        text: model.capacity_kg
                         Layout.preferredWidth: 80
                     }
 
                     Text {
 
-                        text: model.fillLevel
+                        text: model.fill_level_kg
                         Layout.preferredWidth: 80
                     }
                 }
@@ -335,7 +335,7 @@ Rectangle {
                 spacing: 10
 
                 Text {
-                    text: fuelModel.get(selectedFuelTank).name + " Fill Level: " + fuelLevelSlider.value + " kg"
+                    text: fuelTankModel.getByIndex(selectedFuelTank).name + " Fill Level: " + fuelLevelSlider.value + " kg"
                     color: "white"
                     font.pixelSize: 14
                     font.family: "Roboto Mono"
@@ -347,15 +347,15 @@ Rectangle {
                     Layout.fillWidth: true
 
                     from: 0
-                    to: fuelModel.get(selectedFuelTank).capacity
+                    to: fuelTankModel.getByIndex(selectedFuelTank).capacity_kg
                     stepSize: 1
                     enabled: selectedFuelTank >= 0
 
                     onMoved: {
                         if (enabled) {
-                            fuelModel.setData(fuelModel.index(selectedFuelTank, 0),
-                                              value,
-                                              FuelModel.FillLevelRole);
+                            fuelTankModel.setData(fuelTankModel.index(selectedFuelTank, 0),
+                                                  value,
+                                                  FuelTankModel.Fill_level_kgRole);
                         }
                     }
                 }

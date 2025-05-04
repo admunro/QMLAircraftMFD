@@ -276,7 +276,7 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append('')
     decrease_indent()
 
-    source_file.append(indent + 'auto& ' + instance_name + ' = ' + vector_name + '[index.row()]')
+    source_file.append(indent + 'auto& ' + instance_name + ' = ' + vector_name + '[index.row()];')
     source_file.append(indent + 'bool changed = false;')
     source_file.append('')
     source_file.append(indent + 'switch (role)')
@@ -289,10 +289,17 @@ def create_source_file(model, class_name, members, vector_name):
 
         source_file.append(indent + 'case ' + role_name + ':')
         increase_indent()
-        source_file.append(indent + 'if (value.to' + type_name + '() != ' + instance_name + '.' + member.attrib['name'] + ')')
-        source_file.append(indent + '{')
-        increase_indent()
-        source_file.append(indent + instance_name + '.' + member.attrib['name'] + ' = value.to' + type_name + '();')
+        if type_name == 'Qstring':
+            source_file.append(indent + 'if (value.toString() != ' + instance_name + '.' + member.attrib['name'] + ')')
+            source_file.append(indent + '{')
+            increase_indent()
+            source_file.append(indent + instance_name + '.' + member.attrib['name'] + ' = value.toString();')
+        else:
+            source_file.append(indent + 'if (value.to' + type_name + '() != ' + instance_name + '.' + member.attrib['name'] + ')')
+            source_file.append(indent + '{')
+            increase_indent()
+            source_file.append(indent + instance_name + '.' + member.attrib['name'] + ' = value.to' + type_name + '();')
+
         source_file.append(indent + 'changed = true;')
         decrease_indent()
         source_file.append(indent + '}')
@@ -350,7 +357,7 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append('')
     decrease_indent()
 
-    # addEntity
+    # add
     add_entity_header = 'void ' + class_name + '::add' + '('
     add_entity_indent = ' ' * len(add_entity_header)
     add_entity_members = parse_member_parameters(members)
@@ -370,7 +377,7 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append(indent + 'beginInsertRows(QModelIndex(), ' + vector_name + '.size()' + ', ' + vector_name + '.size());' )
     source_file.append('')
 
-    source_file.append(indent + simple_class_name + ' ' + instance_name + ';')
+    source_file.append(indent + instance_name + '_t ' + instance_name + ';')
     source_file.append('')
 
     for member in members:
@@ -395,7 +402,7 @@ def create_source_file(model, class_name, members, vector_name):
     source_file.append(indent + 'return QVariantMap();')
     decrease_indent()
     source_file.append('')
-    source_file.append(indent + 'const ' + simple_class_name + '& = ' + vector_name + '[row];')
+    source_file.append(indent + 'const auto& ' + instance_name + ' = ' + vector_name + '[row];')
     source_file.append('')
     source_file.append(indent + 'QVariantMap map;')
     source_file.append('')
