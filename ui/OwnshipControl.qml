@@ -11,6 +11,7 @@ Rectangle {
     color: "#292929"  // Dark background to match application style
 
     property int selectedFuelTank : fuelTanksListView.currentIndex
+    property int selectedEngine : enginesListView.currentIndex
 
     function updateHeading(headingDelta) {
 
@@ -41,6 +42,16 @@ Rectangle {
             if (data) {
                 fuelLevelSlider.to = data.capacity_kg;
                 fuelLevelSlider.value = data.fill_level_kg;
+            }
+        }
+    }
+
+
+    function updateEngines() {
+        if (selectedEngine >= 0){
+            var data = enginesModel.get(selectedEngine);
+            if (data) {
+                engineSlider.value = data.rpmpercent;
             }
         }
     }
@@ -363,12 +374,142 @@ Rectangle {
             }
         }
 
+
+        // Engines
+        Text {
+            Layout.alignment: Qt.AlignHCenter
+            text: "Engines"
+            color: "white"
+            font.pixelSize: 24
+            font.bold: true
+            font.family: "Roboto Mono"
+        }
+
+        Rectangle {
+            Layout.fillWidth: true
+            height: 40
+
+            color: 'gainsboro'
+
+            RowLayout {
+                anchors.fill: parent
+                anchors.margins: 10
+                spacing: 10
+
+                Text {
+                    text: "Name"
+                    font.bold: true
+                    Layout.preferredWidth: 30
+                }
+
+                Text {
+                    text: "RPM Percent"
+                    font.bold: true
+                    Layout.preferredWidth: 30
+                }
+            }
+        }
+
+
+        ListView {
+
+            id: enginesListView
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            clip: true
+            model: enginesModel
+
+            delegate: Rectangle {
+
+                width: enginesListView.width
+                height: 50
+
+                color: selectedEngine === index ? "darkgrey" : "dimgrey"
+                border.color: "#cccccc"
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    spacing: 10
+
+                    Text {
+                        text: model.name
+                        Layout.preferredWidth: 80
+                    }
+
+                    Text {
+                        text: model.rpmpercent
+                        Layout.preferredWidth: 80
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        enginesListView.currentIndex = index
+                        updateEngines()
+                    }
+                }
+            }
+
+            onCurrentIndexChanged: {
+                updateEngines();
+            }
+
+        }
+
+        // Engine Slider
+        Rectangle {
+            Layout.fillWidth: true
+            height: 120
+            color: "#3a3a3a"
+            border.color: "#5a5a5a"
+            border.width: 1
+            radius: 4
+
+            RowLayout {
+
+                anchors.fill: parent
+                anchors.margins: 10
+                spacing: 10
+
+                Text {
+                    text: enginesModel.get(selectedEngine).name + " RPM: " + engineSlider.value + " %"
+                    color: "white"
+                    font.pixelSize: 14
+                    font.family: "Roboto Mono"
+                }
+
+                Slider {
+                    id: engineSlider
+                    Layout.fillWidth: true
+
+                    from: 0
+                    to: 100
+                    stepSize: 1
+                    enabled: selectedEngine >= 0
+
+                    onMoved: {
+                        if (enabled) {
+                            enginesModel.setData(enginesModel.index(selectedEngine, 0),
+                                                 value,
+                                                 EnginesModel.RPMPercentRole);
+                        }
+                    }
+                }
+            }
+        }
+
     }
+
 
 
     // Initialize controls on component completion
     Component.onCompleted: {
         updateFuelTanks()
+        updateEngines()
     }
 
 }
