@@ -1,4 +1,5 @@
 #include "fuelmodel.h"
+#include <QDebug>
 
 FuelModel::FuelModel(QObject* parent):
         QAbstractListModel { parent }

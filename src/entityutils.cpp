@@ -1,4 +1,3 @@
-#include <numbers>
 #include <cmath>
 
 #include "entityutils.h"
@@ -11,14 +10,15 @@ namespace EntityUtils
                                         double speed_kts,
                                         double deltaTime_ms)
     {
+        constexpr double PI { 3.14159265358979323846 };
         constexpr double earthRadius_m { 6371000 };
         constexpr double knots_to_metres_per_second { 0.514444 };
 
-        double latRad = position.latitude() * std::numbers::pi / 180.0;
-        double lonRad = position.longitude() * std::numbers::pi / 180.0;
+        double latRad = position.latitude() * PI / 180.0;
+        double lonRad = position.longitude() * PI / 180.0;
 
 
-        double headingRad = heading_deg * std::numbers::pi / 180.0;
+        double headingRad = heading_deg * PI / 180.0;
 
         double speedMPS = speed_kts * knots_to_metres_per_second;
 
@@ -32,8 +32,8 @@ namespace EntityUtils
         double newLonRad = lonRad + atan2(sin(headingRad) * sin(distanceRad) * cos(latRad),
                                           cos(distanceRad) - sin(latRad) * sin(newLatRad));
 
-        double newLat = newLatRad * 180 / std::numbers::pi;
-        double newLon = newLonRad * 180 / std::numbers::pi;
+        double newLat = newLatRad * 180 / PI;
+        double newLon = newLonRad * 180 / PI;
 
         return QGeoCoordinate( newLat, newLon );
     }

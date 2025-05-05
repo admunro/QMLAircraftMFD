@@ -7,9 +7,6 @@ import AircraftMFD 1.0
 Rectangle {
     id: mapDisplay
 
-
-Rectangle {
-    id: mapDisplay
     color: 'dimGrey'
 
     property var pages: ["Zoom\nIn", "Zoom\nOut", "RTN\nPP", "TRK\nUp", "NTH\nUp"]
@@ -19,63 +16,6 @@ Rectangle {
         Track_Up
     }
 
-    property var mapOrientation: MapDisplay.MapOrientationType.Track_Up
-
-    property var presentPosition: QtPositioning.coordinate(48.7232, 11.5515) // Manching Airport
-    property real heading: 45 // Degrees 0 - 360
-    property real speed: 350 // knots
-
-    property bool centerOnPresentPosition: true
-
-    Timer {
-        id: positionTimer
-
-        interval: 20 // milliseconds
-        running: true
-        repeat: true
-
-        onTriggered: {
-
-            var newPosition = PositionCalculator.calculateNewPosition(
-                        mapDisplay.presentPosition.latitude,
-                        mapDisplay.presentPosition.longitude, mapDisplay.speed,
-                        mapDisplay.heading, interval / 1000)
-
-            mapDisplay.presentPosition = QtPositioning.coordinate(
-                        newPosition.latitude, newPosition.longitude)
-
-            if (mapDisplay.centerOnPresentPosition) {
-                map.center = mapDisplay.presentPosition
-            }
-        }
-    }
-
-    Plugin {
-        id: mapPlugin
-        name: 'osm'
-    }
-
-    function zoomIn() {
-        if (map.zoomLevel < 20) {
-            map.zoomLevel += 1
-        }
-    }
-
-    function zoomOut() {
-        if (map.zoomLevel > 6) {
-            map.zoomLevel -= 1
-        }
-    }
-
-    function selectTrackUp() {
-        mapDisplay.mapOrientation = MapDisplay.MapOrientationType.Track_Up
-    }
-
-    function selectNorthUp() {
-        mapDisplay.mapOrientation = MapDisplay.MapOrientationType.North_Up
-    }
-
-=======
     property int mapOrientation: MapDisplay.MapOrientationType.Track_Up
     property bool centerOnPresentPosition: true
 
@@ -109,7 +49,6 @@ Rectangle {
         mapDisplay.mapOrientation = MapDisplay.MapOrientationType.North_Up
     }
 
->>>>>>> origin/externalDataModel
     Rectangle {
         id: mapArea
 
@@ -128,10 +67,6 @@ Rectangle {
             width: parent.width
             height: parent.height
 
-<<<<<<< HEAD
-            plugin: mapPlugin
-            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? mapDisplay.heading : 0
-=======
             plugin: Plugin {
                 name: 'osm'
 
@@ -143,36 +78,11 @@ Rectangle {
             //activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
 
             bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? ownshipModel.heading_deg : 0
->>>>>>> origin/externalDataModel
 
             zoomLevel: 11
 
             copyrightsVisible: false
 
-<<<<<<< HEAD
-            Image {
-
-                id: ownshipImage
-
-                source: 'img/plane.png'
-
-                visible: mapDisplay.centerOnPresentPosition ? true : false
-
-                width: 30
-                height: 30
-
-                anchors.centerIn: parent
-
-                transform:
-
-                    Rotation {
-                        angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? mapDisplay.heading : 0
-                    }
-            }
-        }
-    }
-
-=======
 
             Connections {
                 target: ownshipModel
@@ -297,7 +207,6 @@ Rectangle {
         }
     }
 
->>>>>>> origin/externalDataModel
     Rectangle {
         id: bottomButtonArea
         color: 'transparent'
@@ -339,7 +248,6 @@ Rectangle {
                         color: 'white'
                         fontSizeMode: Text.Fit
                         font.family: "Roboto Mono"
-                        font.pixelSize: 12
                         font.bold: true
                     }
 
@@ -355,10 +263,6 @@ Rectangle {
                                 zoomOut()
                             } else if (index == 2) {
                                 mapDisplay.centerOnPresentPosition = true
-<<<<<<< HEAD
-                                map.center = mapDisplay.presentPosition
-=======
->>>>>>> origin/externalDataModel
                             } else if (index == 3) {
                                 selectTrackUp()
                             } else if (index == 4) {

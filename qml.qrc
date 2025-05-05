@@ -1,19 +1,26 @@
 <RCC>
     <qresource prefix="/">
-        <file>Main.qml</file>
-        <file>ui/StorePage.qml</file>
-        <file>ui/SensorPage.qml</file>
-        <file>ui/NavPage.qml</file>
-        <file>ui/MapDisplay.qml</file>
         <file>ui/AircraftMFD.qml</file>
-        <file>ui/HydPage.qml</file>
+        <file>ui/Cockpit.qml</file>
+        <file>ui/ControlWindow.qml</file>
         <file>ui/EnginePage.qml</file>
-        <file>ui/img/stores.png</file>
-        <file>ui/img/sensor.png</file>
-        <file>ui/img/nav.png</file>
-        <file>ui/img/hydraulics.png</file>
+        <file>ui/EntityControl.qml</file>
+        <file>ui/FuelPage.qml</file>
+        <file>ui/fuelWidgets/FuelTankDisplay.qml</file>
+        <file>ui/MapDisplay.qml</file>
+        <file>ui/NavPage.qml</file>
+        <file>ui/OwnshipControl.qml</file>
+        <file>ui/RadarPage.qml</file>
+        <file>ui/SensorPage.qml</file>
+        <file>ui/StorePage.qml</file>
+
         <file>ui/img/engines.png</file>
+        <file>ui/img/fighter-plane-basic.png</file>
+        <file>ui/img/fighter-plane.png</file>
+        <file>ui/img/hydraulics.png</file>
+        <file>ui/img/nav.png</file>
         <file>ui/img/plane.png</file>
-        <file>scripts/PositionCalculator.js</file>
+        <file>ui/img/sensor.png</file>
+        <file>ui/img/stores.png</file>
     </qresource>
 </RCC>

@@ -1,13 +1,12 @@
 #pragma once
 
 #include <QAbstractListModel>
-#include <QtQml/qqmlregistration.h>
+//#include <QtQml/qqmlregistration.h>
 
 
 class FuelModel : public QAbstractListModel
 {
     Q_OBJECT
-    QML_ELEMENT
 
 
 public:
@@ -26,7 +25,7 @@ public:
         NameRole
     };
 
-    Q_ENUM(FuelRoles);
+    Q_ENUMS(FuelRoles);
 
     explicit FuelModel(QObject* parent = nullptr);
 

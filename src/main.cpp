@@ -76,21 +76,23 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+    const QUrl url(QStringLiteral("qrc:/ui/AircraftMFD.qml"));
 
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
+
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+                         &app, [url](QObject *obj, const QUrl &objUrl) {
+            if (!obj && url == objUrl)
+                QCoreApplication::exit(-1);
+        }, Qt::QueuedConnection);
+        engine.load(url);
+
 
     engine.rootContext()->setContextProperty("entityModel", &entityModel);
     engine.rootContext()->setContextProperty("ownshipModel", &ownshipModel);
     engine.rootContext()->setContextProperty("fuelModel", &fuelModel);
 
-
-    engine.loadFromModule("AircraftMFD", "Cockpit");
-    engine.loadFromModule("AircraftMFD", "ControlWindow");
+    engine.load("qrc:/ui/AircraftMFD.qml");
+    engine.load("qrc:/ui/ControlWindow.qml");
 
     return app.exec();
 }

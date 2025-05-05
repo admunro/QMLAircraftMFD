@@ -3,15 +3,13 @@
 #include <QObject>
 #include <QGeoCoordinate>
 #include <QTimer>
-#include <QtQml/qqmlregistration.h>
+//#include <QtQml/qqmlregistration.h>
 
 
 
 class OwnshipModel : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
-    //QML_UNCREATABLE("OwnshipModel is created in C++ and should not be created directly in QML")
 
 public:
 

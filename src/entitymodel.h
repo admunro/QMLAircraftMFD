@@ -4,7 +4,7 @@
 #include <QGeoCoordinate>
 #include <QVector>
 #include <QTimer>
-#include <QtQml/qqmlregistration.h>
+//#include <QtQml/qqmlregistration.h>
 #include "entityutils.h"
 
 
@@ -14,7 +14,6 @@
 class EntityModel : public QAbstractListModel
 {
     Q_OBJECT
-    QML_ELEMENT
 
 
 
@@ -31,7 +30,7 @@ public:
         SpeedRole
     };
 
-    Q_ENUM(EntityRoles); // Expose this enum to QML
+    Q_ENUMS(EntityRoles); // Expose this enum to QML
 
 
     void updateEntities();
