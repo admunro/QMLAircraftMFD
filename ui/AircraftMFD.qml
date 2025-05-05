@@ -11,7 +11,7 @@ Rectangle {
         { name: "NAV",    source: "NavPage.qml",      color: "#203040" },
         { name: "STORE",  source: "StorePage.qml",    color: "#302030" },
         { name: "SNSR",   source: "SensorPage.qml",   color: "#203020" },
-        { name: "HYD",    source: "HydPage.qml",      color: "#303020" },
+        { name: "FUEL",   source: "FuelPage.qml",     color: "#303020" },
         { name: "ENG",    source: "EnginePage.qml",   color: "#302020" }
     ]
 
