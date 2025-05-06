@@ -76,23 +76,23 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    const QUrl url(QStringLiteral("qrc:/ui/AircraftMFD.qml"));
+    qmlRegisterType<EntityModel>("AircraftMFD", 1, 0, "EntityModel");
+    qmlRegisterType<OwnshipModel>("AircraftMFD", 1, 0, "OwnshipModel");
+    qmlRegisterType<FuelModel>("AircraftMFD", 1, 0, "FuelModel");
 
 
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                         &app, [url](QObject *obj, const QUrl &objUrl) {
-            if (!obj && url == objUrl)
-                QCoreApplication::exit(-1);
-        }, Qt::QueuedConnection);
-        engine.load(url);
-
-
+    // Set context properties before loading QML
     engine.rootContext()->setContextProperty("entityModel", &entityModel);
     engine.rootContext()->setContextProperty("ownshipModel", &ownshipModel);
     engine.rootContext()->setContextProperty("fuelModel", &fuelModel);
 
-    engine.load("qrc:/ui/AircraftMFD.qml");
-    engine.load("qrc:/ui/ControlWindow.qml");
+    // Load the main window
+    engine.load(QUrl(QStringLiteral("qrc:/ui/AircraftMFD.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/ui/ControlWindow.qml")));
+
+    // Check for errors
+    if (engine.rootObjects().isEmpty())
+        return -1;
 
     return app.exec();
 }
