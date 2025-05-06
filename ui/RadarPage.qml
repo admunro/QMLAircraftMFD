@@ -170,7 +170,7 @@ Rectangle {
                     // Draw range label
                     var rangeMark = (radarRange / numRings * i).toFixed(0);
                     ctx.fillStyle = "white";
-                    //ctx.font = "10px Roboto Mono";
+                    //ctx.font = "10px Courier New";
                     ctx.fillText(rangeMark + " NM", centerX + 5, centerY - radius + 15);
                 }
 
@@ -190,7 +190,7 @@ Rectangle {
                     // Draw bearing label
                     var bearing = (360 + 270 + angle) % 360;
                     ctx.fillStyle = "white";
-                    //ctx.font = "10px Roboto Mono";
+                    //ctx.font = "10px Courier New";
 
                     // Position the text a bit away from the edge
                     var textRadius = maxRadius * 1.02;
@@ -297,13 +297,13 @@ Rectangle {
                 // Draw stabilization indicator if enabled
                 if (stabilizationEnabled) {
                     ctx.fillStyle = "lime";
-                    //ctx.font = "bold 12px Roboto Mono";
+                    //ctx.font = "bold 12px Courier New";
                     ctx.fillText("STAB", 10, 20);
                 }
 
                 // Draw tilt indicator
                 ctx.fillStyle = "white";
-                //ctx.font = "12px Roboto Mono";
+                //ctx.font = "12px Courier New";
                 ctx.fillText("TILT: " + radarTilt + "°", 10, h - 10);
             }
         }
@@ -351,7 +351,7 @@ Rectangle {
                     color: "white"
                     font.pixelSize: 12
                     font.bold: true
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
@@ -366,35 +366,35 @@ Rectangle {
                     text: "GAIN: " + (radarGain * 100).toFixed(0) + "%"
                     color: "white"
                     font.pixelSize: 12
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
                 Text {
                     text: "BRT: " + (brightness * 100).toFixed(0) + "%"
                     color: "white"
                     font.pixelSize: 12
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
                 Text {
                     text: "SCAN: " + scanWidth + "°"
                     color: "white"
                     font.pixelSize: 12
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
                 Text {
                     text: "STAB: " + (stabilizationEnabled ? "ON" : "OFF")
                     color: stabilizationEnabled ? "lime" : "white"
                     font.pixelSize: 12
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
                 Text {
                     text: "MODE: " + scanModes[scanMode]
                     color: "white"
                     font.pixelSize: 12
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
             }
         }
@@ -422,7 +422,7 @@ Rectangle {
                 color: "white"
                 font.pixelSize: 12
                 width: parent.width / 4
-                font.family: "Roboto Mono"
+                font.family: "Courier New"
             }
 
             Text {
@@ -430,7 +430,7 @@ Rectangle {
                 color: "white"
                 font.pixelSize: 12
                 width: parent.width / 4
-                font.family: "Roboto Mono"
+                font.family: "Courier New"
             }
 
             Text {
@@ -438,7 +438,7 @@ Rectangle {
                 color: "white"
                 font.pixelSize: 12
                 width: parent.width / 4
-                font.family: "Roboto Mono"
+                font.family: "Courier New"
             }
 
             Text {
@@ -446,7 +446,7 @@ Rectangle {
                 color: "white"
                 font.pixelSize: 12
                 width: parent.width / 4
-                font.family: "Roboto Mono"
+                font.family: "Courier New"
             }
         }
     }
@@ -461,6 +461,6 @@ Rectangle {
         color: "white"
         font.pixelSize: 18
         font.bold: true
-        font.family: "Roboto Mono"
+        font.family: "Courier New"
     }
 }

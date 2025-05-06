@@ -72,7 +72,7 @@ Rectangle {
 
             }
 
-            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? ownshipModel.heading_deg : 0
+            bearing: mapDisplay.mapOrientation === MapDisplay.MapOrientationType.Track_Up ? ownshipModel.heading_deg : 0
 
             zoomLevel: 11
 
@@ -82,12 +82,23 @@ Rectangle {
             Connections {
                 target: ownshipModel
 
-                function onPositionChanged() {
+                onPositionChanged: {
                     if (mapDisplay.centerOnPresentPosition) {
                         map.center = ownshipModel.position;
                     }
                 }
             }
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton  // Don't intercept regular mouse clicks
+                onWheel: {
+                    // Ignore the wheel event to prevent zooming
+                    wheel.accepted = true
+                }
+                z: 1  // Make sure it's above other MouseAreas
+            }
+
 
             MouseArea {
                 id: dragArea
@@ -96,6 +107,7 @@ Rectangle {
                 
                 onPressed: {
                     lastPos = Qt.point(mouse.x, mouse.y)
+                    mapDisplay.centerOnPresentPosition = false
                 }
                 
                 onPositionChanged: {
@@ -103,7 +115,7 @@ Rectangle {
                         var delta = Qt.point(mouse.x - lastPos.x, mouse.y - lastPos.y)
                         map.pan(-delta.x, -delta.y)
                         lastPos = Qt.point(mouse.x, mouse.y)
-                        mapDisplay.centerOnPresentPosition = false
+
                     }
                 }
             }
@@ -252,7 +264,7 @@ Rectangle {
                         text: mapDisplay.pages[index]
                         color: 'white'
                         fontSizeMode: Text.Fit
-                        font.family: "Roboto Mono"
+                        font.family: "Courier New"
                         font.bold: true
                     }
 

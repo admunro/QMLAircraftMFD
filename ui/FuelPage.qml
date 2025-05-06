@@ -41,7 +41,7 @@ Rectangle
         target: fuelModel
 
         // This will be triggered whenever data in the model changes
-        function onDataChanged() {
+        onDataChanged: {
 
             frontFuseFillLevel = fuelModel.get("Front Fuselage").fillLevel
             frontFusePercent = frontFuseFillLevel / fuelModel.get("Front Fuselage").capacity * 100

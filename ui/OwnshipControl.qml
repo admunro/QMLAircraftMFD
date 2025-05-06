@@ -57,7 +57,7 @@ Rectangle {
             color: "white"
             font.pixelSize: 24
             font.bold: true
-            font.family: "Roboto Mono"
+            font.family: "Courier New"
         }
 
         // Current Position Display
@@ -78,14 +78,14 @@ Rectangle {
                     text: "Current Position:"
                     color: "white"
                     font.pixelSize: 14
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
                 Text {
                     text: "Lat: " + ownshipModel.position.latitude.toFixed(6) + " Lon: " + ownshipModel.position.longitude.toFixed(6)
                     color: "#00ff00"  // Green for coordinates
                     font.pixelSize: 16
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                     font.bold: true
                 }
             }
@@ -111,7 +111,7 @@ Rectangle {
                     text: "Heading: " + ownshipHeadingSlider.value.toFixed(0) + "°"
                     color: "white"
                     font.pixelSize: 14
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
                 Slider {
@@ -174,7 +174,7 @@ Rectangle {
                     text: "Speed: " + ownshipSpeedSlider.value.toFixed(0) + " kts"
                     color: "white"
                     font.pixelSize: 14
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
                 Slider {
@@ -223,7 +223,7 @@ Rectangle {
             color: "white"
             font.pixelSize: 24
             font.bold: true
-            font.family: "Roboto Mono"
+            font.family: "Courier New"
         }
 
         Rectangle {
@@ -338,7 +338,7 @@ Rectangle {
                     text: fuelModel.get(selectedFuelTank).name + " Fill Level: " + fuelLevelSlider.value + " kg"
                     color: "white"
                     font.pixelSize: 14
-                    font.family: "Roboto Mono"
+                    font.family: "Courier New"
                 }
 
 
