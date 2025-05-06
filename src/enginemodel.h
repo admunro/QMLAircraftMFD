@@ -1,136 +1,44 @@
-#include "enginemodel.h"
+#pragma once
 
-EngineModel::EngineModel(QObject* parent)
-		: QAbstractListModel {parent}
+#include <QAbstractListModel>
+
+class EngineModel : public QAbstractListModel
 {
-}
+    Q_OBJECT
 
-int EngineModel::rowCount(const QModelIndex& parent) const
-{
-	if (parent.isValid())
-		return 0;
+public:
 
-	return m_engines.count();
-}
+    struct engine_t
+    {
+        QString name;
+        int rpm_percent { 0 };
+    };
 
-QVariant EngineModel::data(const QModelIndex& index, int role) const
-{
-	if (!index.isValid() || index.row() >= m_engines.size())
-		return QVariant();
+    enum EngineModelRoles
+    {
+        NameRole = Qt::UserRole + 1,
+        Rpm_percentRole
+    };
 
-	const auto& engine = m_engines[index.row()];
+    Q_ENUMS(EngineModelRoles);
 
-	switch (role)
-	{
-		case NameRole:
-			return engine.name;
-		case Rpm_percentRole:
-			return engine.rpm_percent;
-		default:
-			return QVariant();
-	}
-}
+    explicit EngineModel(QObject* parent = nullptr);
 
-bool EngineModel::setData(const QModelIndex& index, const QVariant& value, int role)
-{
-	if (!index.isValid() || index.row() >= m_engines.size())
-		return false;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role) override;
+    QHash<int, QByteArray> roleNames() const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
 
-	auto& engine = m_engines[index.row()];
-	bool changed = false;
+    Q_INVOKABLE void add(const QString& name,
+                         int rpm_percent);
 
-	switch (role)
-	{
-	case NameRole:
-		if (value.toString() != engine.name)
-		{
-			engine.name = value.toString();
-			changed = true;
-		}
-		break;
+    Q_INVOKABLE QVariantMap getByIndex(int row) const;
+    Q_INVOKABLE QVariantMap getByName(const QString& name) const;
 
-	case Rpm_percentRole:
-		if (value.toInt() != engine.rpm_percent)
-		{
-			engine.rpm_percent = value.toInt();
-			changed = true;
-		}
-		break;
 
-	default:
-		return false;
-	}
+private:
 
-	if (changed)
-	{
-		emit dataChanged(index, index);
-		return true;
-	}
+    QVector<engine_t> m_engines;
 
-	return false;
-
-}
-
-QHash<int, QByteArray> EngineModel::roleNames() const
-{
-	QHash<int, QByteArray> roles;
-	roles[NameRole] = "name";
-	roles[Rpm_percentRole] = "rpm_percent";
-
-	return roles;
-}
-
-Qt::ItemFlags EngineModel::flags(const QModelIndex& index) const
-{
-	if (!index.isValid())
-		return Qt::NoItemFlags;
-
-	return Qt::ItemIsEditable | QAbstractListModel::flags(index);
-}
-
-void EngineModel::add(const QString& name,
-                      int rpm_percent)
-{
-	beginInsertRows(QModelIndex(), m_engines.size(), m_engines.size());
-
-	engine_t engine;
-
-	engine.name = name;
-	engine.rpm_percent = rpm_percent;
-	m_engines.append(engine);
-
-	endInsertRows();
-}
-
-QVariantMap EngineModel::getByIndex(int row) const
-{
-	if (row < 0 || row >= m_engines.size())
-		return QVariantMap();
-
-	const auto& engine = m_engines[row];
-
-	QVariantMap map;
-
-	map["name"] = engine.name;
-	map["rpm_percent"] = engine.rpm_percent;
-
-	return map;
-}
-
-QVariantMap EngineModel::getByName(const QString& name) const
-{
-	for (const auto& engine: m_engines)
-	{
-		if (engine.name == name)
-		{
-			QVariantMap map;
-
-			map["name"] = engine.name;
-			map["rpm_percent"] = engine.rpm_percent;
-
-			return map;
-		}
-	}
-
-	return QVariantMap();
-}
+};

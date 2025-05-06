@@ -19,7 +19,7 @@ Rectangle
     Connections {
         target: engineModel
 
-        function onDataChanged() {
+        onDataChanged: {
             portEngineRPM = engineModel.getByIndex(0).rpm_percent;
             starboardEngineRPM = engineModel.getByIndex(1).rpm_percent
         }
@@ -101,7 +101,7 @@ Rectangle
             font.family: "Courier New"
 
 
-            text: "Port Engine\n" + portEngineRPM.toFixed(0) + " %"
+            text: "Port\nEngine " + portEngineRPM.toFixed(0) + " %"
 
         }
     }
@@ -130,9 +130,9 @@ Rectangle
             color: "white"
             font.pixelSize: 16
             font.bold: true
-            font.family: "Roboto Mono"
+            font.family: "Courier New"
 
-            text: "Starboard Engine\n" + starboardEngineRPM.toFixed(0) + " %"
+            text: "Starboard\nEngine " + starboardEngineRPM.toFixed(0) + " %"
 
         }
     }

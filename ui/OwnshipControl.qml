@@ -119,7 +119,6 @@ Rectangle {
                     value: ownshipControls.ownship.heading_deg
 
                     onMoved: {
-                        // Direct property assignment
                         ownshipControls.ownship.heading_deg = value;
                     }
                 }
@@ -294,7 +293,7 @@ Rectangle {
             font.family: "Roboto Mono"
         }
 
-
+       
         ListView {
 
             id: enginesListView
@@ -313,33 +312,33 @@ Rectangle {
                 color: "dimgrey"
                 border.color: "#cccccc"
 
-            RowLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                spacing: 10
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    spacing: 10
 
-                Text {
-                    text: model.name
+                    Text {
+                        text: model.name
                         Layout.preferredWidth: 120
-                }
+                    }
 
-                Text {
-                    text: 'RPM %: ' + model.rpm_percent
-                    Layout.preferredWidth: 120
-                }
+                    Text {
+                        text: 'RPM %: ' + model.rpm_percent
+                        Layout.preferredWidth: 120
+                    }
 
-                Slider {
-                    Layout.fillWidth: true
+                    Slider {
+                        Layout.fillWidth: true
 
-                    from: 0
-                    to: 100
-                    stepSize: 1
-                    enabled: true
-                    value: engines.getByIndex(index).rpm_percent
+                        from: 0
+                        to: 100
+                        stepSize: 1
+                        enabled: true
+                        value: engines.getByIndex(index).rpm_percent
 
-                    onMoved: {
+                        onMoved: {
 
-                        engines.setData(engines.index(index, 0),
+                                engines.setData(engines.index(index, 0),
                                                 value,
                                                 EngineModel.Rpm_percentRole);
 
@@ -353,4 +352,4 @@ Rectangle {
             }
         }
     }
- }
+}

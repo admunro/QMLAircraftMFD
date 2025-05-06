@@ -19,17 +19,17 @@ Rectangle
     property int wingTankSideMargin: 10
 
 
-    property real frontFuseFillLevel: fuelModel.get("Front Fuselage").fillLevel
-    property real frontFusePercent: frontFuseFillLevel / fuelModel.get("Front Fuselage").capacity * 100
+    property real frontFuseFillLevel: fuelTankModel.getByName("Front Fuselage").fill_level_kg
+    property real frontFusePercent: frontFuseFillLevel / fuelTankModel.getByName("Front Fuselage").capacity_kg * 100
 
-    property real rearFuseFillLevel: fuelModel.get("Rear Fuselage").fillLevel
-    property real rearFusePercent: rearFuseFillLevel / fuelModel.get("Rear Fuselage").capacity * 100
+    property real rearFuseFillLevel: fuelTankModel.getByName("Rear Fuselage").fill_level_kg
+    property real rearFusePercent: rearFuseFillLevel / fuelTankModel.getByName("Rear Fuselage").capacity_kg * 100
 
-    property real portWingFillLevel: fuelModel.get("Port Wing").fillLevel
-    property real portWingPercent: portWingFillLevel / fuelModel.get("Port Wing").capacity * 100
+    property real portWingFillLevel: fuelTankModel.getByName("Port Wing").fill_level_kg
+    property real portWingPercent: portWingFillLevel / fuelTankModel.getByName("Port Wing").capacity_kg * 100
 
-    property real starboardWingFillLevel: fuelModel.get("Starboard Wing").fillLevel
-    property real starboardWingPercent: starboardWingFillLevel / fuelModel.get("Starboard Wing").capacity * 100
+    property real starboardWingFillLevel: fuelTankModel.getByName("Starboard Wing").fill_level_kg
+    property real starboardWingPercent: starboardWingFillLevel / fuelTankModel.getByName("Starboard Wing").capacity_kg * 100
 
     property real totalFuel: frontFuseFillLevel + rearFuseFillLevel + portWingFillLevel + starboardWingFillLevel
 
@@ -38,22 +38,22 @@ Rectangle
 
     // Add connection to the fuelModel to listen for changes
     Connections {
-        target: fuelModel
+        target: fuelTankModel
 
         // This will be triggered whenever data in the model changes
         onDataChanged: {
 
-            frontFuseFillLevel = fuelModel.get("Front Fuselage").fillLevel
-            frontFusePercent = frontFuseFillLevel / fuelModel.get("Front Fuselage").capacity * 100
+            frontFuseFillLevel = fuelTankModel.getByName("Front Fuselage").fill_level_kg
+            frontFusePercent = frontFuseFillLevel / fuelTankModel.getByName("Front Fuselage").capacity_kg * 100
 
-            rearFuseFillLevel = fuelModel.get("Rear Fuselage").fillLevel
-            rearFusePercent = rearFuseFillLevel / fuelModel.get("Rear Fuselage").capacity * 100
+            rearFuseFillLevel = fuelTankModel.getByName("Rear Fuselage").fill_level_kg
+            rearFusePercent = rearFuseFillLevel / fuelTankModel.getByName("Rear Fuselage").capacity_kg * 100
 
-            portWingFillLevel = fuelModel.get("Port Wing").fillLevel
-            portWingPercent = portWingFillLevel / fuelModel.get("Port Wing").capacity * 100
+            portWingFillLevel = fuelTankModel.getByName("Port Wing").fill_level_kg
+            portWingPercent = portWingFillLevel / fuelTankModel.getByName("Port Wing").capacity_kg * 100
 
-            starboardWingFillLevel = fuelModel.get("Starboard Wing").fillLevel
-            starboardWingPercent = starboardWingFillLevel / fuelModel.get("Starboard Wing").capacity * 100
+            starboardWingFillLevel = fuelTankModel.getByName("Starboard Wing").fill_level_kg
+            starboardWingPercent = starboardWingFillLevel / fuelTankModel.getByName("Starboard Wing").capacity_kg * 100
 
             totalFuel = frontFuseFillLevel + rearFuseFillLevel + portWingFillLevel + starboardWingFillLevel
 
@@ -67,10 +67,10 @@ Rectangle
 
     function calculateFuelTankPercentage(tankName) {
 
-        var tank = fuelModel.get(tankName)
+        var tank = fuelTankModel.getByName(tankName)
 
-        var capacity = tank.capacity
-        var fillLevel = tank.fillLevel
+        var capacity = tank.capacity_kg
+        var fillLevel = tank.fill_level_kg
 
         return fillLevel / capacity * 100
     }

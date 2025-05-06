@@ -3,7 +3,6 @@
 #include <QObject>
 #include <QGeoCoordinate>
 #include <QTimer>
-//#include <QtQml/qqmlregistration.h>
 
 
 

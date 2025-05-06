@@ -4,7 +4,6 @@
 #include <QGeoCoordinate>
 #include <QVector>
 #include <QTimer>
-//#include <QtQml/qqmlregistration.h>
 #include "entityutils.h"
 
 
