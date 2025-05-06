@@ -1,6 +1,7 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+*.ini
 *~
 *.autosave
 *.a
@@ -80,3 +81,9 @@ CMakeLists.txt.user*
 .rcc/
 .uic/
 /build*/
+
+# VS Code
+.vscode/
+
+# Auto-generated model files
+modelDefinitions/generated*

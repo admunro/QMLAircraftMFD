@@ -5,6 +5,7 @@
 
 #include "entitymodel.h"
 #include "ownshipmodel.h"
+#include "enginemodel.h"
 #include "fuelmodel.h"
 
 
@@ -72,6 +73,10 @@ int main(int argc, char *argv[])
                           300.0,
                           180.0);
 
+    EngineModel engineModel(&app);
+
+    engineModel.add("Port Engine", 50);
+    engineModel.add("Starboard Engine", 45);
 
 
     QQmlApplicationEngine engine;
@@ -85,7 +90,9 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("entityModel", &entityModel);
     engine.rootContext()->setContextProperty("ownshipModel", &ownshipModel);
     engine.rootContext()->setContextProperty("fuelModel", &fuelModel);
+    engine.rootContext()->setContextProperty("engineModel", &engineModel);
 
+    
     // Load the main window
     engine.load(QUrl(QStringLiteral("qrc:/ui/Cockpit.qml")));
     engine.load(QUrl(QStringLiteral("qrc:/ui/ControlWindow.qml")));

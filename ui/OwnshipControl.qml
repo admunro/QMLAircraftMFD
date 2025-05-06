@@ -11,39 +11,35 @@ Rectangle {
     color: "#292929"  // Dark background to match application style
 
     property int selectedFuelTank : fuelTanksListView.currentIndex
+    property int selectedEngine : enginesListView.currentIndex
 
+    property var ownship : ownshipModel
+    property var fueltanks : fuelTankModel
+    property var engines : engineModel
+    
+    
     function updateHeading(headingDelta) {
 
-        var newHeading = ownshipModel.heading_deg + headingDelta;
+        var newHeading = ownship.heading_deg + headingDelta;
         if (newHeading < 0) newHeading += 360;
         if (newHeading > 360) newHeading -= 360;
 
-        ownshipModel.heading_deg = newHeading;
+        ownship.heading_deg = newHeading;
         ownshipHeadingSlider.value = newHeading;
 
     }
 
     function updateSpeed(speedDelta) {
 
-        var newSpeed = ownshipModel.speed_kts + speedDelta;
+        var newSpeed = ownship.speed_kts + speedDelta;
 
         if (newSpeed < 0) newSpeed = 0
-        if (newSpeed > 360) newSpeed = 360
+        if (newSpeed > 1000) newSpeed = 1000
 
-        ownshipModel.speed_kts = newSpeed;
+        ownship.speed_kts = newSpeed;
         ownshipSpeedSlider.value = newSpeed;
     }
 
-    // Function to update fillLevel slider control based on selected fuel tank
-    function updateFuelTanks() {
-        if (selectedFuelTank >= 0) {
-            var data = fuelModel.get(selectedFuelTank);
-            if (data) {
-                fuelLevelSlider.to = data.capacity;
-                fuelLevelSlider.value = data.fillLevel;
-            }
-        }
-    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -82,7 +78,7 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Lat: " + ownshipModel.position.latitude.toFixed(6) + " Lon: " + ownshipModel.position.longitude.toFixed(6)
+                    text: "Lat: " + ownshipControls.ownship.position.latitude.toFixed(6) + " Lon: " + ownshipControls.ownship.position.longitude.toFixed(6)
                     color: "#00ff00"  // Green for coordinates
                     font.pixelSize: 16
                     font.family: "Courier New"
@@ -120,11 +116,11 @@ Rectangle {
                     from: 0
                     to: 359
                     stepSize: 1
-                    value: ownshipModel.heading_deg
+                    value: ownshipControls.ownship.heading_deg
 
                     onMoved: {
                         // Direct property assignment
-                        ownshipModel.heading_deg = value;
+                        ownshipControls.ownship.heading_deg = value;
                     }
                 }
 
@@ -136,7 +132,7 @@ Rectangle {
                         height: 30
                         text: "-5°"
                         onClicked: {
-                            updateHeading(-5)
+                            ownshipControls.updateHeading(-5)
                         }
                     }
 
@@ -145,7 +141,7 @@ Rectangle {
                         height: 30
                         text: "+5°"
                         onClicked: {
-                            updateHeading(+5)
+                            ownshipControls.updateHeading(+5)
                         }
                     }
                 }
@@ -161,9 +157,6 @@ Rectangle {
             border.color: "#5a5a5a"
             border.width: 1
             radius: 4
-
-
-
 
             RowLayout {
                 anchors.fill: parent
@@ -183,11 +176,11 @@ Rectangle {
                     from: 0
                     to: 1000
                     stepSize: 10
-                    value: ownshipModel.speed_kts
+                    value: ownshipControls.ownship.speed_kts
 
                     onMoved: {
                         // Direct property assignment
-                        ownshipModel.speed_kts = value;
+                        ownshipControls.ownship.speed_kts = value;
                     }
                 }
 
@@ -199,7 +192,7 @@ Rectangle {
                         height: 30
                         text: "-50"
                         onClicked: {
-                            updateSpeed(-50)
+                            ownshipControls.updateSpeed(-50)
                         }
                     }
 
@@ -208,7 +201,7 @@ Rectangle {
                         height: 30
                         text: "+50"
                         onClicked: {
-                            updateSpeed(50)
+                            ownshipControls.updateSpeed(50)
                         }
                     }
                 }
@@ -226,39 +219,6 @@ Rectangle {
             font.family: "Courier New"
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            height: 40
-
-            color: 'gainsboro'
-
-            RowLayout {
-                anchors.fill: parent
-                anchors.margins: 10
-                spacing: 10
-
-                Text {
-                    text: "Name"
-                    font.bold: true
-                    Layout.preferredWidth: 30
-                }
-
-                Text {
-                    text: "Capacity (kg)"
-                    font.bold: true
-                    Layout.preferredWidth: 30
-                }
-
-                Text {
-                    text: "Fill Level (kg)"
-                    font.bold: true
-                    Layout.preferredWidth: 30
-                }
-
-            }
-
-        }
-
         ListView {
 
             id: fuelTanksListView
@@ -267,14 +227,14 @@ Rectangle {
             Layout.fillHeight: true
 
             clip: true
-            model: fuelModel
+            model: ownshipControls.fueltanks
 
             delegate: Rectangle {
 
                 width: fuelTanksListView.width
                 height: 50
 
-                color: selectedFuelTank === index ? "darkgrey" : "dimgrey"
+                color: "dimgrey"
                 border.color: "#cccccc"
 
                 RowLayout {
@@ -282,7 +242,6 @@ Rectangle {
                     anchors.fill: parent
                     anchors.margins: 10
                     spacing: 10
-
 
                     Text {
 
@@ -292,83 +251,106 @@ Rectangle {
 
                     Text {
 
-                        text: model.capacity
+                        text: 'Capacity: ' + model.capacity_kg + ' kg'
                         Layout.preferredWidth: 80
                     }
 
                     Text {
 
-                        text: model.fillLevel
+                        text: 'Fill Level: ' + model.fill_level_kg + ' kg'
                         Layout.preferredWidth: 80
                     }
-                }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        fuelTanksListView.currentIndex = index
-                        updateFuelTanks()
+                    Slider {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        
+                        from: 0
+                        to: fueltanks.getByIndex(index).capacity_kg
+                        stepSize: 1
+                        value: fueltanks.getByIndex(index).fill_level_kg
+                        enabled: true
 
+                        onMoved: {
+                            
+                             fueltanks.setData(fueltanks.index(index, 0),
+                                               value,
+                                               FuelTankModel.Fill_level_kgRole);
+                            
+                        }
                     }
                 }
-            }
-
-            // Also update controls when the current index changes programmatically
-            onCurrentIndexChanged: {
-                updateFuelTanks()
             }
         }
 
-        // Fuel Tank Slider
-        Rectangle {
+
+        // Engines
+        Text {
+            Layout.alignment: Qt.AlignHCenter
+            text: "Engines"
+            color: "white"
+            font.pixelSize: 24
+            font.bold: true
+            font.family: "Roboto Mono"
+        }
+
+
+        ListView {
+
+            id: enginesListView
+
             Layout.fillWidth: true
-            height: 120
-            color: "#3a3a3a"
-            border.color: "#5a5a5a"
-            border.width: 1
-            radius: 4
+            Layout.fillHeight: true
+
+            clip: true
+            model: engineModel
+
+            delegate: Rectangle {
+
+                width: enginesListView.width
+                height: 50
+
+                color: "dimgrey"
+                border.color: "#cccccc"
 
             RowLayout {
-
                 anchors.fill: parent
                 anchors.margins: 10
                 spacing: 10
 
                 Text {
-                    text: fuelModel.get(selectedFuelTank).name + " Fill Level: " + fuelLevelSlider.value + " kg"
-                    color: "white"
-                    font.pixelSize: 14
-                    font.family: "Courier New"
+                    text: model.name
+                        Layout.preferredWidth: 120
                 }
 
+                Text {
+                    text: 'RPM %: ' + model.rpm_percent
+                    Layout.preferredWidth: 120
+                }
 
                 Slider {
-                    id: fuelLevelSlider
                     Layout.fillWidth: true
 
                     from: 0
-                    to: fuelModel.get(selectedFuelTank).capacity
+                    to: 100
                     stepSize: 1
-                    enabled: selectedFuelTank >= 0
+                    enabled: true
+                    value: engines.getByIndex(index).rpm_percent
 
                     onMoved: {
-                        if (enabled) {
-                            fuelModel.setData(fuelModel.index(selectedFuelTank, 0),
-                                              value,
-                                              FuelModel.FillLevelRole);
+
+                        engines.setData(engines.index(index, 0),
+                                                value,
+                                                EngineModel.Rpm_percentRole);
+
                         }
                     }
                 }
+            }
 
+            onCurrentIndexChanged: {
+                ownshipControls.updateEngines();
             }
         }
-
     }
-
-
-    // Initialize controls on component completion
-    Component.onCompleted: {
-        updateFuelTanks()
-    }
-
-}
+ }
