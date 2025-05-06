@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("fuelModel", &fuelModel);
 
     // Load the main window
-    engine.load(QUrl(QStringLiteral("qrc:/ui/AircraftMFD.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/ui/Cockpit.qml")));
     engine.load(QUrl(QStringLiteral("qrc:/ui/ControlWindow.qml")));
 
     // Check for errors
