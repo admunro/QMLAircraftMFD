@@ -70,12 +70,7 @@ Rectangle {
             plugin: Plugin {
                 name: 'osm'
 
-                // PluginParameter { name: "osm.mapping.custom.host";
-                //                   value: "https://a.tile.opentopomap.org/${z}/${x}/${y}.png" }
-
             }
-
-            //activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
 
             bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? ownshipModel.heading_deg : 0
 
@@ -94,12 +89,22 @@ Rectangle {
                 }
             }
 
-            DragHandler {
-                id: drag
-                target: null
-                onTranslationChanged: function(delta) {
-                    map.pan(-delta.x, -delta.y)
-                    mapDisplay.centerOnPresentPosition = false
+            MouseArea {
+                id: dragArea
+                anchors.fill: parent
+                property point lastPos
+                
+                onPressed: {
+                    lastPos = Qt.point(mouse.x, mouse.y)
+                }
+                
+                onPositionChanged: {
+                    if (pressed) {
+                        var delta = Qt.point(mouse.x - lastPos.x, mouse.y - lastPos.y)
+                        map.pan(-delta.x, -delta.y)
+                        lastPos = Qt.point(mouse.x, mouse.y)
+                        mapDisplay.centerOnPresentPosition = false
+                    }
                 }
             }
 
