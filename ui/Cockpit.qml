@@ -20,6 +20,9 @@ Window {
         width: parent.width / 3.5    // 800 pixels when window is 2800 wide
         height: parent.height
 
+        anchors.centerIn: undefined
+        anchors.margins: { top: 0; bottom: 0; left: 0; right: 0 }
+
         anchors.left: parent.left
     }
 
@@ -33,6 +36,9 @@ Window {
         anchors.left: leftMFD.right
         anchors.right: rightMFD.left
 
+        anchors.centerIn: undefined
+        anchors.margins: { top: 0; bottom: 0; left: 0; right: 0 }
+
         anchors.top: parent.top
         anchors.bottom: parent.bottom
     }
@@ -43,6 +49,9 @@ Window {
 
         width: parent.width / 3.5  // 800 pixels when window is 2800 wide
         height: parent.height
+
+        anchors.centerIn: undefined
+        anchors.margins: { top: 0; bottom: 0; left: 0; right: 0 }
 
         anchors.right: parent.right
 

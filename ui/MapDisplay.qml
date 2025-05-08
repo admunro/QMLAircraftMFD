@@ -11,6 +11,14 @@ Rectangle {
 
     property var pages: ["Zoom\nIn", "Zoom\nOut", "RTN\nPP", "TRK\nUp", "NTH\nUp"]
 
+
+    width: 800
+    height: width / 2
+
+
+    anchors.centerIn: parent
+    anchors.margins: { top: 40; bottom: 5; left: 5; right: 5 }
+
     enum MapOrientationType {
         North_Up,
         Track_Up

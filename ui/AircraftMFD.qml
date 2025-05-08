@@ -11,14 +11,8 @@ Rectangle {
     width: 400
     height: 400
 
-    anchors.top: parent.top;
-    anchors.bottom: parent.bottom;
-    anchors.right: parent.right;
-    anchors.left: parent.left;
-    anchors.topMargin: 40
-    anchors.leftMargin: 5
-    anchors.rightMargin: 5
-    anchors.bottomMargin: 5
+    anchors.centerIn: parent
+    anchors.margins: { top: 40; left: 5; right: 5; bottom: 5 }
 
     // Properties
     property var pages: [
