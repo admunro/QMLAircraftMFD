@@ -6,6 +6,20 @@ Rectangle {
     id: mfd
     color: "black"
 
+    //Used to make sure that the window is displayed correctly.
+    //Without this all of the elements would be bunched up entirely in the top left corner.
+    width: 400
+    height: 400
+
+    anchors.top: parent.top;
+    anchors.bottom: parent.bottom;
+    anchors.right: parent.right;
+    anchors.left: parent.left;
+    anchors.topMargin: 40
+    anchors.leftMargin: 5
+    anchors.rightMargin: 5
+    anchors.bottomMargin: 5
+
     // Properties
     property var pages: [
         { name: "NAV",    source: "NavPage.qml",      color: "#203040" },
@@ -111,7 +125,7 @@ Rectangle {
 
                 Text {
                     anchors.centerIn: parent
-                    text: leftButtonCaptions[index]
+                    text: mfd.leftButtonCaptions[index]
                     color: "white"
                     fontSizeMode: Text.Fit
                     font.pixelSize: 12
@@ -124,7 +138,7 @@ Rectangle {
                     onPressed: parent.color = "#404040"
                     onReleased: parent.color = "#2a2a2a"
                     onClicked: {
-                        leftButtonClicked(index);
+                        mfd.leftButtonClicked(index);
                     }
                 }
             }
@@ -162,7 +176,7 @@ Rectangle {
 
                 Text {
                     anchors.centerIn: parent
-                    text: rightButtonCaptions[index]
+                    text: mfd.rightButtonCaptions[index]
                     color: "white"
                     fontSizeMode: Text.Fit
                     font.pixelSize: 12
@@ -175,7 +189,7 @@ Rectangle {
                     onPressed: parent.color = "#404040"
                     onReleased: parent.color = "#2a2a2a"
                     onClicked: {
-                        rightButtonClicked(index);
+                        mfd.rightButtonClicked(index);
                     }
                 }
             }
