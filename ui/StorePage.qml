@@ -10,8 +10,6 @@ Rectangle
     id: storesPage
 
     property string pageName: "STORE_PAGE"
-    property color pageColor: "#000000"
-
     property var weapons: weaponStationModel
 
     // Button captions that will be read by the main MFD
@@ -65,7 +63,7 @@ Rectangle
     }
 
 
-    color: pageColor
+    color: 'black'
 
     anchors.centerIn: parent
 
@@ -75,7 +73,7 @@ Rectangle
 
         source: 'img/fighter-plane.png'
 
-        width: parent.width
+        width: parent.width * 0.8
         height: parent.height
 
         anchors.centerIn: parent
@@ -116,7 +114,7 @@ Rectangle
         stationIndex: 2
 
         anchors.right: parent.horizontalCenter
-        anchors.rightMargin: 10
+        anchors.rightMargin: 5
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: -60
@@ -131,7 +129,7 @@ Rectangle
         stationIndex: 3
 
         anchors.left: parent.horizontalCenter
-        anchors.leftMargin: 10
+        anchors.leftMargin: 5
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: -60
@@ -148,7 +146,7 @@ Rectangle
 
 
         anchors.right: parent.horizontalCenter
-        anchors.rightMargin: 10
+        anchors.rightMargin: 5
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 60
@@ -164,7 +162,7 @@ Rectangle
         stationIndex: 5
 
         anchors.left: parent.horizontalCenter
-        anchors.leftMargin: 10
+        anchors.leftMargin: 5
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.verticalCenterOffset: 60
