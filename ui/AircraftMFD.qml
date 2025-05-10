@@ -6,6 +6,13 @@ Rectangle {
     id: mfd
     color: "black"
 
+    width: 800
+    height: 800
+
+    anchors.centerIn: parent
+    anchors.margins: { top: 40; bottom: 5; left: 5; right: 5 }
+
+
     // Properties
     property var pages: [
         { name: "NAV",    source: "NavPage.qml",      color: "#203040" },
@@ -96,8 +103,10 @@ Rectangle {
         spacing: parent.height / 20
 
         Repeater {
+            
+            id: leftRepeater
             model: 5
-
+            
             Rectangle {
 
                 width: parent.width * 0.8
@@ -111,7 +120,7 @@ Rectangle {
 
                 Text {
                     anchors.centerIn: parent
-                    text: leftButtonCaptions[index]
+                    text: mfd.leftButtonCaptions[index]
                     color: "white"
                     fontSizeMode: Text.Fit
                     font.family: "Roboto Mono"
@@ -123,7 +132,7 @@ Rectangle {
                     onPressed: parent.color = "#404040"
                     onReleased: parent.color = "#2a2a2a"
                     onClicked: {
-                        leftButtonClicked(index);
+                        mfd.leftButtonClicked(index);
                     }
                 }
             }
@@ -161,7 +170,7 @@ Rectangle {
 
                 Text {
                     anchors.centerIn: parent
-                    text: rightButtonCaptions[index]
+                    text: mfd.rightButtonCaptions[index]
                     color: "white"
                     fontSizeMode: Text.Fit
                     font.family: "Roboto Mono"
@@ -173,7 +182,7 @@ Rectangle {
                     onPressed: parent.color = "#404040"
                     onReleased: parent.color = "#2a2a2a"
                     onClicked: {
-                        rightButtonClicked(index);
+                        mfd.rightButtonClicked(index);
                     }
                 }
             }

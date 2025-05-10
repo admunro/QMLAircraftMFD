@@ -19,7 +19,11 @@ Window {
         width: parent.width / 3.5    // 800 pixels when window is 2800 wide
         height: parent.height
 
+        anchors.centerIn: undefined
+        anchors.margins: undefined
+
         anchors.left: parent.left
+
     }
 
     MapDisplay
@@ -42,6 +46,9 @@ Window {
 
         width: parent.width / 3.5  // 800 pixels when window is 2800 wide
         height: parent.height
+
+        anchors.centerIn: undefined
+        anchors.margins: undefined
 
         anchors.right: parent.right
 
