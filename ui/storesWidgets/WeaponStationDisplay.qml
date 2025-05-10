@@ -12,10 +12,13 @@ Rectangle {
     width: 30
     height: 100
 
+    color: 'red'
+
+
     function updateBackgroundColor()
     {
         const station = weaponStationModel.getByName(stationName);
-        weaponStation.color = station.selected ? "red" : "green";
+        weaponStation.color = station.selected ? 'red' : 'black';
     }
 
 
@@ -44,9 +47,7 @@ Rectangle {
         }
     }
 
-    Component.onCompleted: {
-        updateBackgroundColor();
-    }
+
 
     Image {
         source: getWeaponImage()
@@ -70,5 +71,9 @@ Rectangle {
         }
     }
 
+
+    Component.onCompleted: {
+        updateBackgroundColor();
+    }
 
 }

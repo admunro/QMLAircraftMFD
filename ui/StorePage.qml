@@ -91,6 +91,7 @@ Rectangle
 
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 75
 
     }
 
@@ -103,6 +104,7 @@ Rectangle
 
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 75
 
     }
 
@@ -113,8 +115,11 @@ Rectangle
         stationName: "Port Fuselage Front"
         stationIndex: 2
 
-        anchors.centerIn: parent
+        anchors.right: parent.horizontalCenter
+        anchors.rightMargin: 10
 
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -60
 
     }
 
@@ -125,8 +130,11 @@ Rectangle
         stationName: "Starboard Fuselage Front"
         stationIndex: 3
 
-        anchors.left: portFuselageFront.right
-        anchors.top: portFuselageFront.top
+        anchors.left: parent.horizontalCenter
+        anchors.leftMargin: 10
+
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: -60
 
 
     }
@@ -138,8 +146,12 @@ Rectangle
         stationName: "Port Fuselage Rear"
         stationIndex: 4
 
-        anchors.left: portFuselageFront.left
-        anchors.top: portFuselageFront.bottom
+
+        anchors.right: parent.horizontalCenter
+        anchors.rightMargin: 10
+
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 60
 
 
     }
@@ -151,8 +163,11 @@ Rectangle
         stationName: "Starboard Fuselage Rear"
         stationIndex: 5
 
-        anchors.left: portFuselageRear.right
-        anchors.top: portFuselageRear.top
+        anchors.left: parent.horizontalCenter
+        anchors.leftMargin: 10
+
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: 60
 
 
     }
@@ -164,6 +179,7 @@ Rectangle
         stationIndex: 6
 
         anchors.left: portWingTip.right
+        anchors.leftMargin: 50
         anchors.top: portWingTip.top
 
 
@@ -176,6 +192,7 @@ Rectangle
         stationIndex: 7
 
         anchors.right: starboardWingTip.left
+        anchors.rightMargin: 50
         anchors.top: starboardWingTip.top
 
 

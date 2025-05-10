@@ -89,8 +89,8 @@ int main(int argc, char *argv[])
     weaponStationModel.add("Starboard Wing Tip", "AIM-9X", "Air-to-Air");
 
     weaponStationModel.add("Port Fuselage Front", "AIM-120", "Air-to-Air");
-    weaponStationModel.add("Port Fuselage Rear", "AIM-120", "Air-to-Air");
     weaponStationModel.add("Starboard Fuselage Front", "AIM-120", "Air-to-Air");
+    weaponStationModel.add("Port Fuselage Rear", "AIM-120", "Air-to-Air");
     weaponStationModel.add("Starboard Fuselage Rear", "AIM-120", "Air-to-Air");
 
     weaponStationModel.add("Port Under Wing", "GBU-12", "Air-to-Ground");
