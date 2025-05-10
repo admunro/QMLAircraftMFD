@@ -41,6 +41,8 @@ qt_add_qml_module(appAircraftMFD
         src/fueltankmodel.cpp
         src/enginemodel.h
         src/enginemodel.cpp
+        src/weaponstationmodel.h
+        src/weaponstationmodel.cpp
 
     QML_FILES
         ui/Cockpit.qml
@@ -58,6 +60,7 @@ qt_add_qml_module(appAircraftMFD
         ui/EntityControl.qml
         ui/OwnshipControl.qml
         ui/fuelWidgets/FuelTankDisplay.qml
+        ui/storesWidgets/WeaponStationDisplay.qml
 
 
     RESOURCES
@@ -68,9 +71,9 @@ qt_add_qml_module(appAircraftMFD
         ui/img/stores.png
         ui/img/fighter-plane-basic.png
         ui/img/fighter-plane.png
-
-
-
+        ui/storesWidgets/bomb.png
+        ui/storesWidgets/sr_missile.png
+        ui/storesWidgets/mr_missile.png
 
 )
 

@@ -16,6 +16,7 @@ Rectangle {
     property var ownship : ownshipModel
     property var fueltanks : fuelTankModel
     property var engines : engineModel
+    property var weapons: weaponStationModel
 
 
     function updateHeading(headingDelta) {
@@ -347,9 +348,66 @@ Rectangle {
                     }
                 }
             }
+        }
 
-            onCurrentIndexChanged: {
-                ownshipControls.updateEngines();
+        // Weapon Stations
+        Text {
+            Layout.alignment: Qt.AlignHCenter
+            text: "Weapons"
+            color: "white"
+            font.pixelSize: 24
+            font.bold: true
+            font.family: "Roboto Mono"
+        }
+        ListView {
+
+            id: weaponsListView
+
+            currentIndex: undefined
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            clip: true
+            model: ownshipControls.weapons
+
+            delegate: Rectangle {
+                width: weaponsListView.width
+                height: 50
+
+                color: "dimgrey"
+                border.color: "#cccccc"
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    spacing: 10
+
+                    Text {
+                        text: model.name
+                        Layout.preferredWidth: 120
+                    }
+
+                    Text {
+                        text: 'Weapon Type: ' + model.weapon_type
+                        Layout.preferredWidth: 120
+                    }
+
+                    Text {
+                        text: 'Category: ' + model.weapon_category
+                        Layout.preferredWidth: 120
+                    }
+
+                    Text {
+                        text: 'Loaded: ' + model.loaded
+                        Layout.preferredWidth: 120
+                    }
+
+                    Text {
+                        text: 'Selected: ' + model.selected
+                        Layout.preferredWidth: 120
+                    }
+                }
             }
         }
     }

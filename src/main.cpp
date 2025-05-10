@@ -7,6 +7,7 @@
 #include "ownshipmodel.h"
 #include "enginemodel.h"
 #include "fueltankmodel.h"
+#include "weaponstationmodel.h"
 
 
 int main(int argc, char *argv[])
@@ -79,6 +80,20 @@ int main(int argc, char *argv[])
     engineModel.add("Starboard Engine", 45);
 
 
+    WeaponStationModel weaponStationModel(&app);
+
+    weaponStationModel.add("Port Wing Tip", "AIM-9X", "Air-to-Air");
+    weaponStationModel.add("Starboard Wing Tip", "AIM-9X", "Air-to-Air");
+
+    weaponStationModel.add("Port Fuselage Front", "AIM-120", "Air-to-Air");
+    weaponStationModel.add("Port Fuselage Rear", "AIM-120", "Air-to-Air");
+    weaponStationModel.add("Starboard Fuselage Front", "AIM-120", "Air-to-Air");
+    weaponStationModel.add("Starboard Fuselage Rear", "AIM-120", "Air-to-Air");
+
+    weaponStationModel.add("Port Under Wing", "GBU-12", "Air-to-Ground");
+    weaponStationModel.add("Starboard Under Wing", "GBU-12", "Air-to-Ground");
+
+
     QQmlApplicationEngine engine;
 
 
@@ -93,6 +108,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ownshipModel", &ownshipModel);
     engine.rootContext()->setContextProperty("fuelTankModel", &fuelTankModel);
     engine.rootContext()->setContextProperty("engineModel", &engineModel);
+    engine.rootContext()->setContextProperty("weaponStationModel", &weaponStationModel);
 
 
 

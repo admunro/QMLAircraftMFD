@@ -122,6 +122,7 @@ Rectangle
         source: 'img/fighter-plane.png'
 
         height: parent.height
+        width: parent.width
 
         anchors.centerIn: parent
     }

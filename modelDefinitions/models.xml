@@ -28,5 +28,18 @@
 		<member type="int" name="fill_level_kg" initialValue="0"/>
 	</model>
 
+	<model name="WeaponStation">
+		<member name="name" type="QString"/>
+		<member type="QString" name="weapon_type"/>
+		<member type="QString" name="weapon_category"/>
+		<member type="bool"	name="selected" initialValue="false"/>
+		<member type="bool" name="loaded" initialValue="false"/>
+	</model>
+
+<!--
+	<a href="https://www.flaticon.com/free-icons/missile" title="missile icons">Missile icons created by Freepik - Flaticon</a>
+-->
+
+
 </models>
 
