@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QGeoCoordinate>
+#include <QLoggingCategory>
 
 #include "entitymodel.h"
 #include "ownshipmodel.h"
@@ -12,6 +13,8 @@
 
 int main(int argc, char *argv[])
 {
+    qSetMessagePattern("[%{time h:mm:ss.zzz} %{type}] %{message}");
+    QLoggingCategory::setFilterRules("qt.qml.debug=true");
 
     QGuiApplication app(argc, argv);
 

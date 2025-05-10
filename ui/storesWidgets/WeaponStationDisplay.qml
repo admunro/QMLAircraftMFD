@@ -8,28 +8,28 @@ Rectangle {
 
     property string stationName: 'no station'
     property int stationIndex: -1
-    property string background_colour: 'blue'
 
     width: 30
     height: 100
+
+    function updateBackgroundColor()
+    {
+        const station = weaponStationModel.getByName(stationName);
+        console.log("Updating station " + stationName + ": selected=" + station.selected);
+        weaponStation.color = station.selected ? "red" : "green";
+    }
+
 
     Connections {
         target: weaponStationModel
 
         function onDataChanged() {
-            if (weaponStationModel.index(stationIndex, 0).selected)
-            {
-                background_colour = 'red'
-            }
-            else
-            {
-                background_colour = 'green'
-            }
+            updateBackgroundColor();
         }
     }
 
-    function getWeaponImage(stationName) {
-        switch(weapons.getByName(stationName).weapon_type) {
+    function getWeaponImage() {
+        switch(weaponStationModel.getByName(stationName).weapon_type) {
             case "AIM-120":
                 console.log('AMRAAM');
                 return "mr_missile.png";
@@ -47,10 +47,14 @@ Rectangle {
 
 
 
-    color: background_colour
+    color: 'blue'
+
+    Component.onCompleted: {
+        updateBackgroundColor();
+    }
 
     Image {
-        source: getWeaponImage(stationName)
+        source: getWeaponImage()
 
         width: parent.width
         height: parent.height
@@ -67,4 +71,6 @@ Rectangle {
             }
         }
     }
+
+
 }
