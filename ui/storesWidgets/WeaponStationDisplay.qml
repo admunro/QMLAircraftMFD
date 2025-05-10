@@ -15,7 +15,6 @@ Rectangle {
     function updateBackgroundColor()
     {
         const station = weaponStationModel.getByName(stationName);
-        console.log("Updating station " + stationName + ": selected=" + station.selected);
         weaponStation.color = station.selected ? "red" : "green";
     }
 
@@ -26,28 +25,24 @@ Rectangle {
         function onDataChanged() {
             updateBackgroundColor();
         }
+
+        function onModelReset() {
+            updateBackgroundColor();
+        }
     }
 
     function getWeaponImage() {
         switch(weaponStationModel.getByName(stationName).weapon_type) {
             case "AIM-120":
-                console.log('AMRAAM');
                 return "mr_missile.png";
             case "AIM-9X":
-                console.log('SRAAM');
                 return "sr_missile.png";
             case "GBU-12":
-                console.log('Bomb');
                 return "bomb.png";
             default:
-                console.log('Default');
                 return "default.png";
         }
     }
-
-
-
-    color: 'blue'
 
     Component.onCompleted: {
         updateBackgroundColor();
@@ -65,8 +60,11 @@ Rectangle {
             anchors.fill: parent
 
             onClicked: {
+
+                var selected = weaponStationModel.getByName(stationName).selected
+
                 weaponStationModel.setData(weapons.index(stationIndex,0),
-                                           true,
+                                           !selected,
                                            WeaponStationModel.SelectedRole)
             }
         }

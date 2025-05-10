@@ -74,11 +74,16 @@ bool WeaponStationModel::setData(const QModelIndex& index, const QVariant& value
 		break;
 
 	case SelectedRole:
-		if (value.toBool() != weaponstation.selected)
-		{
+        if (value.toBool() != weaponstation.selected)
+        {
+            // We need a reset model here rather than just updating one
+            // model index, because selecting one weapon station
+            // implies automatically deselecting any existing selections,
+            // hence we need to emit a signal which covers the whole model
+            // and not just the index that's been clicked on.
             beginResetModel();
 
-            for (auto& station: m_weaponstations)
+            for (auto& station : m_weaponstations)
             {
                 station.selected = false;
             }
@@ -86,7 +91,7 @@ bool WeaponStationModel::setData(const QModelIndex& index, const QVariant& value
             weaponstation.selected = value.toBool();
 
             endResetModel();
-		}
+        }
 		break;
 
 	case LoadedRole:
