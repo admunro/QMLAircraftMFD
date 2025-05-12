@@ -15,11 +15,11 @@ Rectangle {
 
     // Properties
     property var pages: [
-        { name: "NAV",    source: "NavPage.qml",      color: "#203040" },
-        { name: "STORE",  source: "StorePage.qml",    color: "#302030" },
-        { name: "SNSR",   source: "SensorPage.qml",   color: "#203020" },
-        { name: "FUEL",   source: "FuelPage.qml",     color: "#303020" },
-        { name: "ENG",    source: "EnginePage.qml",   color: "#302020" }
+        { name: "NAV",    source: "NavPage.qml"    },
+        { name: "STORE",  source: "StorePage.qml"  },
+        { name: "SNSR",   source: "SensorPage.qml" },
+        { name: "FUEL",   source: "FuelPage.qml"   },
+        { name: "ENG",    source: "EnginePage.qml" }
     ]
 
 
@@ -72,7 +72,6 @@ Rectangle {
 
                     mfd.currentItem = item
 
-                    item.pageColor = mfd.pages[mfd.currentPage].color;
                     item.pageName = mfd.pages[mfd.currentPage].name;
 
                     // Connect signals

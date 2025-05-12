@@ -90,7 +90,7 @@ Rectangle {
             Connections {
                 target: ownshipModel
 
-                onLatidude_degChanged: {
+                onLatitude_degChanged: {
                     if (mapDisplay.centerOnPresentPosition) {
                         map.center = QtPositioning.coordinate(ownshipModel.latitude_deg, 
                                                               ownshipModel.longitude_deg);
@@ -207,7 +207,7 @@ Rectangle {
                         origin.x: ownshipImage.width / 2
                         origin.y: ownshipImage.height / 2
 
-                        angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? ownshipModel.heading_deg : 0
+                        angle: mapDisplay.mapOrientation === MapDisplay.MapOrientationType.North_Up ? ownshipModel.heading_deg : 0
                     }
                 }
             }
@@ -232,7 +232,7 @@ Rectangle {
                             origin.x: entityImage.width / 2
                             origin.y: entityImage.height / 2
 
-                            angle: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.North_Up ? heading : heading - ownshipModel.heading_deg
+                            angle: mapDisplay.mapOrientation === MapDisplay.MapOrientationType.North_Up ? heading : heading - ownshipModel.heading_deg
                         }
                     }
                 }

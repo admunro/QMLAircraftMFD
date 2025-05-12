@@ -232,24 +232,25 @@ Rectangle {
 
                 Text {
                     text: "Name"
-                    font.bold: true
                     Layout.preferredWidth: 30
+                    font.pixelSize: 14
+                    font.family: "Courier New"
                 }
 
                 Text {
                     text: "Capacity (kg)"
-                    font.bold: true
                     Layout.preferredWidth: 30
+                    font.pixelSize: 14
+                    font.family: "Courier New"
                 }
 
                 Text {
                     text: "Fill Level (kg)"
-                    font.bold: true
                     Layout.preferredWidth: 30
+                    font.pixelSize: 14
+                    font.family: "Courier New"
                 }
-
             }
-
         }
 
         ListView {
@@ -279,19 +280,23 @@ Rectangle {
                     Text {
 
                         text: model.name
-                        Layout.preferredWidth: 80
+                        Layout.preferredWidth: 160
                     }
 
                     Text {
 
                         text: 'Capacity: ' + model.capacity_kg + ' kg'
-                        Layout.preferredWidth: 80
+                        Layout.preferredWidth: 160
+                        font.pixelSize: 14
+                        font.family: "Courier New"
                     }
 
                     Text {
 
                         text: 'Fill Level: ' + model.fill_level_kg + ' kg'
-                        Layout.preferredWidth: 80
+                        Layout.preferredWidth: 160
+                        font.pixelSize: 14
+                        font.family: "Courier New"
                     }
 
                     Slider {
@@ -324,7 +329,7 @@ Rectangle {
             color: "white"
             font.pixelSize: 24
             font.bold: true
-            font.family: "Roboto Mono"
+            font.family: "Courier New"
         }
 
        
@@ -353,12 +358,12 @@ Rectangle {
 
                     Text {
                         text: model.name
-                        Layout.preferredWidth: 120
+                        Layout.preferredWidth: 180
                     }
 
                     Text {
                         text: 'RPM %: ' + model.rpm_percent
-                        Layout.preferredWidth: 120
+                        Layout.preferredWidth: 180
                     }
 
                     Slider {
@@ -389,7 +394,7 @@ Rectangle {
             color: "white"
             font.pixelSize: 24
             font.bold: true
-            font.family: "Roboto Mono"
+            font.family: "Courier New"
         }
         ListView {
 
@@ -417,27 +422,39 @@ Rectangle {
 
                     Text {
                         text: model.name
-                        Layout.preferredWidth: 120
+                        Layout.preferredWidth: 180
+                        font.pixelSize: 14
+                        font.family: "Courier New"
                     }
 
                     Text {
-                        text: 'Weapon Type: ' + model.weapon_type
-                        Layout.preferredWidth: 120
+                        text: 'Type: ' + model.weapon_type
+                        Layout.preferredWidth: 180
+                        font.pixelSize: 14
+                        font.family: "Courier New"
                     }
 
                     Text {
                         text: 'Category: ' + model.weapon_category
-                        Layout.preferredWidth: 120
+                        Layout.preferredWidth: 180
+                        font.pixelSize: 14
+                        font.family: "Courier New"
                     }
 
                     Text {
-                        text: 'Loaded: ' + model.loaded
-                        Layout.preferredWidth: 120
+                        text: model.loaded ? 'Loaded' : ''
+                        Layout.preferredWidth: 80
+                        font.pixelSize: 14
+                        font.bold: true
+                        font.family: "Courier New"
                     }
 
                     Text {
-                        text: 'Selected: ' + model.selected
-                        Layout.preferredWidth: 120
+                        text: model.selected ? 'ARMED' : ''
+                        Layout.preferredWidth: 80
+                        font.pixelSize: 14
+                        font.bold: true
+                        font.family: "Courier New"
                     }
                 }
             }
