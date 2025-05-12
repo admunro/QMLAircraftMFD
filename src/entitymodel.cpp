@@ -20,13 +20,14 @@ void EntityModel::updateEntities()
     {
         auto& entity = m_entities[i];
 
-        auto newPosition = EntityUtils::calculateNewPosition(entity.position,
+        auto newPosition = EntityUtils::calculateNewPosition(entity.latitude_deg,
+                                                             entity.longitude_deg,
                                                              entity.heading_deg,
                                                              entity.speed_kts,
                                                              this->updateRateMilliseconds);
 
-        entity.position.setLatitude(newPosition.latitude());
-        entity.position.setLongitude(newPosition.longitude());
+        entity.latitude_deg = std::get<0>(newPosition);
+        entity.longitude_deg = std::get<1>(newPosition);
 
         QModelIndex index = createIndex(i, 0);
         emit dataChanged(index, index, { LatitudeRole, LongitudeRole });
@@ -55,9 +56,9 @@ QVariant EntityModel::data(const QModelIndex& index, int role) const
     case NameRole:
         return entity.name;
     case LatitudeRole:
-        return entity.position.latitude();
+        return entity.latitude_deg;
     case LongitudeRole:
-        return entity.position.longitude();
+        return entity.longitude_deg;
     case TypeRole:
         return entity.type;
     case HeadingRole:
@@ -98,7 +99,8 @@ void EntityModel::addEntity(const QString &id,
     EntityUtils::Entity entity;
     entity.id = id;
     entity.name = name;
-    entity.position = QGeoCoordinate(latitude, longitude);
+    entity.latitude_deg = latitude;
+    entity.longitude_deg = longitude;
     entity.type = type;
     entity.heading_deg = heading_deg;
     entity.speed_kts = speed_kts;
@@ -132,8 +134,8 @@ QVariantMap EntityModel::get(int row) const
     QVariantMap map;
     map["entityId"] = entity.id;
     map["name"] = entity.name;
-    map["latitude"] = entity.position.latitude();
-    map["longitude"] = entity.position.longitude();
+    map["latitude"] = entity.latitude_deg;
+    map["longitude"] = entity.longitude_deg;
     map["type"] = entity.type;
     map["heading"] = entity.heading_deg;
     map["speed"] = entity.speed_kts;
@@ -172,14 +174,14 @@ bool EntityModel::setData(const QModelIndex& index, const QVariant& value, int r
         }
         break;
     case LatitudeRole:
-        if (value.toDouble() != entity.position.latitude()) {
-            entity.position.setLatitude(value.toDouble());
+        if (value.toDouble() != entity.latitude_deg) {
+            entity.latitude_deg = value.toDouble();
             changed = true;
         }
         break;
     case LongitudeRole:
-        if (value.toDouble() != entity.position.longitude()) {
-            entity.position.setLongitude(value.toDouble());
+        if (value.toDouble() != entity.longitude_deg) {
+            entity.longitude_deg = value.toDouble();
             changed = true;
         }
         break;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include <QGeoCoordinate>
 #include <QTimer>
 #include <QtQml/qqmlregistration.h>
 
@@ -16,7 +15,8 @@ class OwnshipModel : public QObject
 
 public:
 
-    explicit OwnshipModel(QGeoCoordinate startPosition = QGeoCoordinate(0.0, 0.0),
+    explicit OwnshipModel(double latitude_deg = 0.0,
+                          double longitude_deg = 0.0,
                           double heading_deg = 0.0,
                           double speed_kts = 0.0 ,
                           double updateRateMS = 0.0,
@@ -26,7 +26,8 @@ public:
 
     Q_PROPERTY(QString id READ id WRITE setId NOTIFY idChanged FINAL)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
-    Q_PROPERTY(QGeoCoordinate position READ position WRITE setPosition NOTIFY positionChanged FINAL)
+    Q_PROPERTY(double latitude_deg READ latitude_deg WRITE setLatitude_deg NOTIFY latitude_degChanged FINAL)    
+    Q_PROPERTY(double longitude_deg READ longitude_deg WRITE setLongitude_deg NOTIFY longitude_degChanged FINAL)
     Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged FINAL)
     Q_PROPERTY(double heading_deg READ heading_deg WRITE setHeading_deg NOTIFY heading_degChanged FINAL)
     Q_PROPERTY(double speed_kts READ speed_kts WRITE setSpeed_kts NOTIFY speed_ktsChanged FINAL)
@@ -37,8 +38,11 @@ public:
     QString name() const;
     void setName(const QString &newName);
 
-    QGeoCoordinate position() const;
-    void setPosition(const QGeoCoordinate &newPosition);
+    double latitude_deg() const;
+    void setLatitude_deg(double newLatitude_deg);
+
+    double longitude_deg() const;
+    void setLongitude_deg(double newLongitude_deg);
 
     QString type() const;
     void setType(const QString &newType);
@@ -53,7 +57,8 @@ signals:
 
     void idChanged();
     void nameChanged();
-    void positionChanged();
+    void latitude_degChanged();
+    void longitude_degChanged();
     void typeChanged();
     void heading_degChanged();
     void speed_ktsChanged();
@@ -66,7 +71,8 @@ private:
 
     QString m_id;
     QString m_name;
-    QGeoCoordinate m_position;
+    double m_latitude_deg { 0.0 };
+    double m_longitude_deg { 0.0 };
     QString m_type;
 
     double m_heading_deg { 0.0 };

@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-import QtPositioning 5.15
 
 import AircraftMFD 1.0
 
@@ -79,7 +78,7 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Lat: " + ownshipControls.ownship.position.latitude.toFixed(6) + " Lon: " + ownshipControls.ownship.position.longitude.toFixed(6)
+                    text: "Lat: " + ownshipControls.ownship.latitude_deg.toFixed(6) + " Lon: " + ownshipControls.ownship.longitude_deg.toFixed(6)
                     color: "#00ff00"  // Green for coordinates
                     font.pixelSize: 16
                     font.family: "Roboto Mono"

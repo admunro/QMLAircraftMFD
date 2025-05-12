@@ -21,7 +21,8 @@ int main(int argc, char *argv[])
     double timerRateMS = 20;
 
 
-    OwnshipModel ownshipModel(QGeoCoordinate(48.7232, 11.5515), // Manching Airport
+    OwnshipModel ownshipModel(48.7232,  // Manching Airport
+                              11.5515, 
                               45.0,
                               400.0,
                               timerRateMS,
