@@ -17,7 +17,8 @@ add_executable(${PROJECT_NAME} "src/main.cpp"
                "src/entityutils.cpp"
                "src/ownshipmodel.cpp"
                "src/fueltankmodel.cpp"
-               "src/enginemodel.cpp")
+               "src/enginemodel.cpp"
+               "src/weaponstationmodel.cpp")
 
 
 

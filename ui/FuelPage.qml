@@ -9,7 +9,6 @@ Rectangle
     id: fuelPage
 
     property string pageName: "FUEL_PAGE"
-    property color pageColor: "green"
 
     property int fuselageTankDisplayWidth: 65
     property int fuselageTankDisplayHeight: 75
@@ -97,7 +96,7 @@ Rectangle
     }
 
 
-    color: pageColor
+    color: 'black'
     anchors.centerIn: parent
 
 
@@ -122,6 +121,7 @@ Rectangle
         source: 'img/fighter-plane.png'
 
         height: parent.height
+        width: parent.width
 
         anchors.centerIn: parent
     }

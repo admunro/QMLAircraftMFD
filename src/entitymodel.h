@@ -6,6 +6,7 @@
 #include <QTimer>
 #include "entityutils.h"
 
+#include <memory>
 
 
 

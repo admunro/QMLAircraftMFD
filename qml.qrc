@@ -13,6 +13,7 @@
         <file>ui/RadarPage.qml</file>
         <file>ui/SensorPage.qml</file>
         <file>ui/StorePage.qml</file>
+        <file>ui/storesWidgets/WeaponStationDisplay.qml</file>
 
         <file>ui/img/engines.png</file>
         <file>ui/img/fighter-plane-basic.png</file>
@@ -21,6 +22,8 @@
         <file>ui/img/nav.png</file>
         <file>ui/img/plane.png</file>
         <file>ui/img/sensor.png</file>
-        <file>ui/img/stores.png</file>
+        <file>ui/storesWidgets/bomb.png</file>
+        <file>ui/storesWidgets/mr_missile.png</file>
+        <file>ui/storesWidgets/sr_missile.png</file>
     </qresource>
 </RCC>

@@ -6,13 +6,12 @@ Rectangle {
     id: mfd
     color: "black"
 
-    //Used to make sure that the window is displayed correctly.
-    //Without this all of the elements would be bunched up entirely in the top left corner.
-    width: 400
-    height: 400
+    width: 800
+    height: 800
 
     anchors.centerIn: parent
-    anchors.margins: { top: 40; left: 5; right: 5; bottom: 5 }
+    anchors.margins: { top: 40; bottom: 5; left: 5; right: 5 }
+
 
     // Properties
     property var pages: [
@@ -104,8 +103,10 @@ Rectangle {
         spacing: parent.height / 20
 
         Repeater {
+            
+            id: leftRepeater
             model: 5
-
+            
             Rectangle {
 
                 width: parent.width * 0.8

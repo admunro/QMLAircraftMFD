@@ -21,7 +21,7 @@ Window {
         height: parent.height
 
         anchors.centerIn: undefined
-        anchors.margins: { top: 0; bottom: 0; left: 0; right: 0 }
+        anchors.margins: undefined
 
         anchors.left: parent.left
     }
@@ -51,7 +51,7 @@ Window {
         height: parent.height
 
         anchors.centerIn: undefined
-        anchors.margins: { top: 0; bottom: 0; left: 0; right: 0 }
+        anchors.margins: undefined
 
         anchors.right: parent.right
 

@@ -8,9 +8,9 @@ OwnshipModel::OwnshipModel(QGeoCoordinate position, double heading_deg, double s
       m_updateRateMilliseconds { updateRateMS },
       QObject{parent}
 {
-    this->timer = new QTimer();
+    this->timer = std::make_unique<QTimer>();
 
-    QObject::connect(this->timer, &QTimer::timeout, this, &OwnshipModel::updateData);
+    QObject::connect(this->timer.get(), &QTimer::timeout, this, &OwnshipModel::updateData);
 
     timer->start(this->m_updateRateMilliseconds);
 }
