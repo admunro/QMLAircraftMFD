@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QAbstractListModel>
-#include <QGeoCoordinate>
 #include <QVector>
 #include <QTimer>
 #include "entityutils.h"

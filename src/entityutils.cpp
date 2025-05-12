@@ -5,17 +5,18 @@
 namespace EntityUtils
 {
 
-    QGeoCoordinate calculateNewPosition(const QGeoCoordinate& position,
-                                        double heading_deg,
-                                        double speed_kts,
-                                        double deltaTime_ms)
+    std::tuple<double, double> calculateNewPosition(double latitude_deg,
+                                                    double longitude_deg,
+                                                    double heading_deg,
+                                                    double speed_kts,
+                                                    double deltaTime_ms)
     {
         constexpr double PI { 3.14159265358979323846 };
         constexpr double earthRadius_m { 6371000 };
         constexpr double knots_to_metres_per_second { 0.514444 };
 
-        double latRad = position.latitude() * PI / 180.0;
-        double lonRad = position.longitude() * PI / 180.0;
+        double latRad = latitude_deg * PI / 180.0;
+        double lonRad = longitude_deg * PI / 180.0;
 
 
         double headingRad = heading_deg * PI / 180.0;
@@ -35,7 +36,7 @@ namespace EntityUtils
         double newLat = newLatRad * 180 / PI;
         double newLon = newLonRad * 180 / PI;
 
-        return QGeoCoordinate( newLat, newLon );
+        return { newLat, newLon };
     }
 
 }

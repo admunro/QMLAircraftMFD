@@ -79,7 +79,7 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Lat: " + ownshipControls.ownship.position.latitude.toFixed(6) + " Lon: " + ownshipControls.ownship.position.longitude.toFixed(6)
+                    text: "Lat: " + ownshipControls.ownship.latitude_deg.toFixed(6) + " Lon: " + ownshipControls.ownship.longitude_deg.toFixed(6)
                     color: "#00ff00"  // Green for coordinates
                     font.pixelSize: 16
                     font.family: "Courier New"

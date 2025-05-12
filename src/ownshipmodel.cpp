@@ -1,8 +1,9 @@
 #include "ownshipmodel.h"
 #include "entityutils.h"
 
-OwnshipModel::OwnshipModel(QGeoCoordinate position, double heading_deg, double speed_kts, double updateRateMS, QObject *parent)
-    : m_position { position },
+OwnshipModel::OwnshipModel(double latitude_deg, double longitude_deg, double heading_deg, double speed_kts, double updateRateMS, QObject *parent)
+    : m_latitude_deg { latitude_deg },
+      m_longitude_deg { longitude_deg },
       m_heading_deg { heading_deg },
       m_speed_kts { speed_kts },
       m_updateRateMilliseconds { updateRateMS },
@@ -18,12 +19,17 @@ OwnshipModel::OwnshipModel(QGeoCoordinate position, double heading_deg, double s
 
 void OwnshipModel::updateData()
 {
-    m_position = EntityUtils::calculateNewPosition(m_position,
-                                                   m_heading_deg,
-                                                   m_speed_kts,
-                                                   m_updateRateMilliseconds);
+    auto newPosition = EntityUtils::calculateNewPosition(m_latitude_deg,
+                                                         m_longitude_deg,
+                                                         m_heading_deg,
+                                                         m_speed_kts,
+                                                         m_updateRateMilliseconds);
 
-    emit positionChanged();
+    m_latitude_deg = std::get<0>(newPosition);
+    m_longitude_deg = std::get<1>(newPosition);                                                    
+
+    emit latitude_degChanged();
+    emit longitude_degChanged();
 }
 
 QString OwnshipModel::id() const
@@ -52,17 +58,31 @@ void OwnshipModel::setName(const QString &newName)
     emit nameChanged();
 }
 
-QGeoCoordinate OwnshipModel::position() const
+
+double OwnshipModel::latitude_deg() const
 {
-    return m_position;
+    return m_latitude_deg;
 }
 
-void OwnshipModel::setPosition(const QGeoCoordinate &newPosition)
+void OwnshipModel::setLatitude_deg(double newLatitude_deg)
 {
-    if (m_position == newPosition)
+    if (qFuzzyCompare(m_latitude_deg, newLatitude_deg))
         return;
-    m_position = newPosition;
-    emit positionChanged();
+    m_latitude_deg = newLatitude_deg;
+    emit latitude_degChanged();
+}
+
+double OwnshipModel::longitude_deg() const
+{
+    return m_longitude_deg;
+}
+
+void OwnshipModel::setLongitude_deg(double newLongitude_deg)
+{
+    if (qFuzzyCompare(m_longitude_deg, newLongitude_deg))
+        return;
+    m_longitude_deg = newLongitude_deg;
+    emit longitude_degChanged();
 }
 
 QString OwnshipModel::type() const

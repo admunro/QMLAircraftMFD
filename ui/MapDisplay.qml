@@ -90,9 +90,17 @@ Rectangle {
             Connections {
                 target: ownshipModel
 
-                onPositionChanged: {
+                onLatidude_degChanged: {
                     if (mapDisplay.centerOnPresentPosition) {
-                        map.center = ownshipModel.position;
+                        map.center = QtPositioning.coordinate(ownshipModel.latitude_deg, 
+                                                              ownshipModel.longitude_deg);
+                    }
+                }
+
+                onLongitude_degChanged: {
+                    if (mapDisplay.centerOnPresentPosition) {
+                        map.center = QtPositioning.coordinate(ownshipModel.latitude_deg, 
+                                                              ownshipModel.longitude_deg);
                     }
                 }
             }
@@ -134,7 +142,7 @@ Rectangle {
                 line.width: 4
                 line.color: 'white'
 
-                path: [ ownshipModel.position, mapDisplay.navigationRoute[0]]
+                path: [ QtPositioning.coordinate(ownshipModel.latitude_deg, ownshipModel.longitude_deg), mapDisplay.navigationRoute[0]]
 
             }
 
@@ -178,7 +186,7 @@ Rectangle {
             {
                 id: ownship
 
-                coordinate: ownshipModel.position
+                coordinate: QtPositioning.coordinate(ownshipModel.latitude_deg, ownshipModel.longitude_deg)
 
                 anchorPoint.x: ownshipImage.width / 2
                 anchorPoint.y: ownshipImage.height / 2
