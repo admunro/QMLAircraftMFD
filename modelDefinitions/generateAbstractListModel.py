@@ -91,7 +91,7 @@ def parse_enum(members, class_name):
 
     enum.append(indent + '};')
     enum.append('')
-    enum.append(indent + 'Q_ENUM(' + class_name + 'Roles);')
+    enum.append(indent + 'Q_ENUM(' + class_name + 'Roles)')
 
     return enum
 
