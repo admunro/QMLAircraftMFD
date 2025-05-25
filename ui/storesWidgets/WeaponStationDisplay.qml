@@ -6,6 +6,8 @@ Rectangle {
 
     id: weaponStation
 
+    property var weapons: weaponStationModel
+
     property string stationName: 'no station'
     property int stationIndex: -1
 

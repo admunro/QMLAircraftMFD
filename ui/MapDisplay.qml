@@ -51,7 +51,7 @@ Rectangle {
 
     Rectangle {
         id: mapArea
-
+    
         width: parent.width
         height: parent.height * 0.8
 
@@ -77,7 +77,7 @@ Rectangle {
 
             //activeMapType: supportedMapTypes[supportedMapTypes.length - 1]
 
-            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? ownshipModel.heading_deg : 0
+            bearing: mapDisplay.mapOrientation == MapDisplay.MapOrientationType.Track_Up ? AircraftMFD.ownshipModel.heading_deg : 0
 
             zoomLevel: 11
 

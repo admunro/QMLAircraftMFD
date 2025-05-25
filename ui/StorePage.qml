@@ -30,7 +30,7 @@ Rectangle
                 break;
             case 2:
                 // Handle L3
-                break;f
+                break;
             case 3:
                 // Handle L4
                 break;

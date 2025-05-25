@@ -5,11 +5,11 @@ import QtQuick 2.15
 
 Rectangle
 {
-    property real fillPercentage
-    property string fillCaption
+    required property real fillPercentage
+    required property string fillCaption
 
-    property int displayWidth
-    property int displayHeight
+    required property int displayWidth
+    required property int displayHeight
 
     property int marginWidth: 2
 
@@ -63,7 +63,5 @@ Rectangle
             font.family: "Roboto Mono"
             font.bold: true
         }
-
     }
-
 }
