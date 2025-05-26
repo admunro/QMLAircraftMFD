@@ -105,35 +105,22 @@ Rectangle {
             
             id: leftRepeater
             model: 5
-            
-            Rectangle {
 
-                width: parent.width * 0.8
-                height: width
+
+            CustomButton {
+
+                required property int index
+                required property var modelData
+
+                buttonText: mfd.leftButtonCaptions[index]
+                buttonIndex: index
+
+                buttonWidth: parent.width * 0.8
+                buttonHeight: buttonWidth
+
+                onClickedHandler: mfd.leftButtonClicked
 
                 anchors.horizontalCenter: parent.horizontalCenter
-
-                color: "#2a2a2a"
-                border.color: "#3a3a3a"
-                border.width: 2
-
-                Text {
-                    anchors.centerIn: parent
-                    text: mfd.leftButtonCaptions[index]
-                    color: "white"
-                    fontSizeMode: Text.Fit
-                    font.family: "Roboto Mono"
-                    font.bold: true
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: parent.color = "#404040"
-                    onReleased: parent.color = "#2a2a2a"
-                    onClicked: {
-                        mfd.leftButtonClicked(index);
-                    }
-                }
             }
         }
     }
@@ -156,40 +143,27 @@ Rectangle {
             id: rightRepeater
             model: 5
 
-            Rectangle {
+            CustomButton {
 
-                width: parent.width * 0.8
-                height: width
+                required property int index
+                required property var modelData
+
+                buttonText: mfd.rightButtonCaptions[index]
+                buttonIndex: index
+
+                buttonWidth: parent.width * 0.8
+                buttonHeight: buttonWidth
+
+                onClickedHandler: mfd.rightButtonClicked
 
                 anchors.horizontalCenter: parent.horizontalCenter
-
-                color: "#2a2a2a"
-                border.color: "#3a3a3a"
-                border.width: 1
-
-                Text {
-                    anchors.centerIn: parent
-                    text: mfd.rightButtonCaptions[index]
-                    color: "white"
-                    fontSizeMode: Text.Fit
-                    font.family: "Roboto Mono"
-                    font.bold: true
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: parent.color = "#404040"
-                    onReleased: parent.color = "#2a2a2a"
-                    onClicked: {
-                        mfd.rightButtonClicked(index);
-                    }
-                }
             }
         }
     }
 
     // Bottom buttons for page selection
     Row {
+
         id: bottomButtonRow
         anchors {
             bottom: parent.bottom
@@ -200,46 +174,80 @@ Rectangle {
         spacing: parent.width / 20
 
         Repeater {
+
+            id: bottomRowRepeater
+
             model: mfd.pages
 
-            Rectangle {
-
-                height: parent.height * 0.8
-                width: height
-
-                color: index == mfd.currentPage ? "#404040" : "#2a2a2a"
-                border.color: "#3a3a3a"
-                border.width: 1
-
-                Text {
-                    anchors.centerIn: parent
-                    text: mfd.pages[index].name
-                    color: "white"
-                    fontSizeMode: Text.Fit
-                    font.family: "Roboto Mono"
-                    font.bold: true
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-
-                        if (index != mfd.currentPage)
-                        {
-                            // Disconnect the button handlers from the currently selected page
-
-                            if (mfd.currentItem)
-                            {
-                                mfd.leftButtonClicked.disconnect(mfd.currentItem.handleLeftButton);
-                                mfd.rightButtonClicked.disconnect(mfd.currentItem.handleRightButton);
-                            }
-
-                            // Set the new page index. The Loader object will handle new connections
-                            mfd.currentPage = index;
-                        }
+            function onClickedHandler(index) {
+                if (index !== mfd.currentPage)
+                {
+                    // Disconnect the button handlers from the currently selected page
+                    if (mfd.currentItem)
+                    {
+                        mfd.leftButtonClicked.disconnect(mfd.currentItem.handleLeftButton);
+                        mfd.rightButtonClicked.disconnect(mfd.currentItem.handleRightButton);
                     }
+
+                    // Set the new page index. The Loader object will handle new connections
+                    mfd.currentPage = index;
                 }
             }
+
+
+            CustomButton {
+
+                required property int index
+                required property var modelData
+
+
+                buttonText: mfd.pages[index].name
+                buttonIndex: index
+
+                buttonHeight: parent.height * 0.8
+                buttonWidth: buttonHeight
+
+                onClickedHandler: bottomRowRepeater.onClickedHandler
+            }
+
+            // Rectangle {
+
+            //     height: parent.height * 0.8
+            //     width: height
+
+            //     color: index == mfd.currentPage ? "#404040" : "#2a2a2a"
+            //     border.color: "#3a3a3a"
+            //     border.width: 1
+
+            //     Text {
+            //         anchors.centerIn: parent
+            //         text: mfd.pages[index].name
+            //         color: "white"
+            //         fontSizeMode: Text.Fit
+            //         font.family: "Roboto Mono"
+            //         font.bold: true
+            //     }
+
+            //     MouseArea {
+            //         anchors.fill: parent
+            //         onClicked: {
+
+            //             if (index != mfd.currentPage)
+            //             {
+            //                 // Disconnect the button handlers from the currently selected page
+
+            //                 if (mfd.currentItem)
+            //                 {
+            //                     mfd.leftButtonClicked.disconnect(mfd.currentItem.handleLeftButton);
+            //                     mfd.rightButtonClicked.disconnect(mfd.currentItem.handleRightButton);
+            //                 }
+
+            //                 // Set the new page index. The Loader object will handle new connections
+            //                 mfd.currentPage = index;
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 }

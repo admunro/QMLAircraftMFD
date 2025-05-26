@@ -45,6 +45,7 @@ qt_add_qml_module(appAircraftMFD
         src/weaponstationmodel.cpp
 
     QML_FILES
+        ui/CustomButton.qml
         ui/Cockpit.qml
         ui/ControlWindow.qml
         ui/AircraftMFD.qml

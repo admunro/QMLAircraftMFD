@@ -28,7 +28,6 @@ Rectangle {
 
     property var navigationRoute: [regensburg, nurnberg, wurzburg, heilbronn, augsburg, ingolstadt]
 
-
     function zoomIn() {
         if (map.zoomLevel < 20) {
             map.zoomLevel += 1
@@ -71,7 +70,7 @@ Rectangle {
                 name: 'osm'
 
                 // PluginParameter { name: "osm.mapping.custom.host";
-                //                   value: "https://a.tile.opentopomap.org/${z}/${x}/${y}.png" }
+                // value: "https://a.tile.opentopomap.org/${z}/${x}/${y}.png" }
 
             }
 
@@ -82,7 +81,6 @@ Rectangle {
             zoomLevel: 11
 
             copyrightsVisible: false
-
 
             Connections {
                 target: ownshipModel
@@ -119,8 +117,6 @@ Rectangle {
                 line.width: 3
                 line.color: 'chartreuse'
 
-
-
                 path: mapDisplay.navigationRoute
             }
 
@@ -147,7 +143,6 @@ Rectangle {
                     }
                 }
             }
-
 
             MapQuickItem
             {
@@ -231,50 +226,88 @@ Rectangle {
             spacing: parent.width / 20
 
             Repeater {
+
+                id: buttonRepeater
                 model: mapDisplay.pages
 
-                Rectangle {
+                function onClickedHandler(index) {
 
-                    height: parent.height * 0.8
-                    width: height
-
-                    color: "#2a2a2a"
-                    border.color: 'black'
-                    border.width: 1
-
-                    Text {
-                        anchors.centerIn: parent
-                        text: mapDisplay.pages[index]
-                        color: 'white'
-                        fontSizeMode: Text.Fit
-                        font.family: "Roboto Mono"
-                        font.bold: true
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onPressed: parent.color = "#404040"
-                        onReleased: parent.color = "#2a2a2a"
-
-                        onClicked: {
-                            if (index == 0) {
-                                zoomIn()
-                            } else if (index == 1) {
-                                zoomOut()
-                            } else if (index == 2) {
-                                mapDisplay.centerOnPresentPosition = true
-                            } else if (index == 3) {
-                                selectTrackUp()
-                            } else if (index == 4) {
-                                selectNorthUp()
-                            } else {
-                                console.log('Button pressed on Map Display: '
-                                            + mapDisplay.pages[index])
-                            }
-                        }
+                    if (index === 0) {
+                        zoomIn()
+                    } else if (index === 1) {
+                        zoomOut()
+                    } else if (index === 2) {
+                        mapDisplay.centerOnPresentPosition = true
+                    } else if (index === 3) {
+                        selectTrackUp()
+                    } else if (index === 4) {
+                        selectNorthUp()
+                    } else {
+                        console.log('Button pressed on Map Display: '
+                                    + mapDisplay.pages[index])
                     }
                 }
+
+                CustomButton {
+
+                    required property int index
+                    required property var modelData
+
+
+                    buttonText: mapDisplay.pages[index]
+                    buttonIndex: index
+
+                    buttonHeight: parent.height * 0.8
+                    buttonWidth: buttonHeight
+
+                    onClickedHandler: buttonRepeater.onClickedHandler
+
+                }
             }
+
+
+
+            // Rectangle {
+
+            //     height: parent.height * 0.8
+            //     width: height
+
+            //     color: "#2a2a2a"
+            //     border.color: 'black'
+            //     border.width: 1
+
+            //     Text {
+            //         anchors.centerIn: parent
+            //         text: mapDisplay.pages[index]
+            //         color: 'white'
+            //         fontSizeMode: Text.Fit
+            //         font.family: "Roboto Mono"
+            //         font.bold: true
+            //     }
+
+            //     MouseArea {
+            //         anchors.fill: parent
+            //         onPressed: parent.color = "#404040"
+            //         onReleased: parent.color = "#2a2a2a"
+
+            //         onClicked: {
+            //             if (index == 0) {
+            //                 zoomIn()
+            //             } else if (index == 1) {
+            //                 zoomOut()
+            //             } else if (index == 2) {
+            //                 mapDisplay.centerOnPresentPosition = true
+            //             } else if (index == 3) {
+            //                 selectTrackUp()
+            //             } else if (index == 4) {
+            //                 selectNorthUp()
+            //             } else {
+            //                 console.log('Button pressed on Map Display: '
+            //                             + mapDisplay.pages[index])
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 }
