@@ -1,13 +1,9 @@
 import QtQuick
 
-//pragma NativeMethodBehavior: AcceptThisObject
-
 Item  {
     id: root
 
-    signal onClicked
-
-    required property var onClickedHandler
+    signal buttonClicked(int index)
 
     required property int buttonWidth
     required property int buttonHeight
@@ -42,10 +38,8 @@ Item  {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                if (root.onClickedHandler && typeof root.onClickedHandler === 'function') {
-                    root.onClickedHandler(root.buttonIndex);
+                root.buttonClicked(root.buttonIndex)
                 }
-            }
 
             onPressed: parent.color = "#404040"
             onReleased: parent.color = "#2a2a2a"

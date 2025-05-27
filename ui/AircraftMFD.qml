@@ -118,7 +118,9 @@ Rectangle {
                 buttonWidth: parent.width * 0.8
                 buttonHeight: buttonWidth
 
-                onClickedHandler: mfd.leftButtonClicked
+                onButtonClicked: function(buttonIndex) {
+                    mfd.leftButtonClicked(buttonIndex)
+                }
 
                 anchors.horizontalCenter: parent.horizontalCenter
             }
@@ -154,7 +156,9 @@ Rectangle {
                 buttonWidth: parent.width * 0.8
                 buttonHeight: buttonWidth
 
-                onClickedHandler: mfd.rightButtonClicked
+                onButtonClicked: function(buttonIndex) {
+                    mfd.rightButtonClicked(buttonIndex)
+                }
 
                 anchors.horizontalCenter: parent.horizontalCenter
             }
@@ -207,47 +211,9 @@ Rectangle {
                 buttonHeight: parent.height * 0.8
                 buttonWidth: buttonHeight
 
-                onClickedHandler: bottomRowRepeater.onClickedHandler
+                onButtonClicked: bottomRowRepeater.onClickedHandler(buttonIndex)
+
             }
-
-            // Rectangle {
-
-            //     height: parent.height * 0.8
-            //     width: height
-
-            //     color: index == mfd.currentPage ? "#404040" : "#2a2a2a"
-            //     border.color: "#3a3a3a"
-            //     border.width: 1
-
-            //     Text {
-            //         anchors.centerIn: parent
-            //         text: mfd.pages[index].name
-            //         color: "white"
-            //         fontSizeMode: Text.Fit
-            //         font.family: "Roboto Mono"
-            //         font.bold: true
-            //     }
-
-            //     MouseArea {
-            //         anchors.fill: parent
-            //         onClicked: {
-
-            //             if (index != mfd.currentPage)
-            //             {
-            //                 // Disconnect the button handlers from the currently selected page
-
-            //                 if (mfd.currentItem)
-            //                 {
-            //                     mfd.leftButtonClicked.disconnect(mfd.currentItem.handleLeftButton);
-            //                     mfd.rightButtonClicked.disconnect(mfd.currentItem.handleRightButton);
-            //                 }
-
-            //                 // Set the new page index. The Loader object will handle new connections
-            //                 mfd.currentPage = index;
-            //             }
-            //         }
-            //     }
-            // }
         }
     }
 }

@@ -260,54 +260,10 @@ Rectangle {
                     buttonHeight: parent.height * 0.8
                     buttonWidth: buttonHeight
 
-                    onClickedHandler: buttonRepeater.onClickedHandler
+                    onButtonClicked: buttonRepeater.onClickedHandler(buttonIndex)
 
                 }
             }
-
-
-
-            // Rectangle {
-
-            //     height: parent.height * 0.8
-            //     width: height
-
-            //     color: "#2a2a2a"
-            //     border.color: 'black'
-            //     border.width: 1
-
-            //     Text {
-            //         anchors.centerIn: parent
-            //         text: mapDisplay.pages[index]
-            //         color: 'white'
-            //         fontSizeMode: Text.Fit
-            //         font.family: "Roboto Mono"
-            //         font.bold: true
-            //     }
-
-            //     MouseArea {
-            //         anchors.fill: parent
-            //         onPressed: parent.color = "#404040"
-            //         onReleased: parent.color = "#2a2a2a"
-
-            //         onClicked: {
-            //             if (index == 0) {
-            //                 zoomIn()
-            //             } else if (index == 1) {
-            //                 zoomOut()
-            //             } else if (index == 2) {
-            //                 mapDisplay.centerOnPresentPosition = true
-            //             } else if (index == 3) {
-            //                 selectTrackUp()
-            //             } else if (index == 4) {
-            //                 selectNorthUp()
-            //             } else {
-            //                 console.log('Button pressed on Map Display: '
-            //                             + mapDisplay.pages[index])
-            //             }
-            //         }
-            //     }
-            // }
         }
     }
 }
