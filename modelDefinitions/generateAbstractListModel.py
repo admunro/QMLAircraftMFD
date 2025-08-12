@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+import argparse
 import xml.etree.ElementTree as ET
 
 indent = ''
@@ -474,4 +477,14 @@ def parse_models(filename):
 
 
 if __name__ == "__main__":
-    parse_models('models.xml')
+
+    argument_parser = argparse.ArgumentParser(description="Parse a model definition in xml format and output a set of C++ files suitable for use as a backend to a QML model")
+
+    argument_parser.add_argument("-i", "--inputfile", help='specifies the name of the input file to be processed')
+
+    arguments = argument_parser.parse_args()
+    print(arguments.inputfile)
+
+
+
+    #parse_models('models.xml')
