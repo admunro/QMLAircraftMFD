@@ -522,7 +522,6 @@ if __name__ == "__main__":
 
     argument_parser.add_argument("inputfile", help="specifies the name of the input file to be processed")
 
-    argument_parser.add_argument("-d", "--dry-run",     action="store_true", help="output what would be generated to std out, but don't write any files")
     argument_parser.add_argument("-l", "--list-models", action="store_true",  help="output a list of the models found in the inputfile")
     
     format_group = argument_parser.add_mutually_exclusive_group()
@@ -530,8 +529,9 @@ if __name__ == "__main__":
     format_group.add_argument("-j", "--force-json", action="store_true", help="forces inputfile to be treated as json, ignoring any file extension")
                                  
     output_group = argument_parser.add_mutually_exclusive_group()
-    output_group.add_argument("--source-only", action="store_true", help="only generate the source file, not the header file (works in conjunction with --dry-run)")
-    output_group.add_argument("--header-only", action="store_true", help="only generate the header file, not the source file (works in conjunction with --dry-run)")
+    output_group.add_argument("-d", "--dry-run", action="store_true", help="output what would be generated to std out, but don't write any files")
+    output_group.add_argument("--source-only",   action="store_true", help="only write the source file (--dry-run will still output the header file)")
+    output_group.add_argument("--header-only",   action="store_true", help="only write the header file (--dry-run will still output the source file)")
 
 
 
