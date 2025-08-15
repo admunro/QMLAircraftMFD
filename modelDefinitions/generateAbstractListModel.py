@@ -480,10 +480,10 @@ if __name__ == "__main__":
 
     argument_parser = argparse.ArgumentParser(description="Parse a model definition in xml format and output a set of C++ files suitable for use as a backend to a QML model")
 
-    argument_parser.add_argument("-i", "--inputfile", help='specifies the name of the input file to be processed')
+    argument_parser.add_argument("inputfile", help='specifies the name of the input file to be processed')
 
     arguments = argument_parser.parse_args()
-    print(arguments.inputfile)
+    print(f"Input file to be parsed: {arguments.inputfile}")
 
 
 
