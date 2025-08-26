@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+
+import argparse
+import os.path
+from sys import exit
 import xml.etree.ElementTree as ET
 
 indent = ''
@@ -117,7 +122,7 @@ def parse_member_parameters(members):
     return parameters
 
 
-def create_header_file(model, class_name, includes, members, vector_name):
+def create_header_file(model, class_name, includes, members, vector_name, arguments):
     global indent
     indent = ''
 
@@ -189,12 +194,20 @@ def create_header_file(model, class_name, includes, members, vector_name):
 
     header_file.append('};')
 
-    with open('generated_' + class_name.lower() + '.h', 'w') as file:
-        for line in header_file:
-            file.write(f"{line}\n")
+    generated_filename = 'generated_' + class_name.lower() + '.h'
+
+    if arguments.dry_run:
+        print(f"\n********* Header File for {class_name} *********")
+        print(f"\n{generated_filename}:\n")
+        for line in header_file:   
+            print(f"{line}")
+    elif not arguments.source_only:
+        with open(generated_filename, 'w') as file:
+            for line in header_file:
+                file.write(f"{line}\n")
 
 
-def create_source_file(model, class_name, members, vector_name):
+def create_source_file(model, class_name, members, vector_name, arguments):
 
     global indent
     indent = ''
@@ -446,16 +459,33 @@ def create_source_file(model, class_name, members, vector_name):
     decrease_indent()
     source_file.append(indent + '}')
 
-    with open('generated_' + class_name.lower() + '.cpp', 'w') as file:
-        for line in source_file:
-            file.write(f"{line}\n")
+    generated_filename = 'generated_' + class_name.lower() + '.cpp'
+
+    if arguments.dry_run:
+        print(f"\n********* Source File for {class_name} *********")
+        print(f"\n{generated_filename}:\n")
+        for line in source_file:   
+            print(f"{line}")
+    elif not arguments.header_only:
+        with open(generated_filename, 'w') as file:
+            for line in source_file:
+                file.write(f"{line}\n")
+
+    
 
 
-def parse_models(filename):
+def parse_xml_models(arguments):
 
     global indent
 
-    models = ET.parse(filename).getroot().findall('model')
+    models = ET.parse(arguments.inputfile).getroot().findall('model')
+
+    if arguments.list_models:
+        print(f"Found {len(models)} models in {arguments.inputfile}:\n")    
+
+        for model in models:
+            print(f"Model: {model.attrib['name']}")
+
 
     for model in models:
 
@@ -463,15 +493,61 @@ def parse_models(filename):
         members = model.findall('member')
 
         class_name = (model.attrib['name'] + 'Model')
-
+     
         if 'plural' in model.attrib.keys():
             vector_name = ('m_' + model.attrib['plural']).lower()
         else:
             vector_name = ('m_' + model.attrib['name'] + 's').lower()
 
-        create_header_file(model, class_name, includes, members, vector_name)
-        create_source_file(model, class_name, members, vector_name)
+        create_header_file(model, class_name, includes, members, vector_name, arguments)
+        create_source_file(model, class_name, members, vector_name, arguments)
+
+
+
+def check_input_file(arguments):
+    
+    print(f"Input file to be parsed: {arguments.inputfile}")
+
+
+
+    
+
+
+
 
 
 if __name__ == "__main__":
-    parse_models('models.xml')
+
+    argument_parser = argparse.ArgumentParser(description="Parse a model definition in xml format and output a set of C++ files suitable for use as a backend to a QML model")
+
+    argument_parser.add_argument("inputfile", help="specifies the name of the input file to be processed")
+
+    argument_parser.add_argument("-l", "--list-models", action="store_true",  help="output a list of the models found in the inputfile")
+    
+    format_group = argument_parser.add_mutually_exclusive_group()
+    format_group.add_argument("-x", "--force-xml",  action="store_true", help="forces inputfile to be treated as xml, ignoring any file extension")
+    format_group.add_argument("-j", "--force-json", action="store_true", help="forces inputfile to be treated as json, ignoring any file extension")
+                                 
+    output_group = argument_parser.add_mutually_exclusive_group()
+    output_group.add_argument("-d", "--dry-run", action="store_true", help="output what would be generated to std out, but don't write any files")
+    output_group.add_argument("--source-only",   action="store_true", help="only write the source file (--dry-run will still output the header file)")
+    output_group.add_argument("--header-only",   action="store_true", help="only write the header file (--dry-run will still output the source file)")
+
+
+
+    arguments = argument_parser.parse_args()
+
+    check_input_file(arguments)
+
+    if not os.path.exists(arguments.inputfile):
+        exit(f"{arguments.inputfile} does not exist, cannot continue.")
+
+    if arguments.force_xml or arguments.inputfile.endswith('.xml'):
+        print(f"Treating {arguments.inputfile} as XML")
+        parse_xml_models(arguments)
+
+    elif arguments.force_json or arguments.inputfile.endswith('.json'):   
+        exit("JSON input files are not yet supported, please use XML format.")
+
+            
+   
