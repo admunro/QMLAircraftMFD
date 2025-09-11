@@ -1,0 +1,26 @@
+{
+	"entity_id": "ASSET_1",
+	"asset_data": {
+		"messageID": "abcdef",
+		"source": "ABC_DEF",
+		"timestamp": 1234,
+		"dynamics": {
+			"acceleration": { 
+				"alt": 123.0,
+				"lat": 234.0,
+				"lon": 345.0
+			},
+			"position": {
+				"lat": 567.0,
+				"lon": 678.0,
+				"alt": 789.0,
+				"hdg": 789.1
+			},
+			"velocity": {
+				"hdg": 123.1,
+				"groundspeed": 234.2,
+				"vertical": 345.3
+			}
+		}
+	}
+}
