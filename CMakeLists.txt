@@ -5,7 +5,8 @@ project(AircraftMFD VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Positioning Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Quick Positioning)
+
 
 # Make sure all required components were found
 if(NOT Qt6_FOUND OR NOT Qt6Quick_FOUND OR NOT Qt6Positioning_FOUND)
