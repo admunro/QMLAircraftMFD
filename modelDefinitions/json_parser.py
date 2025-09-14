@@ -2,26 +2,54 @@
 
 import json
 
-structures = {}
+class Data_type:
 
-class structure:
+    def __init__(self, data_type, name, initial_value = None):
+        self.data_type = data_type
+        self.name = name
+        self.initial_value = initial_value
+        
+    def __repr__(self):
+        return f"Data_type ({self.data_type} {self.name} = {self.initial_value})"
+  
 
-    structure_names = []
+class Structure:
 
-    def __init__(self, name, type, initial_value = None):
+    structures = []
 
-        if self.name in structure.structure_names:
-            raise Exception(f'Structure with name {name} already exists!')
+    def get_structure(type):
 
-        structure.structure_names.append(name)
+        for struct in Structure.structures:
+            if struct.type == type:
+                return struct
+            
+        return None
+
+    def __init__(self, type, name):
+
+        if Structure.get_structure(type) is not None:    
+            raise Exception(f'Structure with type {type} already exists!')
 
         self.name = name
         self.type = type
-        self.initial_value = initial_value
+            
+        self.members = []
 
-    
+        Structure.structures.append(self)
 
+    def __repr__(self):
+        return f"Structure ({self.type} {self.name})"
 
+    def add_struct(self, struct):
+        self.members.append(struct)
+
+    def add_member(self, new_member):
+        
+        for member in self.members:
+            if member.name == new_member.name:
+                raise Exception(f'Member with name {new_member.name} already exists!')
+            
+        self.members.append(new_member)
 
 
 def infer_cpp_type(value):
@@ -36,22 +64,17 @@ def infer_cpp_type(value):
     return None
 
 
-def parse_json(parent_name, data):
-
-    this_struct = {}
+def parse_json(containing_struct, data):
 
     for key, value in data.items():
-        if isinstance(value, dict):
-            parse_json(key, value)
-            this_struct[key] = structures[key]
+
+        if isinstance(value, dict):    
+            this_struct = Structure(key.lower().capitalize(), key.lower())
+            parse_json(this_struct, value)
+            containing_struct.add_struct(this_struct)
         else:
-            this_struct[key] = (infer_cpp_type(value), key, value)
+            containing_struct.add_member(Data_type(infer_cpp_type(value), key, value))
 
-    structures[parent_name] = this_struct
-
-
-
- 
 
 
 if __name__ == "__main__":
@@ -60,9 +83,8 @@ if __name__ == "__main__":
     data = json.load(file)
     file.close()
 
+    top_level_structure = Structure(type='Entity', name='entity')
 
-    parse_json('entity', data)
+    parse_json(top_level_structure, data)
 
-    print(structures['entity'])
-    
     pass
